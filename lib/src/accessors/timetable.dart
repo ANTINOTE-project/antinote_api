@@ -1,0 +1,121 @@
+import 'dart:async';
+
+import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/json.dart';
+import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/session.dart';
+import 'package:antinote/src/helpers/visual_id.dart';
+import 'package:antinote/src/models/break.dart';
+import 'package:antinote/src/models/classes/classes.dart';
+import 'package:antinote/src/models/date.dart';
+import 'package:antinote/src/models/timetable.dart';
+import 'package:antinote/src/models/user/resource.dart';
+
+class TimetableAccessor extends StatefulAccessor<Timetable, PronoteSession> {
+  final UserResource resource;
+  final Map<String, dynamic> extra;
+
+  const TimetableAccessor({required this.resource, required this.extra});
+
+  factory TimetableAccessor.forRange({
+    required UserResource resource,
+    required DateTime from,
+    required DateTime? to,
+  }) {
+    return TimetableAccessor(
+      resource: resource,
+      extra: {
+        ...propertyCaseInsensitive('dateDebut', {
+          '_T': 7,
+          'V': from.asPronoteDate(),
+        }),
+        if (to != null)
+          ...propertyCaseInsensitive('dateFin', {
+            '_T': 7,
+            'V': to.asPronoteDate(),
+          }),
+      },
+    );
+  }
+
+  factory TimetableAccessor.forDay({
+    required UserResource resource,
+    required DateTime day,
+  }) => TimetableAccessor.forRange(resource: resource, from: day, to: null);
+
+  factory TimetableAccessor.forWeek({
+    required UserResource resource,
+    required int week,
+  }) {
+    return TimetableAccessor(
+      resource: resource,
+      extra: propertyCaseInsensitive('numeroSemaine', week),
+    );
+  }
+
+  factory TimetableAccessor.forYear({
+    required UserResource resource,
+    required PronoteSession session,
+  }) {
+    return TimetableAccessor.forRange(
+      resource: resource,
+      from: session.instance.firstDate,
+      to: session.instance.lastDate,
+    );
+  }
+
+  @override
+  FutureOr<Map<String, dynamic>> access(
+    NetworkStack stack,
+    Completer<void>? cancellationSignal,
+  ) {
+    return stack
+        .post(
+          Call.function(
+            name: "PageEmploiDuTemps",
+            dataSec: {
+              stack.vocab.data: {
+                'estEDTPermanence': false,
+                'avecAbsencesEleve': false,
+                'avecRessourcesLibrePiedHoraire': false,
+                'avecAbsencesRessource': true,
+                'avecInfoPrefsGrille': true,
+                'avecConseilDeClasse': true,
+                'avecCoursSortiePeda': true,
+                'avecDisponibilites': true,
+                'avecRetenuesEleve': true,
+                'edt': {'G': 16, 'L': 'Emploi du temps'},
+                ...propertyCaseInsensitive('ressource', resource.toRaw()),
+                ...extra,
+              },
+            },
+            cancellationSignal: cancellationSignal,
+          ),
+        )
+        .thenField(stack.vocab.data);
+  }
+
+  @override
+  FutureOr<PronoteSession> collectState(PronoteSession session) => session;
+
+  @override
+  FutureOr<Timetable> interpret(MapJsonNavigator nav, PronoteSession state) {
+    return Timetable(
+      absences: nav.get('absences'),
+      withCanceledClasses: nav.get('avecCoursAnnule') ?? true,
+      classes: nav.getLM('ListeCours').mapL((e) => e.asClass(state))
+        ..sort(
+          (a, b) => a.startDate.millisecondsSinceEpoch.compareTo(
+            b.startDate.millisecondsSinceEpoch,
+          ),
+        ),
+      firstSlotForDay: nav.get('premierePlaceHebdoDuJour'),
+      middayMealStartSlot: nav.get('debutDemiPensionHebdo'),
+      middayMealEndSlot: nav.get('finDemiPensionHebdo'),
+      breaks: nav.getLM('recreations').mapL((e) => e.asBreak()),
+    );
+  }
+
+  @override
+  List<VisualIdMixin> store(Timetable result) => result.classes;
+}

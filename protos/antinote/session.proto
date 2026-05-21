@@ -1,0 +1,97 @@
+syntax = "proto3";
+package antinote;
+
+import "protos/antinote/workspace.proto";
+
+message SerializedCrypto {
+  // 16 bytes for the AES Initialization Vector used in the relevant session.
+  bytes iv = 1;
+  // The unknown-length key given by the remote to communicate with the server.
+  bytes key = 2;
+  // The RSA modulo for the session, if one is given by the remote (else we use the default).
+  optional string rsa_modulus = 3;
+  // The RSA exponent for the session, if one is given by the remote (else we use the default).
+  optional string rsa_exponent = 4;
+}
+
+message SerializedNetworkStack {
+  SerializedCrypto crypto = 1;
+  string instance_version = 2;
+  string base_url = 3;
+  repeated string cookies = 4;
+  SerializedWorkspace temp_workspace = 5;
+  bool demo = 6;
+  bool rsa_from_constants = 7;
+  bool skip_encryption = 8;
+  bool skip_compression = 9;
+  bool http = 10;
+  bool poll = 11;
+  string username = 12;
+  uint32 session_id = 13;
+  optional string token_id = 14;
+  optional string token_key = 15;
+  optional string client_signature = 16;
+  optional string server_signature = 17;
+  map<string, sint32> orders = 18;
+}
+
+enum CacheType {
+  // SPECIAL CACHE TYPE
+  //
+  // Will simply give out the latest value for each item type put in cache when
+  // asked (this is just a marker where we expect any object that wants to
+  // replace versions of it by putting the same constant visual ID).
+  UNIQUE = 0;
+  PERIOD = 1;
+  DISCUSSION_MESSAGE = 2;
+  FILE_ATTACHMENT = 3;
+  LINK_ATTACHMENT = 4;
+  SUBMITTED_FILE_ATTACHMENT = 5;
+  DISCUSSION_NODE = 6;
+  SERVICE = 7;
+  EXAM = 8;
+  THEME = 9;
+  MEAL = 10;
+  FOOD = 11;
+  FOOD_LABEL = 12;
+  FOOD_ALLERGEN = 13;
+  NEWS = 14;
+  PERSON = 15;
+  NEWS_CATEGORY = 16;
+  NEWS_QUESTION = 17;
+  NEWS_QUESTION_PICK = 18;
+  NEWS_QUESTION_ANSWER = 19;
+  NOTEBOOK_ENTRY = 20;
+  NOTEBOOK_ENTRY_GROUP = 21;
+  NOTEBOOK_CONTENT = 22;
+  NOTEBOOK_CONTENT_CATEGORY = 23;
+  HOMEWORK = 24;
+  HANDED_ASSIGNMENT = 25;
+  NOTEBOOK_RESOURCE_ENTRY = 26;
+  CLAZZ = 27;
+  SUBJECT = 28;
+  NOTEBOOK_ENTRY_PREVIEW = 29;
+  NOTEBOOK_RESOURCE = 30;
+  PEDAGOGICAL_FORUM = 31;
+  MCQ_EXECUTION = 32;
+  MCQ = 33;
+  EXAM_PREVIEW = 34;
+  ROOM = 35;
+  SCHOOL_LIFE_EVENT = 36;
+  SCHOOL_LIFE_EVENT_REASON = 37;
+  SCHOOL_LIFE_EVENT_SECTION = 38;
+  USER_RESOURCE = 39;
+  HOLIDAY = 40;
+  CLASSROOM = 41;
+  CLASS_GROUP = 42;
+}
+
+message CacheSection {
+  CacheType type = 1;
+  map<string, string> values = 2;
+}
+
+message SerializedSession {
+  SerializedNetworkStack stack = 1;
+  repeated CacheSection cache = 2;
+}

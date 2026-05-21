@@ -1,0 +1,98 @@
+import 'dart:async';
+import 'dart:math';
+
+import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/json.dart';
+import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/visual_id.dart';
+import 'package:cross_file/cross_file.dart';
+import 'package:http/http.dart';
+import 'package:mime/mime.dart';
+
+class FileUploadAccessor extends StatelessAccessor<String> {
+  final String fileCategory;
+  final XFile file;
+  final String nextCallName;
+
+  const FileUploadAccessor({
+    this.fileCategory = 'selecfile',
+    required this.file,
+    required this.nextCallName,
+  });
+
+  static const int _chunkSize = 100 * 1024; // Same as PRONOTE
+
+  @override
+  FutureOr<Map<String, dynamic>> access(
+    NetworkStack stack,
+    Completer<void>? cancellationSignal,
+  ) async {
+    final baseOrder = await stack.getEncryptedOrder(
+      OrderBehavior.communication,
+      forceNullIv: false,
+    );
+    final uploadStart = DateTime.now();
+    final fileId = UploadCallData.buildFileId(stack, fileCategory);
+    print(
+      'Starting an upload at ${uploadStart.millisecondsSinceEpoch} for $fileId',
+    );
+
+    int contentLength = await file.length();
+    String? mimeType;
+    print('File size is $contentLength');
+
+    int currentOffset = 0;
+    while (currentOffset < contentLength) {
+      final viewEnd = min(contentLength, currentOffset + _chunkSize) /* - 1*/;
+      final viewData = await ByteStream(
+        file.openRead(currentOffset, viewEnd),
+      ).toBytes();
+
+      mimeType ??= lookupMimeType(
+        file.name,
+        headerBytes: viewData
+            .take(defaultMagicNumbersMaxLength)
+            .toList(growable: false),
+      );
+
+      print(
+        'Uploading chunk $currentOffset-$viewEnd/$contentLength... (actual view data len = ${viewData.length}, requested = ${viewEnd - currentOffset})',
+      );
+
+      final result = await stack
+          .post(
+            Call.upload(
+              cancellationSignal: cancellationSignal,
+              data: UploadCallData(
+                orderId: baseOrder,
+                fileName: file.name,
+                contentType: mimeType ?? file.mimeType,
+                contentLength: contentLength,
+                viewOffset: currentOffset,
+                dataView: viewData,
+                fileId: fileId,
+                md5DataHash: null,
+                // TODO: Calculate when the file is already in memory or in the
+                // TODO: same cases as PRONOTE (e.g. blobs)
+                uploadStartTime: uploadStart,
+              ),
+              name: nextCallName,
+            ),
+          )
+          .resultCompleter
+          .future;
+
+      print('Uploaded chunk. Got $result');
+      currentOffset += _chunkSize;
+    }
+
+    return {'fileId': fileId};
+  }
+
+  @override
+  FutureOr<String> interpretStateless(MapJsonNavigator<dynamic> nav) =>
+      nav.get('fileId');
+
+  @override
+  List<VisualIdMixin> store(String result) => [];
+}
