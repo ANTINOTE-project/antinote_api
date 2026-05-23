@@ -180,8 +180,7 @@ final class SpecificInstanceParameters extends InstanceParameters {
 
   int getWeekNumberForDate(DateTime date) =>
       firstWeekNumber +
-      ((date.toUtc().millisecondsSinceEpoch -
-                  firstMonday.toUtc().millisecondsSinceEpoch) ~/
+      ((date.toUtc().millisecondsSinceEpoch - firstMonday.toUtc().millisecondsSinceEpoch) ~/
               (Duration.millisecondsPerSecond *
                   Duration.secondsPerMinute *
                   Duration.minutesPerHour *
@@ -203,10 +202,7 @@ final class SpecificInstanceParameters extends InstanceParameters {
       return false;
     }
 
-    if (holidays.any(
-      (holiday) =>
-          !holiday.startDate.isAfter(day) && !holiday.endDate.isBefore(day),
-    )) {
+    if (holidays.any((holiday) => !holiday.startDate.isAfter(day) && !holiday.endDate.isBefore(day))) {
       return false;
     }
 
@@ -219,15 +215,9 @@ final class SpecificInstanceParameters extends InstanceParameters {
     return true;
   }
 
-  DateTime findBusinessDay(
-    DateTime anchor,
-    Duration offset, {
-    bool canBeDifferent = false,
-  }) {
+  DateTime findBusinessDay(DateTime anchor, Duration offset, {bool canBeDifferent = false}) {
     final startAnchor = anchor.copyWith();
-    while (((offset.isNegative
-                ? !anchor.isBefore(firstDate)
-                : !anchor.isAfter(lastDate)) &&
+    while (((offset.isNegative ? !anchor.isBefore(firstDate) : !anchor.isAfter(lastDate)) &&
             !isBusinessDay(anchor)) ||
         (canBeDifferent ? false : startAnchor.isAtSameMomentAs(anchor))) {
       anchor = anchor.add(offset);
@@ -238,11 +228,7 @@ final class SpecificInstanceParameters extends InstanceParameters {
 
   List<DateTime> listBusinessDays() {
     List<DateTime> days = [];
-    for (
-      DateTime date = firstDate.copyWith();
-      !date.isAfter(lastDate);
-      date = date.add(Duration(days: 1))
-    ) {
+    for (DateTime date = firstDate.copyWith(); !date.isAfter(lastDate); date = date.add(Duration(days: 1))) {
       if (isBusinessDay(date)) days.add(date);
     }
 
@@ -264,18 +250,12 @@ final class SpecificInstanceParameters extends InstanceParameters {
 }
 
 extension AsSpecificInstanceParameters on MapJsonNavigator {
-  (
-    Map<int, WeekFrequency>,
-    Map<WeekFrequency, int?>,
-    Map<WeekFrequency, WeekFrequency?>,
-  )
+  (Map<int, WeekFrequency>, Map<WeekFrequency, int?>, Map<WeekFrequency, WeekFrequency?>)
   _buildWeekFrequenciesAndPeriodicity() {
     Map<int, WeekFrequency> weekFrequencies = {};
 
     for (final fortnight in [1, 2]) {
-      final frequency = go(
-        'General',
-      ).getL('DomainesFrequences').getL<int>(fortnight);
+      final frequency = go('General').getL('DomainesFrequences').getL<int>(fortnight);
       for (final week in frequency) {
         weekFrequencies[week] = WeekFrequency(
           label: go('General').getL('LibellesFrequences').get(fortnight),
@@ -284,31 +264,17 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       }
     }
 
-    Map<
-      WeekFrequency,
-      ({int? periodicity, int lastWeekNumber, bool ignoreNext})
-    >
-    weekFrequenciesPeriodicity = HashMap();
-    final weekFrequenciesEntries = weekFrequencies.entries.toList(
-      growable: false,
-    );
+    Map<WeekFrequency, ({int? periodicity, int lastWeekNumber, bool ignoreNext})> weekFrequenciesPeriodicity =
+        HashMap();
+    final weekFrequenciesEntries = weekFrequencies.entries.toList(growable: false);
     weekFrequenciesEntries.sort((a, b) => a.key.compareTo(b.key));
-    for (
-      int i = weekFrequenciesEntries.first.key;
-      i <= weekFrequenciesEntries.last.key;
-      i++
-    ) {
-      final filtered = weekFrequenciesEntries.where(
-        (element) => element.key == i,
-      );
+    for (int i = weekFrequenciesEntries.first.key; i <= weekFrequenciesEntries.last.key; i++) {
+      final filtered = weekFrequenciesEntries.where((element) => element.key == i);
 
       if (filtered.isEmpty) {
         weekFrequenciesPeriodicity.updateAll(
-          (key, value) => (
-            ignoreNext: true,
-            lastWeekNumber: value.lastWeekNumber,
-            periodicity: value.periodicity,
-          ),
+          (key, value) =>
+              (ignoreNext: true, lastWeekNumber: value.lastWeekNumber, periodicity: value.periodicity),
         );
         continue;
       }
@@ -325,33 +291,22 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
         final value = weekFrequenciesPeriodicity[frequency]!;
 
         final diff = weekNumber - value.lastWeekNumber;
-        if (value.periodicity != -1 &&
-            diff != value.periodicity &&
-            !value.ignoreNext) {
+        if (value.periodicity != -1 && diff != value.periodicity && !value.ignoreNext) {
           weekFrequenciesPeriodicity.update(
             frequency,
-            (value) => (
-              periodicity: null,
-              lastWeekNumber: weekNumber,
-              ignoreNext: false,
-            ),
+            (value) => (periodicity: null, lastWeekNumber: weekNumber, ignoreNext: false),
           );
         }
 
         weekFrequenciesPeriodicity.update(
           frequency,
-          (value) => (
-            periodicity: diff,
-            lastWeekNumber: weekNumber,
-            ignoreNext: false,
-          ),
+          (value) => (periodicity: diff, lastWeekNumber: weekNumber, ignoreNext: false),
         );
       }
     }
 
     Map<WeekFrequency, WeekFrequency?> followingFrequencies = HashMap();
-    for (final MapEntry(key: weekNumber, value: frequency)
-        in weekFrequencies.entries) {
+    for (final MapEntry(key: weekNumber, value: frequency) in weekFrequencies.entries) {
       final followingFrequency = weekFrequencies[weekNumber + 1];
       if (followingFrequency == null) continue;
 
@@ -367,9 +322,7 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
 
     return (
       weekFrequencies,
-      weekFrequenciesPeriodicity.map(
-        (key, value) => MapEntry(key, value.periodicity),
-      ),
+      weekFrequenciesPeriodicity.map((key, value) => MapEntry(key, value.periodicity)),
       followingFrequencies,
     );
   }
@@ -379,8 +332,7 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
     Workspace temporaryWorkspace,
   ) {
     final general = getM('General');
-    final (frequency, frequencyPeriodicity, followingFrequencies) =
-        _buildWeekFrequenciesAndPeriodicity();
+    final (frequency, frequencyPeriodicity, followingFrequencies) = _buildWeekFrequenciesAndPeriodicity();
 
     return SpecificInstanceParameters(
       shared: shared,
@@ -396,16 +348,10 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       helpUrl: Uri.tryParse(general.get('UrlAide')),
       videosAccessUrl: Uri.tryParse(general.get('urlAccesVideos')),
       twitterAccessUrl: Uri.tryParse(general.get('urlAccesTwitter')),
-      doubleAuthRegistrationFAQUrl: Uri.tryParse(
-        general.get('urlFAQEnregistrementDoubleAuth'),
-      ),
-      devicesRegisterTutorialUrl: Uri.tryParse(
-        general.get('urlTutoEnregistrerAppareils'),
-      ),
+      doubleAuthRegistrationFAQUrl: Uri.tryParse(general.get('urlFAQEnregistrementDoubleAuth')),
+      devicesRegisterTutorialUrl: Uri.tryParse(general.get('urlTutoEnregistrerAppareils')),
       canopeUrl: Uri.tryParse(general.get('urlCanope')),
-      securityVideoTutorialUrl: Uri.tryParse(
-        general.get('urlTutoVideoSecurite'),
-      ),
+      securityVideoTutorialUrl: Uri.tryParse(general.get('urlTutoVideoSecurite')),
       withConnexionChoice: general.get('AvecChoixConnexion'),
       firstWeekNumber: general.get('numeroPremiereSemaine'),
       firstCycleStartDate: general.get('dateDebutPremierCycle'),
@@ -417,9 +363,7 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       sequenceLength: general.get('DureeSequence'),
       halfDayAbsenceSlot: general.get('PlaceDemiJourneeAbsence'),
       typeAbsencesViaDJ: general.get('saisirAbsencesParDJ'),
-      defaultPresenceExemptionValue: general.get(
-        'valeurDefautPresenceDispense',
-      ),
+      defaultPresenceExemptionValue: general.get('valeurDefautPresenceDispense'),
       lunchActivation: general.get('activationDemiPension'),
       lunchStartSlot: general.get('debutDemiPension'),
       lunchEndSlot: general.get('finDemiPension'),
@@ -427,9 +371,7 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       nextBusinessDay: general.get('JourOuvre'),
       businessDays: general.getL<int>('JoursOuvres'),
       lunchDays: general.get('JoursDemiPension'),
-      discussionBetweenParentsActivated: general.get(
-        'ActivationMessagerieEntreParents',
-      ),
+      discussionBetweenParentsActivated: general.get('ActivationMessagerieEntreParents'),
       excellenceParcoursGestion: general.get('GestionParcoursExcellence'),
       blogActivation: general.get('activerBlog'),
       businessDaysPerCycle: general.get('joursOuvresParCycle'),
@@ -442,25 +384,15 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       followingFrequencies: followingFrequencies,
       bareme: general.get('BaremeNotation'),
       maxBareme: general.get('BaremeMaxDevoirs'),
-      defaultPublicationInterval: general.get(
-        'NbJDecalageDatePublicationParDefaut',
-      ),
-      publicationIntervalForParents: general.get(
-        'NbJDecalagePublicationAuxParents',
-      ),
-      withGradesPublicationIntervalDisplayToParents: general.get(
-        'AvecAffichageDecalagePublicationNotesAuxParents',
-      ),
-      withTestsPublicationIntervalDisplayToParents: general.get(
-        'AvecAffichageDecalagePublicationEvalsAuxParents',
-      ),
+      defaultPublicationInterval: general.get('NbJDecalageDatePublicationParDefaut'),
+      publicationIntervalForParents: general.get('NbJDecalagePublicationAuxParents'),
+      withGradesPublicationIntervalDisplayToParents:
+          general.get('AvecAffichageDecalagePublicationNotesAuxParents') ?? false,
+      withTestsPublicationIntervalDisplayToParents:
+          general.get('AvecAffichageDecalagePublicationEvalsAuxParents') ?? false,
       allowedAnnotations: general.get('listeAnnotationsAutorisees'),
-      acquirementLevels: general.getL<Map<String, dynamic>>(
-        'ListeNiveauxDAcquisitions',
-      ),
-      showShorthandForAcquirementLevel: general.get(
-        'AfficherAbbreviationNiveauDAcquisition',
-      ),
+      acquirementLevels: general.getL<Map<String, dynamic>>('ListeNiveauxDAcquisitions'),
+      showShorthandForAcquirementLevel: general.get('AfficherAbbreviationNiveauDAcquisition'),
       withHistoricalTests: general.get('AvecEvaluationHistorique'),
       withoutIntermediaryLevelValidationExamInAutomaticValidation: general.get(
         'SansValidationNivIntermediairesDsValidAuto',
@@ -472,20 +404,14 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
         'PondererMatieresSelonLeurCoeffDsDomaine',
       ),
       cecrlLevelManagement: general.get('AvecGestionNiveauxCECRL'),
-      langActivityColor: general
-          .get<String>('couleurActiviteLangagiere')
-          .asRGB(),
+      langActivityColor: general.get<String>('couleurActiviteLangagiere').asRGB(),
       minimumBaremeForMCQQuestion: general.get('minBaremeQuestionQCM'),
       maximumBaremeForMCQQuestion: general.get('maxBaremeQuestionQCM'),
       maxPointsForMCQ: general.get('maxNbPointQCM'),
       maxLevelForMCQ: general.get('maxNiveauQCM'),
-      skillGridElementLabelSize: general.get(
-        'tailleLibelleElementGrilleCompetence',
-      ),
+      skillGridElementLabelSize: general.get('tailleLibelleElementGrilleCompetence'),
       homeworkCommentSize: general.get('tailleCommentaireDevoir'),
-      withConnexionInformationRetrieval: general.get(
-        'AvecRecuperationInfosConnexion',
-      ),
+      withConnexionInformationRetrieval: general.get('AvecRecuperationInfosConnexion'),
       parentAuthorisesPasswordChange: general.get('parentAutoriseChangerMDP'),
       font: general.get('Police'),
       fontSize: general.get('TaillePolice'),
@@ -498,15 +424,11 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       firstHour: general.get('PremiereHeure'),
       starts: general.getLM('ListeHeures').mapL((e) => e.asTimeSlot()),
       endings: general.getLM('ListeHeuresFin').mapL((e) => e.asTimeSlot()),
-      endingsForSL: general
-          .getLM('ListeHeuresFinPourVS')
-          .mapL((e) => e.asTimeSlot()),
+      endingsForSL: general.getLM('ListeHeuresFinPourVS').mapL((e) => e.asTimeSlot()),
       sequences: general.getL<String>('sequences'),
       periods: general.getLM('ListePeriodes').mapL((e) => e.asPeriod()),
       pauses: general.getLM('recreations').mapL((e) => e.asPause()),
-      audioRecordingHomeworkSubmissionMaxSize: general.get(
-        'tailleMaxEnregistrementAudioRenduTAF',
-      ),
+      audioRecordingHomeworkSubmissionMaxSize: general.get('tailleMaxEnregistrementAudioRenduTAF'),
       validHomeworkSubmissionTypes: general.get('genresRenduTAFValable'),
       applicationCookieName: general.get('nomCookieAppli'),
       contextualHelp: general.get('aideContextuelle'),
