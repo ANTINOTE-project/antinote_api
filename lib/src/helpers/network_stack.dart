@@ -8,6 +8,7 @@ import 'package:antinote/antinote.dart';
 import 'package:antinote/src/helpers/api_properties.dart';
 import 'package:antinote/src/helpers/json_codec.dart';
 import 'package:http/http.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:version/version.dart';
 
 export 'call/call.dart';
@@ -182,12 +183,12 @@ class NetworkStack {
     );
   }
 
-  final StreamController<Map<String, dynamic>>
-  _serverSignatureStreamController = StreamController.broadcast();
+  final BehaviorSubject<Map<String, dynamic>> _serverSignatureSubject =
+      BehaviorSubject();
 
   /// A stream sending the new server signature each time it is updated.
   Stream<Map<String, dynamic>> get serverSignatureStream =>
-      _serverSignatureStreamController.stream;
+      _serverSignatureSubject.stream;
 
   /// The current configuration asked by the PRONOTE server.
   Map<String, dynamic>? get serverSignature => _serverSignature;
@@ -204,7 +205,7 @@ class NetworkStack {
       mergeInnerMaps: deepMerge,
     );
 
-    _serverSignatureStreamController.add(_serverSignature!);
+    _serverSignatureSubject.add(_serverSignature!);
   }
 
   /// When an Android device is asleep, it blocks by default all network-related

@@ -19,6 +19,7 @@ dependencies:
   path: ^1.9.1
   pointycastle: ^4.0.0
   protobuf: ^6.0.0
+  rxdart: ^0.28.0
   uuid: ^4.5.1
   version: ^3.0.2
 
