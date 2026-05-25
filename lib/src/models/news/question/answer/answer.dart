@@ -108,6 +108,8 @@ sealed class ChoiceNewsQuestionAnswer extends NewsQuestionAnswer {
   final Set<int> answers;
   final String? freeResponse;
 
+  final int responseMaxSize;
+
   const ChoiceNewsQuestionAnswer({
     required super.id,
     required super.withAnswer,
@@ -117,6 +119,7 @@ sealed class ChoiceNewsQuestionAnswer extends NewsQuestionAnswer {
     required super.isRespondent,
     required this.answers,
     required this.freeResponse,
+    required this.responseMaxSize,
   });
 
   @override
@@ -150,6 +153,7 @@ final class SingleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
     required super.isRespondent,
     required super.answers,
     required super.freeResponse,
+    required super.responseMaxSize,
   });
 
   @override
@@ -166,6 +170,7 @@ final class SingleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
       isRespondent: isRespondent,
       answers: picked,
       freeResponse: freeResponse,
+      responseMaxSize: responseMaxSize,
     );
   }
 }
@@ -180,6 +185,7 @@ final class MultipleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
     required super.isRespondent,
     required super.answers,
     required super.freeResponse,
+    required super.responseMaxSize,
   });
 
   @override
@@ -196,6 +202,7 @@ final class MultipleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
       isRespondent: isRespondent,
       answers: picked,
       freeResponse: freeResponse,
+      responseMaxSize: responseMaxSize,
     );
   }
 }
@@ -218,6 +225,9 @@ final class NoResponseNewsQuestionAnswer extends NewsQuestionAnswer {
 }
 
 final class TextualResponseNewsQuestionAnswer extends NewsQuestionAnswer {
+  final String answer;
+  final int responseMaxSize;
+
   const TextualResponseNewsQuestionAnswer({
     required super.id,
     required super.withAnswer,
@@ -226,9 +236,8 @@ final class TextualResponseNewsQuestionAnswer extends NewsQuestionAnswer {
     required super.respondentFullName,
     required super.isRespondent,
     required this.answer,
+    required this.responseMaxSize,
   });
-
-  final String answer;
 
   @override
   String? get freeResponseValue => null;
@@ -245,6 +254,7 @@ final class TextualResponseNewsQuestionAnswer extends NewsQuestionAnswer {
       respondentFullName: respondentFullName,
       isRespondent: isRespondent,
       answer: response,
+      responseMaxSize: responseMaxSize,
     );
   }
 }
@@ -342,6 +352,7 @@ extension AsNewsQuestionAnswer on MapJsonNavigator {
       isRespondent: message.isRespondent,
       answers: get('valeurReponse') ?? {},
       freeResponse: get('valeurReponseLibre'),
+      responseMaxSize: get('tailleReponse') ?? 200,
     );
   }
 
@@ -357,6 +368,7 @@ extension AsNewsQuestionAnswer on MapJsonNavigator {
       isRespondent: message.isRespondent,
       answers: get('valeurReponse') ?? {},
       freeResponse: get('valeurReponseLibre'),
+      responseMaxSize: get('tailleReponse') ?? 200,
     );
   }
 
@@ -371,6 +383,7 @@ extension AsNewsQuestionAnswer on MapJsonNavigator {
       respondentFullName: message.respondentFullName,
       isRespondent: message.isRespondent,
       answer: get('valeurReponse') ?? '',
+      responseMaxSize: get('tailleReponse') ?? 200,
     );
   }
 }
