@@ -20,7 +20,7 @@ extension AsBroadInstanceParameters on MapJsonNavigator {
     return BroadInstanceParameters(
       shared: shared,
       navIdentifier: get('identifiantNav'),
-      withPublicEstablishmentPage: get('avecPagePubliqueEtab'),
+      withPublicEstablishmentPage: get('avecPagePubliqueEtab') ?? false,
       workspaces: getLM('espaces').mapL((e) => e.asWorkspace()),
     );
   }
