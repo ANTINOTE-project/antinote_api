@@ -198,7 +198,7 @@ extension AsInstanceParameters on MapJsonNavigator {
   }) {
     final shared = asSharedInstanceParameters(casToken: casToken);
 
-    return switch (has('URLEspace')) {
+    return switch (has('General')) {
       true => asSpecificInstanceParameters(shared, tempWorkspace),
       false => asBroadInstanceParameters(shared),
     };
