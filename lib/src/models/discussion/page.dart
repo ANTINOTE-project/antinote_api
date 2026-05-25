@@ -12,9 +12,9 @@ final class DiscussionPage {
 extension AsDiscussionPage on MapJsonNavigator {
   DiscussionPage asDiscussionPage() {
     return DiscussionPage(
-      labels: mGetLM('listeEtiquettes')?.mapL((e) => e.asDiscussionLabel()) ??
-          [],
-      discussions: getLM('listeMessagerie').asDiscussionRootsList(),
+      labels:
+          mGetLM('listeEtiquettes')?.mapL((e) => e.asDiscussionLabel()) ?? [],
+      discussions: mGetLM('listeMessagerie')?.asDiscussionRootsList() ?? [],
     );
   }
 }
