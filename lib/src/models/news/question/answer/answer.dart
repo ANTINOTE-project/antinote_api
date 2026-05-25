@@ -217,6 +217,38 @@ final class NoResponseNewsQuestionAnswer extends NewsQuestionAnswer {
   get responseValue => null;
 }
 
+final class TextualResponseNewsQuestionAnswer extends NewsQuestionAnswer {
+  const TextualResponseNewsQuestionAnswer({
+    required super.id,
+    required super.withAnswer,
+    required super.answerAwaited,
+    required super.answeredOn,
+    required super.respondentFullName,
+    required super.isRespondent,
+    required this.answer,
+  });
+
+  final String answer;
+
+  @override
+  String? get freeResponseValue => null;
+
+  @override
+  String get responseValue => answer;
+
+  TextualResponseNewsQuestionAnswer buildAnswered(final String response) {
+    return TextualResponseNewsQuestionAnswer(
+      id: id,
+      withAnswer: true,
+      answerAwaited: answerAwaited,
+      answeredOn: DateTime.now().copyWith(isUtc: true),
+      respondentFullName: respondentFullName,
+      isRespondent: isRespondent,
+      answer: response,
+    );
+  }
+}
+
 final class NewsQuestionAnswerMessage {
   final String id;
   final bool withAnswer;
@@ -250,20 +282,12 @@ extension AsNewsQuestionAnswer on MapJsonNavigator {
   NewsQuestionAnswer asNewsQuestionAnswer(NewsQuestionAnswerType type) {
     final message = asNewsQuestionAnswerMessage();
     return switch (type) {
-      NewsQuestionAnswerType.receiptAcknowledgment => asRANewsQuestionAnswer(
-        message,
-      ),
-      NewsQuestionAnswerType.withoutReceiptAcknowledgment =>
-        asWithoutRANewsQuestionAnswer(message),
-      NewsQuestionAnswerType.singleChoice => asSingleChoiceNewsQuestionAnswer(
-        message,
-      ),
-      NewsQuestionAnswerType.multipleChoices =>
-        asMultipleChoiceNewsQuestionAnswer(message),
-      NewsQuestionAnswerType.withoutResponse => asNoResponseNewsQuestionAnswer(
-        message,
-      ),
-      _ => throw UnimplementedError(),
+      .receiptAcknowledgment => asRANewsQuestionAnswer(message),
+      .withoutReceiptAcknowledgment => asWithoutRANewsQuestionAnswer(message),
+      .singleChoice => asSingleChoiceNewsQuestionAnswer(message),
+      .multipleChoices => asMultipleChoiceNewsQuestionAnswer(message),
+      .withoutResponse => asNoResponseNewsQuestionAnswer(message),
+      .textual => asTextualResponseNewsQuestionAnswer(message),
     };
   }
 
@@ -333,6 +357,20 @@ extension AsNewsQuestionAnswer on MapJsonNavigator {
       isRespondent: message.isRespondent,
       answers: get('valeurReponse') ?? {},
       freeResponse: get('valeurReponseLibre'),
+    );
+  }
+
+  TextualResponseNewsQuestionAnswer asTextualResponseNewsQuestionAnswer(
+    NewsQuestionAnswerMessage message,
+  ) {
+    return TextualResponseNewsQuestionAnswer(
+      id: message.id,
+      withAnswer: message.withAnswer,
+      answerAwaited: message.answerAwaited,
+      answeredOn: message.answeredOn,
+      respondentFullName: message.respondentFullName,
+      isRespondent: message.isRespondent,
+      answer: get('valeurReponse') ?? '',
     );
   }
 }
