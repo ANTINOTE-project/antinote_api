@@ -85,6 +85,10 @@ sealed class Class with VisualIdMixin {
   final String? notes;
   final int weekNumber;
 
+  bool get canceled;
+
+  String? get status;
+
   const Class({
     required this.id,
     required this.backgroundColor,

@@ -6,6 +6,12 @@ final class Activity extends Class {
   final String resourceTypeName;
   final String resourceValue;
 
+  @override
+  String? get status => null;
+
+  @override
+  bool get canceled => false;
+
   const Activity({
     required this.title,
     required this.attendants,

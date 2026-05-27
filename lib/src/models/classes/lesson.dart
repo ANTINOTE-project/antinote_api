@@ -96,6 +96,7 @@ final class Lesson extends Class {
   ClassType get type => ClassType.lesson;
 
   final int classType;
+  @override
   final String? status;
   final bool canceled;
   final String? exemptedLabel;

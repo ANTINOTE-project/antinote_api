@@ -6,6 +6,12 @@ final class Detention extends Class {
   final List<Person> teachers;
   final List<Classroom> classrooms;
 
+  @override
+  String? get status => null;
+
+  @override
+  bool get canceled => false;
+
   const Detention({
     required this.title,
     required this.personals,
