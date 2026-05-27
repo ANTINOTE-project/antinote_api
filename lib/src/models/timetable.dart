@@ -3,15 +3,15 @@ import 'package:antinote/src/models/break.dart';
 import 'package:antinote/src/models/classes/classes.dart';
 
 final class Timetable {
-  final Map<String, dynamic> absences;
+  final Map<String, dynamic>? absences;
   final List<Break> breaks;
 
   final bool withCanceledClasses;
   final List<Class> classes;
 
-  final int firstSlotForDay;
-  final int middayMealStartSlot;
-  final int middayMealEndSlot;
+  final int? firstSlotForDay;
+  final int? middayMealStartSlot;
+  final int? middayMealEndSlot;
 
   Set<DateTime> dayList() {
     final Set<DateTime> tr = {};

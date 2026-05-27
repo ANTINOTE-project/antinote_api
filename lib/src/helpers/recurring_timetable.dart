@@ -214,15 +214,15 @@ extension AsRecurringClass on List<Class> {
 }
 
 final class RecurringTimetable {
-  final Map<String, dynamic> absences;
+  final Map<String, dynamic>? absences;
   final List<Break> breaks;
 
   final bool withCanceledClasses;
-  final List<RecurringClass> recurringClasses;
+  final List<RecurringClass>? recurringClasses;
 
-  final int firstSlotForDay;
-  final int middayMealStartSlot;
-  final int middayMealEndSlot;
+  final int? firstSlotForDay;
+  final int? middayMealStartSlot;
+  final int? middayMealEndSlot;
 
   const RecurringTimetable({
     required this.absences,

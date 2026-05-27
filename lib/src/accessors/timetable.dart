@@ -103,7 +103,7 @@ class TimetableAccessor extends StatefulAccessor<Timetable, PronoteSession> {
     return Timetable(
       absences: nav.get('absences'),
       withCanceledClasses: nav.get('avecCoursAnnule') ?? true,
-      classes: nav.getLM('ListeCours').mapL((e) => e.asClass(state))
+      classes: (nav.mGetLM('ListeCours')?.mapL((e) => e.asClass(state)) ?? [])
         ..sort(
           (a, b) => a.startDate.millisecondsSinceEpoch.compareTo(
             b.startDate.millisecondsSinceEpoch,
@@ -112,7 +112,7 @@ class TimetableAccessor extends StatefulAccessor<Timetable, PronoteSession> {
       firstSlotForDay: nav.get('premierePlaceHebdoDuJour'),
       middayMealStartSlot: nav.get('debutDemiPensionHebdo'),
       middayMealEndSlot: nav.get('finDemiPensionHebdo'),
-      breaks: nav.getLM('recreations').mapL((e) => e.asBreak()),
+      breaks: nav.mGetLM('recreations')?.mapL((e) => e.asBreak()) ?? [],
     );
   }
 
