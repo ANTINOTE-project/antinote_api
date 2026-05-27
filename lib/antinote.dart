@@ -109,6 +109,7 @@ export 'src/models/user/resource.dart';
 export 'src/models/week_frequency.dart';
 export 'src/models/workspace/type.dart';
 export 'src/models/workspace/workspace.dart';
+export 'src/models/pause.dart';
 export 'src/protos/antinote/credentials.pb.dart';
 export 'src/protos/antinote/session.pb.dart';
 export 'src/protos/antinote/workspace.pb.dart';
