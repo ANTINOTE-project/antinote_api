@@ -12,6 +12,21 @@ final class Activity extends Class {
   @override
   bool get canceled => false;
 
+  @override
+  List<ClassContent<dynamic>> get contents => [
+    TitleContent(value: title, isTime: false),
+    for (final attendant in attendants)
+      PersonalContent(
+        value: Person(
+          name: attendant,
+          id: null,
+          type: null,
+          place: null,
+          withDiscussion: false,
+        ),
+      ),
+  ];
+
   const Activity({
     required this.title,
     required this.attendants,

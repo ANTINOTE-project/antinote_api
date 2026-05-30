@@ -1,10 +1,25 @@
 part of 'classes.dart';
 
 final class Detention extends Class {
-  final String? title;
-  final List<Person> personals;
-  final List<Person> teachers;
-  final List<Classroom> classrooms;
+  @override
+  final List<ClassContent> contents;
+
+  String? get title => contents.whereType<TitleContent>().firstOrNull?.value;
+
+  List<Person> get personals => contents
+      .whereType<PersonalContent>()
+      .map((e) => e.value)
+      .toList(growable: false);
+
+  List<Person> get teachers => contents
+      .whereType<TeacherContent>()
+      .map((e) => e.value)
+      .toList(growable: false);
+
+  List<Classroom> get classrooms => contents
+      .whereType<ClassroomContent>()
+      .map((e) => e.value)
+      .toList(growable: false);
 
   @override
   String? get status => null;
@@ -13,10 +28,6 @@ final class Detention extends Class {
   bool get canceled => false;
 
   const Detention({
-    required this.title,
-    required this.personals,
-    required this.teachers,
-    required this.classrooms,
     required super.id,
     required super.backgroundColor,
     required super.startDate,
@@ -25,6 +36,7 @@ final class Detention extends Class {
     required super.blockSlot,
     required super.notes,
     required super.weekNumber,
+    required this.contents,
   });
 
   @override
@@ -34,41 +46,16 @@ final class Detention extends Class {
     ClassMessage classMessage,
     MapJsonNavigator detention,
   ) {
-    String? title;
-
-    final List<Person> personals = [];
-    final List<Person> teachers = [];
-    final List<Classroom> classrooms = [];
+    final List<ClassContent> contents = [];
 
     if (detention.has('ListeContenus')) {
       for (final MapJsonNavigator data in detention.getLM('ListeContenus')) {
-        final label = data.get<String>('L');
-
-        if (data.get('estHoraire') ?? false) {
-          title = label;
-        } else if (data.has('G')) {
-          switch (data.get<int>('G')) {
-            case 3:
-              teachers.add(data.asPerson());
-              break;
-            case 34:
-              personals.add(data.asPerson());
-              break;
-            case 17:
-              classrooms.add(data.asClassroom());
-              break;
-            default:
-              throw UnimplementedError();
-          }
-        }
+        contents.add(data.asLessonContent());
       }
     }
 
     return Detention(
-      title: title,
-      personals: personals,
-      teachers: teachers,
-      classrooms: classrooms,
+      contents: contents,
       id: classMessage.id,
       backgroundColor: classMessage.backgroundColor,
       startDate: classMessage.startDate,

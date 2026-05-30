@@ -8,6 +8,7 @@ import 'package:antinote/src/helpers/datetime.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
+import 'package:antinote/src/models/classes/content.dart';
 import 'package:antinote/src/models/classes/group.dart';
 import 'package:antinote/src/models/classes/room.dart';
 import 'package:antinote/src/models/notebook/entry/preview.dart';
@@ -88,6 +89,8 @@ sealed class Class with VisualIdMixin {
   bool get canceled;
 
   String? get status;
+
+  List<ClassContent> get contents;
 
   const Class({
     required this.id,

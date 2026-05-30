@@ -7,13 +7,8 @@ final class Lesson extends Class {
     required this.canceled,
     required this.exemptedLabel,
     required this.notebookEntryPreview,
-    required this.virtualClassrooms,
-    required this.personals,
-    required this.teachers,
-    required this.classrooms,
-    required this.groups,
-    required this.subject,
     required this.lessonResourceId,
+    required this.contents,
 
     required super.id,
     required super.backgroundColor,
@@ -26,39 +21,22 @@ final class Lesson extends Class {
   });
 
   factory Lesson.decode(ClassMessage classMessage, MapJsonNavigator lesson) {
-    final List<Uri> virtualClassrooms = [];
-    final List<Person> teachers = [];
-    final List<Person> personals = [];
-    final List<Classroom> classrooms = [];
-    final List<ClassGroup> groups = [];
-    Subject? subject;
+    final List<ClassContent> contents = [];
     String? lessonResourceId;
 
     if (lesson.has('listeVisios')) {
       for (final virtualClassroom in lesson.getLM('listeVisios')) {
-        virtualClassrooms.add(Uri.parse(virtualClassroom.get('url')));
+        contents.add(
+          VirtualClassroomContent(
+            value: Uri.parse(virtualClassroom.get('url')),
+          ),
+        );
       }
     }
 
     if (lesson.has('ListeContenus')) {
       for (final MapJsonNavigator data in lesson.getLM('ListeContenus')) {
-        switch (data.get('G')) {
-          case 16:
-            subject = data.asSubject();
-            break;
-          case 3:
-            teachers.add(data.asPerson());
-            break;
-          case 34:
-            personals.add(data.asPerson());
-            break;
-          case 17:
-            classrooms.add(data.asClassroom());
-            break;
-          case 2:
-            groups.add(data.asClassGroup());
-            break;
-        }
+        contents.add(data.asLessonContent());
       }
     }
 
@@ -74,12 +52,7 @@ final class Lesson extends Class {
       notebookEntryPreview: lesson
           .mGetM('cahierDeTextes')
           ?.asNotebookEntryPreview(),
-      virtualClassrooms: virtualClassrooms,
-      personals: personals,
-      teachers: teachers,
-      classrooms: classrooms,
-      groups: groups,
-      subject: subject,
+      contents: contents,
       lessonResourceId: lessonResourceId,
       id: classMessage.id,
       backgroundColor: classMessage.backgroundColor,
@@ -98,15 +71,40 @@ final class Lesson extends Class {
   final int classType;
   @override
   final String? status;
+  @override
   final bool canceled;
   final String? exemptedLabel;
   final NotebookEntryPreview? notebookEntryPreview;
-  final List<Uri> virtualClassrooms;
-  final List<Person> personals;
-  final List<Person> teachers;
-  final List<Classroom> classrooms;
-  final List<ClassGroup> groups;
-  final Subject? subject;
+  @override
+  final List<ClassContent> contents;
+
+  List<Uri> get virtualClassrooms => contents
+      .whereType<VirtualClassroomContent>()
+      .map((e) => e.value)
+      .toList(growable: false);
+
+  List<Person> get personals => contents
+      .whereType<PersonalContent>()
+      .map((e) => e.value)
+      .toList(growable: false);
+
+  List<Person> get teachers => contents
+      .whereType<TeacherContent>()
+      .map((e) => e.value)
+      .toList(growable: false);
+
+  List<Classroom> get classrooms => contents
+      .whereType<ClassroomContent>()
+      .map((e) => e.value)
+      .toList(growable: false);
+
+  List<ClassGroup> get groups => contents
+      .whereType<ClassGroupContent>()
+      .map((e) => e.value)
+      .toList(growable: false);
+
+  Subject? get subject =>
+      contents.whereType<SubjectContent>().firstOrNull?.value;
 
   final String? lessonResourceId;
 
