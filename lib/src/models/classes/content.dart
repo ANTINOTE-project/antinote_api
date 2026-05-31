@@ -14,7 +14,7 @@ extension AsLessonContent on MapJsonNavigator {
   ClassContent asLessonContent() => switch (get('G')) {
     0 ||
     null => TitleContent(value: get('L'), isTime: get('estHoraire') ?? false),
-    6 => SubjectContent(value: asSubject()),
+    16 => SubjectContent(value: asSubject()),
     3 => TeacherContent(value: asPerson()),
     34 => PersonalContent(value: asPerson()),
     17 => ClassroomContent(value: asClassroom()),
