@@ -88,7 +88,7 @@ extension AsReportService on MapJsonNavigator {
       appreciations:
           mGetLM('ListeAppreciations')?.mapL((e) => e.asReportAppreciation()) ??
           [],
-      category: getM('SurMatiere')?.asPartialServiceCategory(),
+      category: mGetM('SurMatiere')?.asPartialServiceCategory(),
       regroupementRank: get('OrdreRegroupement'),
       rankWithinRegroupement: get('OrdreDansRegroupement'),
       sections: has('ListeElements')
