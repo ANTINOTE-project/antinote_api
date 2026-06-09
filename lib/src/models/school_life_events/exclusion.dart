@@ -40,7 +40,7 @@ class Exclusion extends SchoolLifeEvent {
       linkedToIncident: nav.get('estLieAUnIncident'),
       demandDate: nav.get('dateDemande'),
       nature: nav.get('nature'),
-      comment: nav.mGet('commentaire'),
+      comment: nav.eGet(['commentaire']),
       circonstance: nav.get('circonstances'),
       documentsForCirconstance: nav.getL('documentsCirconstances'),
       decideur: nav.getM('decideur'),
