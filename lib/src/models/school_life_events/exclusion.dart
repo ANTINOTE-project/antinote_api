@@ -35,8 +35,8 @@ class Exclusion extends SchoolLifeEvent {
   ) {
     return Exclusion(
       id: message.id,
-      start: message.start!,
-      end: message.end!,
+      start: message.start,
+      end: message.end,
       linkedToIncident: nav.get('estLieAUnIncident'),
       demandDate: nav.get('dateDemande'),
       nature: nav.get('nature'),
