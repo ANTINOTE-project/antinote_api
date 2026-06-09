@@ -56,7 +56,7 @@ class Exclusion extends SchoolLifeEvent {
     yield start?.millisecondsSinceEpoch.bytesVisualIdData();
     yield end?.millisecondsSinceEpoch.bytesVisualIdData();
     yield linkedToIncident.visualIdData();
-    yield comment.visualIdData();
+    yield comment?.visualIdData();
     yield circonstance.visualIdData();
     yield duration.visualIdData();
     yield accessRestriction.asDomain().visualIdData();
