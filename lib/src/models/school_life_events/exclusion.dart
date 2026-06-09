@@ -7,7 +7,7 @@ class Exclusion extends SchoolLifeEvent {
   final String? comment;
   final String circonstance;
   final List<dynamic> documentsForCirconstance; // TODO: Implement this
-  final Map<String, dynamic> decideur; // TODO: Implement this
+  final Map<String, dynamic>? decideur; // TODO: Implement this
   final Map<String, dynamic> demander; // TODO: Implement this
   final double duration;
   final Set<int> accessRestriction;
@@ -43,7 +43,7 @@ class Exclusion extends SchoolLifeEvent {
       comment: nav.eGet(['commentaire']),
       circonstance: nav.get('circonstances'),
       documentsForCirconstance: nav.getL('documentsCirconstances'),
-      decideur: nav.getM('decideur'),
+      decideur: nav.mGetM('decideur'),
       demander: nav.getM('demandeur'),
       duration: nav.get('duree'),
       accessRestriction: nav.get('interditAcces'),
