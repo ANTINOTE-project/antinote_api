@@ -4,7 +4,7 @@ class Exclusion extends SchoolLifeEvent {
   final bool linkedToIncident;
   final DateTime demandDate;
   final Map<String, dynamic> nature; // TODO: Implement this
-  final String comment;
+  final String? comment;
   final String circonstance;
   final List<dynamic> documentsForCirconstance; // TODO: Implement this
   final Map<String, dynamic> decideur; // TODO: Implement this
@@ -40,7 +40,7 @@ class Exclusion extends SchoolLifeEvent {
       linkedToIncident: nav.get('estLieAUnIncident'),
       demandDate: nav.get('dateDemande'),
       nature: nav.get('nature'),
-      comment: nav.get('commentaire'),
+      comment: nav.mGet('commentaire'),
       circonstance: nav.get('circonstances'),
       documentsForCirconstance: nav.getL('documentsCirconstances'),
       decideur: nav.getM('decideur'),
