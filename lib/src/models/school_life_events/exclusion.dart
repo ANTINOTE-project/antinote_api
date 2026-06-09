@@ -10,7 +10,7 @@ class Exclusion extends SchoolLifeEvent {
   final Map<String, dynamic>? decideur; // TODO: Implement this
   final Map<String, dynamic> demander; // TODO: Implement this
   final int duration;
-  final Set<int> accessRestriction;
+  final Set<int>? accessRestriction;
 
   const Exclusion({
     required super.id,
@@ -59,6 +59,6 @@ class Exclusion extends SchoolLifeEvent {
     yield comment?.visualIdData();
     yield circonstance.visualIdData();
     yield duration.toString().visualIdData();
-    yield accessRestriction.asDomain().visualIdData();
+    yield accessRestriction?.asDomain().visualIdData();
   }
 }
