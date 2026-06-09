@@ -9,7 +9,7 @@ class Exclusion extends SchoolLifeEvent {
   final List<dynamic> documentsForCirconstance; // TODO: Implement this
   final Map<String, dynamic>? decideur; // TODO: Implement this
   final Map<String, dynamic> demander; // TODO: Implement this
-  final double duration;
+  final int duration;
   final Set<int> accessRestriction;
 
   const Exclusion({
