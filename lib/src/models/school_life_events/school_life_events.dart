@@ -8,6 +8,8 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/subject/subject.dart';
 
+import '../../../antinote.dart';
+
 part 'absence.dart';
 part 'dispense.dart';
 part 'exclusion.dart';

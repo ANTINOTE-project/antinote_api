@@ -4,13 +4,13 @@ class Exclusion extends SchoolLifeEvent {
   final bool linkedToIncident;
   final DateTime demandDate;
   final Map<String, dynamic> nature; // TODO: Implement this
-  final String comment;
+  final String? comment;
   final String circonstance;
   final List<dynamic> documentsForCirconstance; // TODO: Implement this
-  final Map<String, dynamic> decideur; // TODO: Implement this
+  final Map<String, dynamic>? decideur; // TODO: Implement this
   final Map<String, dynamic> demander; // TODO: Implement this
-  final double duration;
-  final Set<int> accessRestriction;
+  final int duration;
+  final Set<int>? accessRestriction;
 
   const Exclusion({
     required super.id,
@@ -35,15 +35,15 @@ class Exclusion extends SchoolLifeEvent {
   ) {
     return Exclusion(
       id: message.id,
-      start: message.start!,
-      end: message.end!,
+      start: message.start,
+      end: message.end,
       linkedToIncident: nav.get('estLieAUnIncident'),
       demandDate: nav.get('dateDemande'),
       nature: nav.get('nature'),
-      comment: nav.get('commentaire'),
+      comment: nav.eGet(['commentaire']),
       circonstance: nav.get('circonstances'),
       documentsForCirconstance: nav.getL('documentsCirconstances'),
-      decideur: nav.getM('decideur'),
+      decideur: nav.mGetM('decideur'),
       demander: nav.getM('demandeur'),
       duration: nav.get('duree'),
       accessRestriction: nav.get('interditAcces'),
@@ -56,9 +56,9 @@ class Exclusion extends SchoolLifeEvent {
     yield start?.millisecondsSinceEpoch.bytesVisualIdData();
     yield end?.millisecondsSinceEpoch.bytesVisualIdData();
     yield linkedToIncident.visualIdData();
-    yield comment.visualIdData();
+    yield comment?.visualIdData();
     yield circonstance.visualIdData();
-    yield duration.visualIdData();
-    yield accessRestriction.asDomain().visualIdData();
+    yield duration.toString().visualIdData();
+    yield accessRestriction?.asDomain().visualIdData();
   }
 }

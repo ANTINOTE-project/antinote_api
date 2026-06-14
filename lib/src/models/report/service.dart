@@ -27,7 +27,7 @@ final class ReportService {
   final Grade? lowestAverage;
   final Grade? highestAverage;
   final List<ReportAppreciation> appreciations;
-  final PartialServiceCategory category;
+  final PartialServiceCategory? category;
   final int regroupementRank;
   final int rankWithinRegroupement;
 
@@ -88,7 +88,7 @@ extension AsReportService on MapJsonNavigator {
       appreciations:
           mGetLM('ListeAppreciations')?.mapL((e) => e.asReportAppreciation()) ??
           [],
-      category: getM('SurMatiere').asPartialServiceCategory(),
+      category: mGetM('SurMatiere')?.asPartialServiceCategory(),
       regroupementRank: get('OrdreRegroupement'),
       rankWithinRegroupement: get('OrdreDansRegroupement'),
       sections: has('ListeElements')
