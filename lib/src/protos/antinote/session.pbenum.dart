@@ -98,6 +98,8 @@ class CacheType extends $pb.ProtobufEnum {
       CacheType._(41, _omitEnumNames ? '' : 'CLASSROOM');
   static const CacheType CLASS_GROUP =
       CacheType._(42, _omitEnumNames ? '' : 'CLASS_GROUP');
+  static const CacheType STUDENT_CLASS =
+      CacheType._(43, _omitEnumNames ? '' : 'STUDENT_CLASS');
 
   static const $core.List<CacheType> values = <CacheType>[
     UNIQUE,
@@ -143,10 +145,11 @@ class CacheType extends $pb.ProtobufEnum {
     HOLIDAY,
     CLASSROOM,
     CLASS_GROUP,
+    STUDENT_CLASS,
   ];
 
   static final $core.List<CacheType?> _byValue =
-      $pb.ProtobufEnum.$_initByValueList(values, 42);
+      $pb.ProtobufEnum.$_initByValueList(values, 43);
   static CacheType? valueOf($core.int value) =>
       value < 0 || value >= _byValue.length ? null : _byValue[value];
 

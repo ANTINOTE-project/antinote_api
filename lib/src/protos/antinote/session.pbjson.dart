@@ -62,6 +62,7 @@ const CacheType$json = {
     {'1': 'HOLIDAY', '2': 40},
     {'1': 'CLASSROOM', '2': 41},
     {'1': 'CLASS_GROUP', '2': 42},
+    {'1': 'STUDENT_CLASS', '2': 43},
   ],
 };
 
@@ -81,7 +82,8 @@ final $typed_data.Uint8List cacheTypeDescriptor = $convert.base64Decode(
     'JVTRAfEhEKDU1DUV9FWEVDVVRJT04QIBIHCgNNQ1EQIRIQCgxFWEFNX1BSRVZJRVcQIhIICgRS'
     'T09NECMSFQoRU0NIT09MX0xJRkVfRVZFTlQQJBIcChhTQ0hPT0xfTElGRV9FVkVOVF9SRUFTT0'
     '4QJRIdChlTQ0hPT0xfTElGRV9FVkVOVF9TRUNUSU9OECYSEQoNVVNFUl9SRVNPVVJDRRAnEgsK'
-    'B0hPTElEQVkQKBINCglDTEFTU1JPT00QKRIPCgtDTEFTU19HUk9VUBAq');
+    'B0hPTElEQVkQKBINCglDTEFTU1JPT00QKRIPCgtDTEFTU19HUk9VUBAqEhEKDVNUVURFTlRfQ0'
+    'xBU1MQKw==');
 
 @$core.Deprecated('Use serializedCryptoDescriptor instead')
 const SerializedCrypto$json = {

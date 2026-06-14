@@ -6,11 +6,34 @@ import 'package:antinote/src/models/tab.dart';
 
 import '../../helpers/visual_id.dart';
 
+final class StudentClass with VisualIdMixin {
+  final String id;
+  final String name;
+
+  const StudentClass({required this.id, required this.name});
+
+  Map<String, dynamic> toRaw() => {'L': name, 'N': id};
+
+  @override
+  CacheType? get cacheType => .STUDENT_CLASS;
+
+  @override
+  Iterable<Uint8List?> collectVisualIdData() sync* {
+    yield name.visualIdData();
+  }
+}
+
+extension AsStudentClass on MapJsonNavigator {
+  StudentClass asStudentClass() {
+    return StudentClass(id: get('N'), name: get('L'));
+  }
+}
+
 final class UserResource with VisualIdMixin {
   final String id;
   final int type;
   final String name;
-  final String? className;
+  final StudentClass? studentClass;
   final String? establishmentName;
   final Uint8List? profilePicture;
   final bool isDirector;
@@ -22,7 +45,7 @@ final class UserResource with VisualIdMixin {
     required this.id,
     required this.type,
     required this.name,
-    required this.className,
+    required this.studentClass,
     required this.establishmentName,
     required this.profilePicture,
     required this.isDirector,
@@ -40,7 +63,7 @@ final class UserResource with VisualIdMixin {
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield type.byteVisualIdData();
     yield name.visualIdData();
-    yield className?.visualIdData();
+    yield* studentClass?.collectVisualIdData() ?? [];
     yield establishmentName?.visualIdData();
   }
 }
@@ -59,7 +82,7 @@ extension AsUserResource on MapJsonNavigator {
       id: get('N'),
       type: get('G'),
       name: get('L'),
-      className: mGo('classeDEleve')?.get('L'),
+      studentClass: mGo('classeDEleve')?.asStudentClass(),
       establishmentName: mGo('Etablissement')?.get('L'),
       profilePicture: (get('avecPhoto') ?? false) ? get('photoBase64') : null,
       isDirector: get('estDirecteur') ?? false,

@@ -18,8 +18,10 @@ void main() {
     final (session: session, refreshCredentials: refreshCredentials) =
         await credentials.login();
 
-    session.access(DisconnectionAccessor.logged());
+    try {
+      //
+    } catch (_) {}
 
-    print(session.user.name);
+    await session.access(DisconnectionAccessor.logged());
   });
 }

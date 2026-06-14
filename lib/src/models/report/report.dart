@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:antinote/src/helpers/json.dart';
+import 'package:antinote/src/models/person.dart';
 import 'package:antinote/src/models/report/mention.dart';
 import 'package:antinote/src/models/report/service.dart';
+import 'package:antinote/src/models/user/resource.dart';
 
 import '../grades/grade.dart';
 import 'appreciation.dart';
@@ -48,8 +50,7 @@ final class PublishedReport implements BaseReport {
   @override
   final bool canEdit;
 
-  final String className;
-  final String classId;
+  final StudentClass clazz;
 
   final ReportDisplayInformation displayInformation;
 
@@ -71,8 +72,7 @@ final class PublishedReport implements BaseReport {
   final List<dynamic>? attestationData;
   final List<dynamic>? studentAttestationData;
 
-  final String? studentName;
-  final String? studentId;
+  final Person? student;
   final int? studentSortOrder;
 
   final bool canEditAppreciations;
@@ -89,8 +89,7 @@ final class PublishedReport implements BaseReport {
 
   const PublishedReport({
     required this.canEdit,
-    required this.className,
-    required this.classId,
+    required this.clazz,
     required this.displayInformation,
     required this.services,
     required this.serviceCategories,
@@ -105,8 +104,7 @@ final class PublishedReport implements BaseReport {
     required this.orientationData,
     required this.attestationData,
     required this.studentAttestationData,
-    required this.studentName,
-    required this.studentId,
+    required this.student,
     required this.studentSortOrder,
     required this.canEditAppreciations,
     required this.appreciations,
@@ -126,8 +124,7 @@ extension AsPublishedReport on MapJsonNavigator {
     ).mapL((e) => e.asServiceCategory());
     return PublishedReport(
       canEdit: get('Editable'),
-      className: go('Classe').get('L'),
-      classId: go('Classe').get('N'),
+      clazz: getM('Classe').asStudentClass(),
       displayInformation: getM(
         'ParametresAffichages',
       ).asReportDisplayInformation(),
@@ -152,8 +149,7 @@ extension AsPublishedReport on MapJsonNavigator {
       orientationData: mGo('Orientation'),
       attestationData: mGetL('ListeAttestations'),
       studentAttestationData: mGetL('listeAttestationsEleve'),
-      studentName: mGo('eleve')?.get('L'),
-      studentId: mGo('eleve')?.get('N'),
+      student: mGetM('eleve')?.asPerson(),
       studentSortOrder: mGo('eleve')?.get('P'),
       canEditAppreciations: go('ObjetListeAppreciations').get('Editable'),
       appreciations: go(
