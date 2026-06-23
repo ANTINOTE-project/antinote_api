@@ -37,9 +37,7 @@ class NavigationAccessor extends StatelessAccessor<void> {
   }
 
   @override
-  FutureOr<void> interpretStateless(MapJsonNavigator nav) {
-    print(nav);
-  }
+  FutureOr<void> interpretStateless(MapJsonNavigator nav) {}
 
   @override
   List<VisualIdMixin> store(void result) => [];

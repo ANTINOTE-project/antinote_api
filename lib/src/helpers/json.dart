@@ -193,15 +193,28 @@ extension ListJsonNavigatorExt<E> on ListJsonNavigator<E> {
 class JsonReference<T> {
   final dynamic rawReference;
   final T Function(MapJsonNavigator nav) _resolver;
+  final dynamic Function(T resolved) _serializer;
+
+  bool _loaded = false;
   T? value;
 
   JsonReference({
     required this.rawReference,
-    required T Function(MapJsonNavigator<dynamic>) resolver,
-  }) : _resolver = resolver;
+    required this._resolver,
+    required this._serializer,
+  });
 
   void resolve(MapJsonNavigator nav) {
     value = _resolver(nav);
+    _loaded = true;
+  }
+
+  dynamic serialize() {
+    if (!_loaded) {
+      throw StateError("Tried to serialize reference that wasn't resolved");
+    }
+
+    return _serializer(value!);
   }
 }
 

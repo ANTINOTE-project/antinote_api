@@ -6,6 +6,7 @@ import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/grades/grade.dart';
 
 const _intSetType = -1;
+const _resolvedJsonReferenceType = -2;
 
 class PronoteJsonDecoder {
   final String data;
@@ -35,6 +36,13 @@ class PronoteJsonDecoder {
         case _intSetType:
           assert(value is List);
           parsedValue = (value as List).cast<int>().toSet();
+        case _resolvedJsonReferenceType:
+          assert(value is String);
+          parsedValue = JsonReference(
+            rawReference: -1,
+            resolver: (nav) => base64Decode(value),
+            serializer: (resolved) => base64Encode(resolved),
+          );
         case 15:
         case 8:
           // It's a domain.
@@ -86,6 +94,7 @@ class PronoteJsonDecoder {
                   .get(value)
                   .replaceAll(RegExp(r'[\r\n]'), ''),
             ),
+            serializer: (resolved) => base64Encode(resolved),
           );
           references.add(ref);
           parsedValue = ref;
@@ -124,7 +133,7 @@ class PronoteJsonEncoder {
     } else if (value is Grade) {
       return {'_T': 10, 'V': value.rawContent ?? value.value};
     } else if (value is JsonReference) {
-      return {'_T': 25, 'V': value.rawReference};
+      return {'_T': _resolvedJsonReferenceType, 'V': value.serialize()};
     } else {
       throw UnimplementedError(
         "Don't know how to serialize $value of type ${value.runtimeType}",
