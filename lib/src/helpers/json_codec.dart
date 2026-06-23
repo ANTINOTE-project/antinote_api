@@ -38,11 +38,7 @@ class PronoteJsonDecoder {
           parsedValue = (value as List).cast<int>().toSet();
         case _resolvedJsonReferenceType:
           assert(value is String);
-          parsedValue = JsonReference(
-            rawReference: -1,
-            resolver: (nav) => base64Decode(value),
-            serializer: (resolved) => base64Encode(resolved),
-          );
+          parsedValue = base64Decode(value);
         case 15:
         case 8:
           // It's a domain.

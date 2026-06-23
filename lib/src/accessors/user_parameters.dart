@@ -3,15 +3,13 @@ import 'dart:async';
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
-import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/tab.dart';
 import 'package:antinote/src/models/user/authorizations.dart';
 import 'package:antinote/src/models/user/parameters.dart';
 import 'package:antinote/src/models/user/resource.dart';
 
-class UserParametersAccessor
-    extends StatefulAccessor<UserParameters, PronoteSession> {
+class UserParametersAccessor extends StatelessAccessor<UserParameters> {
   const UserParametersAccessor();
 
   @override
@@ -28,37 +26,29 @@ class UserParametersAccessor
           ),
         )
         .resultCompleter
-        .future;
+        .future
+        .thenField(stack.vocab.data);
   }
 
   @override
-  FutureOr<PronoteSession> collectState(PronoteSession session) => session;
-
-  @override
-  FutureOr<UserParameters> interpret(
-    MapJsonNavigator nav,
-    PronoteSession state,
-  ) {
-    final dataNav = nav.getM(state.stack.vocab.data);
-    final filesNav = nav.mGetL<String>('fichiers');
-
+  FutureOr<UserParameters> interpretStateless(MapJsonNavigator nav) {
     List<MapJsonNavigator> resources = [
-      ...?dataNav.go('ressource').mGetLM('listeRessources'),
+      ...?nav.go('ressource').mGetLM('listeRessources'),
     ];
 
     if (resources.isEmpty) {
-      resources.add(dataNav.getM('ressource'));
+      resources.add(nav.getM('ressource'));
     }
 
     return UserParameters(
-      id: dataNav.go('ressource').get('N'),
-      type: dataNav.go('ressource').get('G'),
-      name: dataNav.go('ressource').get('L'),
-      resources: resources.mapL((e) => e.asUserResource(filesNav ?? [])),
-      authorizations: dataNav.asUserAuthorizations(),
-      tabs: dataNav.getLM('listeOnglets').mapL((e) => e.asTab()),
-      hiddenTabIds: dataNav.getL<int>('listeOngletsInvisibles'),
-      notificationTabIds: dataNav.getL<int>('listeOngletsNotification'),
+      id: nav.go('ressource').get('N'),
+      type: nav.go('ressource').get('G'),
+      name: nav.go('ressource').get('L'),
+      resources: resources.mapL((e) => e.asUserResource()),
+      authorizations: nav.asUserAuthorizations(),
+      tabs: nav.getLM('listeOnglets').mapL((e) => e.asTab()),
+      hiddenTabIds: nav.getL<int>('listeOngletsInvisibles'),
+      notificationTabIds: nav.getL<int>('listeOngletsNotification'),
     );
   }
 

@@ -399,9 +399,8 @@ class NetworkStack {
     }
 
     if (decoders.isNotEmpty) {
-      final nav = data;
       for (final decoder in decoders) {
-        decoder.resolveAll(nav);
+        decoder.resolveAll(data);
       }
     }
 

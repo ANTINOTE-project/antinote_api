@@ -69,7 +69,7 @@ final class UserResource with VisualIdMixin {
 }
 
 extension AsUserResource on MapJsonNavigator {
-  UserResource asUserResource(ListJsonNavigator<String> files) {
+  UserResource asUserResource() {
     List<Tab> tabs = [];
 
     if (has('listeOngletsPourPeriodes')) {
