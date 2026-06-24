@@ -6,6 +6,7 @@ export 'src/accessors/authentication.dart';
 export 'src/accessors/change_homework_state.dart';
 export 'src/accessors/change_homework_submission.dart';
 export 'src/accessors/change_news_state.dart';
+export 'src/accessors/class_content.dart';
 export 'src/accessors/disconnection.dart';
 export 'src/accessors/discussion.dart';
 export 'src/accessors/discussion_page.dart';
