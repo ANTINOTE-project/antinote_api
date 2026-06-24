@@ -34,11 +34,15 @@ class PronoteSession {
     return session;
   }
 
-  static Future<PronoteSession> restoreBinary(Uint8List data) async =>
-      restore(SerializedSession.fromBuffer(data));
+  static Future<PronoteSession> restoreBinary(
+    Uint8List data, {
+    SessionOptions? options,
+  }) async => restore(SerializedSession.fromBuffer(data), options: options);
 
-  static Future<PronoteSession> restoreJson(String data) async =>
-      restore(SerializedSession.fromJson(data));
+  static Future<PronoteSession> restoreJson(
+    String data, {
+    SessionOptions? options,
+  }) async => restore(SerializedSession.fromJson(data), options: options);
 
   static final _instanceParametersKey = 'InstanceParameters'
       .visualIdData()
