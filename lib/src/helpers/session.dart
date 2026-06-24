@@ -112,6 +112,11 @@ class PronoteSession {
     }
 
     stack.updateClientSignature({'onglet': page});
+
+    if (options.saveNavigationRequests) {
+      return;
+    }
+
     final result = await access(
       NavigationAccessor(previousTabId: oldPage ?? 7, currentTabId: page),
     );
