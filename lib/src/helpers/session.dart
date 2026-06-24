@@ -15,12 +15,15 @@ class PronoteSession {
   late final SerializableCacheStore serializableCache;
   final CacheStore cache = {for (final val in CacheType.values) val: {}};
 
+  final SessionOptions options;
+
   static Future<PronoteSession> restore(SerializedSession serialized) async {
     final session = PronoteSession(
       stack: await NetworkStack.restore(serialized.stack),
       serializableCache: {
         for (final entry in serialized.cache) entry.type: entry.values,
       },
+      options: serialized.options,
     );
 
     await session._reconstructCache();
@@ -215,6 +218,7 @@ class PronoteSession {
     Workspace workspace = Workspace.commonMobile,
     bool keepBaseUrl = false,
     bool followRedirects = false,
+    SessionOptions? options,
   }) async {
     if (keepBaseUrl && parameters != baseParameters) {
       baseUri = baseUri.replace(
@@ -371,12 +375,14 @@ class PronoteSession {
         tokenId: seed['e'],
         tokenKey: seed['f'],
       ),
+      options: options ?? SessionOptions.getDefault(),
     );
   }
 
   PronoteSession({
     required this.stack,
     SerializableCacheStore? serializableCache,
+    required this.options,
   }) {
     if (serializableCache == null) {
       this.serializableCache = {};

@@ -95,4 +95,10 @@ message CacheSection {
 message SerializedSession {
   SerializedNetworkStack stack = 1;
   repeated CacheSection cache = 2;
+  SessionOptions options = 3;
+}
+
+message SessionOptions {
+  // When this field is true, Navigation requests won't be sent from ensurePage
+  bool saveNavigationRequests = 1;
 }

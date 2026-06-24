@@ -303,6 +303,14 @@ const SerializedSession$json = {
       '6': '.antinote.CacheSection',
       '10': 'cache'
     },
+    {
+      '1': 'options',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.antinote.SessionOptions',
+      '10': 'options'
+    },
   ],
 };
 
@@ -310,4 +318,24 @@ const SerializedSession$json = {
 final $typed_data.Uint8List serializedSessionDescriptor = $convert.base64Decode(
     'ChFTZXJpYWxpemVkU2Vzc2lvbhI2CgVzdGFjaxgBIAEoCzIgLmFudGlub3RlLlNlcmlhbGl6ZW'
     'ROZXR3b3JrU3RhY2tSBXN0YWNrEiwKBWNhY2hlGAIgAygLMhYuYW50aW5vdGUuQ2FjaGVTZWN0'
-    'aW9uUgVjYWNoZQ==');
+    'aW9uUgVjYWNoZRIyCgdvcHRpb25zGAMgASgLMhguYW50aW5vdGUuU2Vzc2lvbk9wdGlvbnNSB2'
+    '9wdGlvbnM=');
+
+@$core.Deprecated('Use sessionOptionsDescriptor instead')
+const SessionOptions$json = {
+  '1': 'SessionOptions',
+  '2': [
+    {
+      '1': 'saveNavigationRequests',
+      '3': 1,
+      '4': 1,
+      '5': 8,
+      '10': 'saveNavigationRequests'
+    },
+  ],
+};
+
+/// Descriptor for `SessionOptions`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List sessionOptionsDescriptor = $convert.base64Decode(
+    'Cg5TZXNzaW9uT3B0aW9ucxI2ChZzYXZlTmF2aWdhdGlvblJlcXVlc3RzGAEgASgIUhZzYXZlTm'
+    'F2aWdhdGlvblJlcXVlc3Rz');

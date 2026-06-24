@@ -443,10 +443,12 @@ class SerializedSession extends $pb.GeneratedMessage {
   factory SerializedSession({
     SerializedNetworkStack? stack,
     $core.Iterable<CacheSection>? cache,
+    SessionOptions? options,
   }) {
     final result = create();
     if (stack != null) result.stack = stack;
     if (cache != null) result.cache.addAll(cache);
+    if (options != null) result.options = options;
     return result;
   }
 
@@ -467,6 +469,8 @@ class SerializedSession extends $pb.GeneratedMessage {
         subBuilder: SerializedNetworkStack.create)
     ..pPM<CacheSection>(2, _omitFieldNames ? '' : 'cache',
         subBuilder: CacheSection.create)
+    ..aOM<SessionOptions>(3, _omitFieldNames ? '' : 'options',
+        subBuilder: SessionOptions.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -501,6 +505,74 @@ class SerializedSession extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(2)
   $pb.PbList<CacheSection> get cache => $_getList(1);
+
+  @$pb.TagNumber(3)
+  SessionOptions get options => $_getN(2);
+  @$pb.TagNumber(3)
+  set options(SessionOptions value) => $_setField(3, value);
+  @$pb.TagNumber(3)
+  $core.bool hasOptions() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearOptions() => $_clearField(3);
+  @$pb.TagNumber(3)
+  SessionOptions ensureOptions() => $_ensure(2);
+}
+
+class SessionOptions extends $pb.GeneratedMessage {
+  factory SessionOptions({
+    $core.bool? saveNavigationRequests,
+  }) {
+    final result = create();
+    if (saveNavigationRequests != null)
+      result.saveNavigationRequests = saveNavigationRequests;
+    return result;
+  }
+
+  SessionOptions._();
+
+  factory SessionOptions.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory SessionOptions.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'SessionOptions',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'antinote'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'saveNavigationRequests',
+        protoName: 'saveNavigationRequests')
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SessionOptions clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  SessionOptions copyWith(void Function(SessionOptions) updates) =>
+      super.copyWith((message) => updates(message as SessionOptions))
+          as SessionOptions;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static SessionOptions create() => SessionOptions._();
+  @$core.override
+  SessionOptions createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static SessionOptions getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<SessionOptions>(create);
+  static SessionOptions? _defaultInstance;
+
+  /// When this field is true, Navigation requests won't be sent from ensurePage
+  @$pb.TagNumber(1)
+  $core.bool get saveNavigationRequests => $_getBF(0);
+  @$pb.TagNumber(1)
+  set saveNavigationRequests($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasSaveNavigationRequests() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearSaveNavigationRequests() => $_clearField(1);
 }
 
 const $core.bool _omitFieldNames =
