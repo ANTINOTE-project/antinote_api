@@ -443,12 +443,10 @@ class SerializedSession extends $pb.GeneratedMessage {
   factory SerializedSession({
     SerializedNetworkStack? stack,
     $core.Iterable<CacheSection>? cache,
-    SessionOptions? options,
   }) {
     final result = create();
     if (stack != null) result.stack = stack;
     if (cache != null) result.cache.addAll(cache);
-    if (options != null) result.options = options;
     return result;
   }
 
@@ -469,8 +467,6 @@ class SerializedSession extends $pb.GeneratedMessage {
         subBuilder: SerializedNetworkStack.create)
     ..pPM<CacheSection>(2, _omitFieldNames ? '' : 'cache',
         subBuilder: CacheSection.create)
-    ..aOM<SessionOptions>(3, _omitFieldNames ? '' : 'options',
-        subBuilder: SessionOptions.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -505,17 +501,6 @@ class SerializedSession extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(2)
   $pb.PbList<CacheSection> get cache => $_getList(1);
-
-  @$pb.TagNumber(3)
-  SessionOptions get options => $_getN(2);
-  @$pb.TagNumber(3)
-  set options(SessionOptions value) => $_setField(3, value);
-  @$pb.TagNumber(3)
-  $core.bool hasOptions() => $_has(2);
-  @$pb.TagNumber(3)
-  void clearOptions() => $_clearField(3);
-  @$pb.TagNumber(3)
-  SessionOptions ensureOptions() => $_ensure(2);
 }
 
 class SessionOptions extends $pb.GeneratedMessage {

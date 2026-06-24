@@ -95,7 +95,6 @@ message CacheSection {
 message SerializedSession {
   SerializedNetworkStack stack = 1;
   repeated CacheSection cache = 2;
-  SessionOptions options = 3;
 }
 
 message SessionOptions {

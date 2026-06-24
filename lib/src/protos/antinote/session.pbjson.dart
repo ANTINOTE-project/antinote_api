@@ -303,14 +303,6 @@ const SerializedSession$json = {
       '6': '.antinote.CacheSection',
       '10': 'cache'
     },
-    {
-      '1': 'options',
-      '3': 3,
-      '4': 1,
-      '5': 11,
-      '6': '.antinote.SessionOptions',
-      '10': 'options'
-    },
   ],
 };
 
@@ -318,8 +310,7 @@ const SerializedSession$json = {
 final $typed_data.Uint8List serializedSessionDescriptor = $convert.base64Decode(
     'ChFTZXJpYWxpemVkU2Vzc2lvbhI2CgVzdGFjaxgBIAEoCzIgLmFudGlub3RlLlNlcmlhbGl6ZW'
     'ROZXR3b3JrU3RhY2tSBXN0YWNrEiwKBWNhY2hlGAIgAygLMhYuYW50aW5vdGUuQ2FjaGVTZWN0'
-    'aW9uUgVjYWNoZRIyCgdvcHRpb25zGAMgASgLMhguYW50aW5vdGUuU2Vzc2lvbk9wdGlvbnNSB2'
-    '9wdGlvbnM=');
+    'aW9uUgVjYWNoZQ==');
 
 @$core.Deprecated('Use sessionOptionsDescriptor instead')
 const SessionOptions$json = {
