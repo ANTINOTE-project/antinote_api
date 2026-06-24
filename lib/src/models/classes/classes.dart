@@ -30,7 +30,7 @@ final class ClassMessage {
   final int blockLength;
   final int blockSlot;
   final int weekNumber;
-  final String studentCountString;
+  final String? studentCountString;
 
   const ClassMessage({
     required this.id,
