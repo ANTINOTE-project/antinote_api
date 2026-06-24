@@ -27,11 +27,13 @@ class ClassContentAccessor
           .function(
             cancellationSignal: cancellationSignal,
             dataSec: {
-              'avecListeEleves': withStudentList,
-              'avecNbEleves': withStudentCount,
-              'cours': {'G': classToAccess.type.index, 'N': classToAccess.id},
-              'numeroSemaine': classToAccess.weekNumber,
-              'ressource': resource.toRaw(),
+              stack.vocab.data: {
+                'avecListeEleves': withStudentList,
+                'avecNbEleves': withStudentCount,
+                'cours': {'G': classToAccess.type.index, 'N': classToAccess.id},
+                'numeroSemaine': classToAccess.weekNumber,
+                'ressource': resource.toRaw(),
+              },
             },
             name: 'FicheCours',
           ),
