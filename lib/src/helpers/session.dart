@@ -17,13 +17,16 @@ class PronoteSession {
 
   final SessionOptions options;
 
-  static Future<PronoteSession> restore(SerializedSession serialized) async {
+  static Future<PronoteSession> restore(
+    SerializedSession serialized, {
+    SessionOptions? options,
+  }) async {
     final session = PronoteSession(
       stack: await NetworkStack.restore(serialized.stack),
       serializableCache: {
         for (final entry in serialized.cache) entry.type: entry.values,
       },
-      options: serialized.options,
+      options: options ?? SessionOptions.getDefault(),
     );
 
     await session._reconstructCache();
