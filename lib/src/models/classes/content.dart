@@ -3,6 +3,7 @@ import 'package:antinote/src/models/classes/group.dart';
 import 'package:antinote/src/models/classes/room.dart';
 import 'package:antinote/src/models/person.dart';
 import 'package:antinote/src/models/subject/subject.dart';
+import 'package:antinote/src/models/user/resource.dart';
 
 sealed class ClassContent<T> {
   final T value;
@@ -19,6 +20,7 @@ extension AsLessonContent on MapJsonNavigator {
     34 => PersonalContent(value: asPerson()),
     17 => ClassroomContent(value: asClassroom()),
     2 => ClassGroupContent(value: asClassGroup()),
+    1 => StudentClassContent(value: asStudentClass()),
     _ => UnknownContent(value: this),
   };
 }
@@ -51,6 +53,10 @@ final class VirtualClassroomContent extends ClassContent<Uri> {
 
 final class ClassGroupContent extends ClassContent<ClassGroup> {
   const ClassGroupContent({required super.value});
+}
+
+final class StudentClassContent extends ClassContent<StudentClass> {
+  const StudentClassContent({required super.value});
 }
 
 final class UnknownContent extends ClassContent<MapJsonNavigator> {
