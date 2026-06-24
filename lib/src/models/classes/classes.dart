@@ -30,6 +30,7 @@ final class ClassMessage {
   final int blockLength;
   final int blockSlot;
   final int weekNumber;
+  final String studentCountString;
 
   const ClassMessage({
     required this.id,
@@ -40,6 +41,7 @@ final class ClassMessage {
     required this.blockLength,
     required this.blockSlot,
     required this.weekNumber,
+    required this.studentCountString,
   });
 }
 
@@ -70,6 +72,7 @@ extension AsClassMessage on MapJsonNavigator {
       blockSlot: blockSlot,
       weekNumber:
           get('numeroSemaine') ?? startDate.toPronoteWeekNumber(session),
+      studentCountString: get('strNbEleves'),
     );
   }
 }
@@ -85,6 +88,7 @@ sealed class Class with VisualIdMixin {
   final int blockSlot;
   final String? notes;
   final int weekNumber;
+  final String? studentCountString;
 
   bool get canceled;
 
@@ -101,6 +105,7 @@ sealed class Class with VisualIdMixin {
     required this.blockSlot,
     required this.notes,
     required this.weekNumber,
+    required this.studentCountString,
   });
 
   @override

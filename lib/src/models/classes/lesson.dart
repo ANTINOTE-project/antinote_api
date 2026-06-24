@@ -18,6 +18,7 @@ final class Lesson extends Class {
     required super.blockSlot,
     required super.notes,
     required super.weekNumber,
+    required super.studentCountString,
   });
 
   factory Lesson.decode(ClassMessage classMessage, MapJsonNavigator lesson) {
@@ -38,6 +39,10 @@ final class Lesson extends Class {
       for (final MapJsonNavigator data in lesson.getLM('ListeContenus')) {
         contents.add(data.asLessonContent());
       }
+    }
+
+    if (lesson.has('matiere')) {
+      contents.add(SubjectContent(value: lesson.getM('matiere').asSubject()));
     }
 
     if (lesson.get('AvecCdT') == true && lesson.get('cahierDeTextes') != null) {
@@ -62,6 +67,7 @@ final class Lesson extends Class {
       blockSlot: classMessage.blockSlot,
       notes: classMessage.notes,
       weekNumber: classMessage.weekNumber,
+      studentCountString: classMessage.studentCountString,
     );
   }
 

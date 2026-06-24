@@ -36,6 +36,7 @@ final class Detention extends Class {
     required super.blockSlot,
     required super.notes,
     required super.weekNumber,
+    required super.studentCountString,
     required this.contents,
   });
 
@@ -64,6 +65,7 @@ final class Detention extends Class {
       blockSlot: classMessage.blockSlot,
       notes: classMessage.notes,
       weekNumber: classMessage.weekNumber,
+      studentCountString: classMessage.studentCountString,
     );
   }
 
