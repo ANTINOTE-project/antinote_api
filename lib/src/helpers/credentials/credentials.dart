@@ -5,7 +5,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:antinote/antinote.dart';
-import 'package:antinote/src/protos/antinote/credentials.pb.dart';
 import 'package:uuid/data.dart';
 import 'package:uuid/rng.dart';
 import 'package:uuid/uuid.dart';
@@ -93,13 +92,13 @@ sealed class Credentials {
     );
   }
 
-  Future<LoginResult> login() async {
-    final session = await createSession();
+  Future<LoginResult> login({SessionOptions? options}) async {
+    final session = await createSession(options ?? SessionOptions.getDefault());
     await accessInstanceParameters(session);
     return loginBody(session);
   }
 
-  Future<PronoteSession> createSession();
+  Future<PronoteSession> createSession(SessionOptions options);
 
   Future<void> accessInstanceParameters(PronoteSession session) async {
     if (!session.hasAccessorNamed("InstanceParameters")) {

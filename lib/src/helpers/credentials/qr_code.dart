@@ -61,11 +61,13 @@ class QrCodeCredentials extends Credentials {
   }
 
   @override
-  Future<PronoteSession> createSession() => PronoteSession.init(
-    pronoteBaseUrl,
-    workspace: workspace,
-    cookies: [Cookie('appliMobile', '1')],
-  );
+  Future<PronoteSession> createSession(SessionOptions options) =>
+      PronoteSession.init(
+        pronoteBaseUrl,
+        workspace: workspace,
+        cookies: [Cookie('appliMobile', '1')],
+        options: options,
+      );
 
   @override
   Future<LoginResult> loginBody(PronoteSession session) async {

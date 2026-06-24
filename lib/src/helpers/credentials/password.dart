@@ -21,14 +21,16 @@ class PasswordCredentials extends Credentials {
   });
 
   @override
-  Future<PronoteSession> createSession() => PronoteSession.init(
-    pronoteBaseUrl,
-    workspace: workspace,
-    parameters: {
-      ...PronoteSession.baseParameters,
-      'bydlg': 'A6ABB224-12DD-4E31-AD3E-8A39A1C2C335',
-    },
-  );
+  Future<PronoteSession> createSession(SessionOptions options) =>
+      PronoteSession.init(
+        pronoteBaseUrl,
+        workspace: workspace,
+        parameters: {
+          ...PronoteSession.baseParameters,
+          'bydlg': 'A6ABB224-12DD-4E31-AD3E-8A39A1C2C335',
+        },
+        options: options,
+      );
 
   @override
   Future<LoginResult> loginBody(PronoteSession session) async {

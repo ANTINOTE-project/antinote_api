@@ -57,11 +57,13 @@ class TokenCredentials extends Credentials {
   Uint8List exportBinary() => serialize().writeToBuffer();
 
   @override
-  Future<PronoteSession> createSession() => PronoteSession.init(
-    pronoteBaseUrl,
-    workspace: workspace,
-    cookies: cookies,
-  );
+  Future<PronoteSession> createSession(SessionOptions options) =>
+      PronoteSession.init(
+        pronoteBaseUrl,
+        workspace: workspace,
+        cookies: cookies,
+        options: options,
+      );
 
   @override
   Future<LoginResult> loginBody(PronoteSession session) async {
