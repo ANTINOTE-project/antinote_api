@@ -13,6 +13,8 @@ extension MergeServerSignature on ServerSignature {
   // - notifications.tokenOAuth2
 
   ServerSignature mergeWith(Map<String, dynamic> newSignature) {
+    if (!isFrozen) freeze();
+
     return rebuild((sig) {
       if (newSignature.has('ModeExclusif')) {
         sig.exclusiveMode = newSignature.getB('ModeExclusif');
