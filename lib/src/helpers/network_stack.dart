@@ -176,7 +176,7 @@ class NetworkStack {
 
   /// Updates the tab displayed in the signature with the new one.
   void changeTab(int newTab) => _clientSignatureSubject.add(
-    (clientSignature ?? ClientSignature.create()).changeTab(newTab),
+    (clientSignature ?? ClientSignature.getDefault()).changeTab(newTab),
   );
 
   /// Updates the member displayed in the signature with the new one.
@@ -202,7 +202,7 @@ class NetworkStack {
     bool deepMerge = true,
   }) {
     _serverSignatureSubject.add(
-      (serverSignature ?? ServerSignature.create()).mergeWith(newSignature),
+      (serverSignature ?? ServerSignature.getDefault()).mergeWith(newSignature),
     );
 
     // TODO: Send events

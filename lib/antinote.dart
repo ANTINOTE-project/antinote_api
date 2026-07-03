@@ -90,7 +90,6 @@ export 'src/models/notebook/resource/resource.dart';
 export 'src/models/notebook/resource/set.dart';
 export 'src/models/notification/center.dart';
 export 'src/models/notification/notification.dart';
-export 'src/models/notification/preview.dart';
 export 'src/models/pause.dart';
 export 'src/models/period.dart';
 export 'src/models/person.dart';

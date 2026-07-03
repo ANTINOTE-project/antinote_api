@@ -3,6 +3,7 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/models/workspace/type.dart';
 import 'package:antinote/src/models/workspace/workspace.dart';
 
+// TODO: Make notification parsing exhaustive...
 final class Notification {
   final int type;
   final int action;
@@ -61,8 +62,6 @@ final class Notification {
           return tab;
         }
       }
-
-      return -1;
     }
 
     return tabLocationByNotificationId(session.instance.workspace) ?? -1;
@@ -71,11 +70,11 @@ final class Notification {
   int? tabLocationByNotificationId(Workspace workspace) {
     return switch (id) {
       'insh_IdDiscussions' => 131,
-      'insh_IdCasiers' => 104,
+      'insh_IdCasiers' => 148,
       'insh_IdInformations' => 8,
       'insh_IdSujetsForum' => 275,
-      'insh_IdDocumentASigner' => 285,
-      'insh_IdDemandeRemplacements' =>
+      'insh_IdDemandeRemplacements' => 285,
+      'insh_IdDocumentASigner' =>
         workspace.type.categories.contains(WorkspaceCategory.hasNoLocker)
             ? 148
             : 104,
