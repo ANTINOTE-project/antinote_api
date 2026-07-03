@@ -194,6 +194,7 @@ final class SpecificInstanceParameters extends InstanceParameters {
     return day.copyWith(hour: slot.timing.hour, minute: slot.timing.minute);
   }
 
+  // TODO: fix, when in nether regions (pauses), 0 is returned.
   int daySlotForTime(DateTime time) {
     for (int i = 0; i < starts.length; i++) {
       if (starts[i] <= time && endings[i] > time) {
@@ -227,17 +228,17 @@ final class SpecificInstanceParameters extends InstanceParameters {
     return true;
   }
 
-  bool isBusinessHalfDay(DateTime time) {
+  bool isBusinessHalfDay(DateTime time, int? slot) {
     if (!isBusinessDay(time.toDay())) return false;
 
-    final slot = daySlotForTime(time);
+    final placeSlot = slot ?? daySlotForTime(time);
 
-    if (slot < 0) return false;
+    if (placeSlot < 0) return false;
 
     final int halfDay;
-    if (slot < lunchStartSlot) {
+    if (placeSlot < lunchStartSlot) {
       halfDay = 0; // Morning
-    } else if (slot >= lunchEndSlot) {
+    } else if (placeSlot >= lunchEndSlot) {
       halfDay = 1; // Afternoon
     } else {
       halfDay = 0; // Somewhere in-between, considered morning afaik
