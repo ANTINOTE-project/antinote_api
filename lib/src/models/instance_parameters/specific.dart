@@ -244,7 +244,7 @@ final class SpecificInstanceParameters extends InstanceParameters {
       halfDay = 0; // Somewhere in-between, considered morning afaik
     }
 
-    return businessHalfDays[halfDay].contains(time.weekday);
+    return businessHalfDays[halfDay].contains(time.weekday - 1);
   }
 
   DateTime findBusinessDay(
