@@ -7,8 +7,10 @@ import 'dart:typed_data';
 import 'package:antinote/antinote.dart';
 import 'package:antinote/src/helpers/api_properties.dart';
 import 'package:antinote/src/helpers/json_codec.dart';
+import 'package:antinote/src/helpers/signatures/client.dart';
+import 'package:antinote/src/helpers/signatures/server.dart';
 import 'package:http/http.dart';
-import 'package:rxdart/subjects.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:version/version.dart';
 
 export 'call/call.dart';
@@ -60,11 +62,11 @@ class NetworkStack {
     stack.username = serialized.username;
 
     if (serialized.hasClientSignature()) {
-      stack.updateClientSignature(jsonDecode(serialized.clientSignature));
+      stack._clientSignatureSubject.add(serialized.clientSignature);
     }
 
     if (serialized.hasServerSignature()) {
-      stack.updateServerSignature(jsonDecode(serialized.serverSignature));
+      stack._serverSignatureSubject.add(serialized.serverSignature);
     }
 
     stack._orders.addAll(serialized.orders);
@@ -89,12 +91,8 @@ class NetworkStack {
       sessionId: sessionId,
       tokenId: tokenId,
       tokenKey: tokenKey,
-      clientSignature: clientSignature == null
-          ? null
-          : jsonEncode(clientSignature!),
-      serverSignature: serverSignature == null
-          ? null
-          : jsonEncode(serverSignature!),
+      clientSignature: clientSignature,
+      serverSignature: serverSignature,
       orders: _orders.entries,
     );
   }
@@ -165,47 +163,49 @@ class NetworkStack {
   /// The "Token Key" is some form of password used on CAS login.
   final String? tokenKey;
 
+  final BehaviorSubject<ClientSignature> _clientSignatureSubject =
+      BehaviorSubject();
+
+  ValueStream<ClientSignature> get clientSignatureStream =>
+      _clientSignatureSubject.stream;
+
   /// The global signature is appended mainly to function calls after login
   /// which is used by PRONOTE to know some kinds of actions taken by the client
   /// (resource swaps, page navigation...)
-  Map<String, dynamic>? get clientSignature => _clientSignature;
-  Map<String, dynamic>? _clientSignature;
+  ClientSignature? get clientSignature => _clientSignatureSubject.valueOrNull;
 
-  /// Updates [clientSignature] by merging the existing one with the new data.
-  void updateClientSignature(
-    Map<String, dynamic> newSignature, {
-    bool deepMerge = true,
-  }) {
-    _clientSignature = deepMergeMaps(
-      newSignature,
-      clientSignature ?? {},
-      mergeInnerMaps: deepMerge,
-    );
-  }
+  /// Updates the tab displayed in the signature with the new one.
+  void changeTab(int newTab) => _clientSignatureSubject.add(
+    (clientSignature ?? ClientSignature.create()).changeTab(newTab),
+  );
 
-  final BehaviorSubject<Map<String, dynamic>> _serverSignatureSubject =
+  /// Updates the member displayed in the signature with the new one.
+  void changeUserResource(UserResource userResource) =>
+      _clientSignatureSubject.add(
+        (clientSignature ?? ClientSignature(member: null, tab: 7))
+            .changeUserResource(userResource),
+      );
+
+  final BehaviorSubject<ServerSignature> _serverSignatureSubject =
       BehaviorSubject();
 
   /// A stream sending the new server signature each time it is updated.
-  Stream<Map<String, dynamic>> get serverSignatureStream =>
+  ValueStream<ServerSignature> get serverSignatureStream =>
       _serverSignatureSubject.stream;
 
   /// The current configuration asked by the PRONOTE server.
-  Map<String, dynamic>? get serverSignature => _serverSignature;
-  Map<String, dynamic>? _serverSignature;
+  ServerSignature? get serverSignature => _serverSignatureSubject.valueOrNull;
 
   /// Updates [serverSignature] by merging the existing one with the new data.
   void updateServerSignature(
     Map<String, dynamic> newSignature, {
     bool deepMerge = true,
   }) {
-    _serverSignature = deepMergeMaps(
-      newSignature,
-      serverSignature ?? {},
-      mergeInnerMaps: deepMerge,
+    _serverSignatureSubject.add(
+      (serverSignature ?? ServerSignature.create()).mergeWith(newSignature),
     );
 
-    _serverSignatureSubject.add(_serverSignature!);
+    // TODO: Send events
   }
 
   /// When an Android device is asleep, it blocks by default all network-related

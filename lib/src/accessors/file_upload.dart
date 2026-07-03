@@ -23,6 +23,9 @@ class FileUploadAccessor extends StatelessAccessor<String> {
   static const int _chunkSize = 100 * 1024; // Same as PRONOTE
 
   @override
+  bool get exclusiveFriendly => false;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

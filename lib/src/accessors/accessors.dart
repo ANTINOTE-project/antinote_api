@@ -11,6 +11,8 @@ import 'package:meta/meta.dart';
 abstract class StatefulAccessor<R, S> {
   FutureOr<S> collectState(PronoteSession session);
 
+  bool get exclusiveFriendly;
+
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

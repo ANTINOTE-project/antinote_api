@@ -13,6 +13,9 @@ class NotebookEntryAccessor extends StatelessAccessor<NotebookEntry> {
   const NotebookEntryAccessor({required this.entryId});
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

@@ -13,6 +13,9 @@ class LatestGradesPageAccessor extends StatelessAccessor<LatestGradesPage> {
   final Period period;
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

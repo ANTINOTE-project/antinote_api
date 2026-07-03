@@ -15,6 +15,9 @@ class AuthenticationAccessor extends StatelessAccessor<AuthenticationResponse> {
   const AuthenticationAccessor({required this.challengeSolution});
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   Future<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

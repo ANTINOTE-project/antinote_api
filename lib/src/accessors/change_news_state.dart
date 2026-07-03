@@ -23,6 +23,9 @@ class ChangeNewsStateAccessor extends StatelessAccessor<void> {
   final Map<News, NewsUpdate> updatesToPerform;
 
   @override
+  bool get exclusiveFriendly => false;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

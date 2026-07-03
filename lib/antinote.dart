@@ -32,7 +32,6 @@ export 'src/helpers/credentials/credentials.dart';
 export 'src/helpers/crypto.dart';
 export 'src/helpers/datetime.dart';
 export 'src/helpers/enum_id.dart';
-export 'src/helpers/exception.dart';
 export 'src/helpers/exceptions.dart';
 export 'src/helpers/geolocation.dart';
 export 'src/helpers/json.dart';

@@ -13,6 +13,9 @@ class DisconnectionAccessor extends StatelessAccessor<void> {
   const DisconnectionAccessor.unlogged() : logged = false;
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

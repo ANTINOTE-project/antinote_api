@@ -117,6 +117,243 @@ class SerializedCrypto extends $pb.GeneratedMessage {
   void clearRsaExponent() => $_clearField(4);
 }
 
+class ServerSignature extends $pb.GeneratedMessage {
+  factory ServerSignature({
+    $core.bool? exclusiveMode,
+    $core.Iterable<$core.MapEntry<$core.int, $core.int>>? tabNotificationCounts,
+    $core.int? visibleNotificationsCount,
+    ServerSignature_ConnectionStatus? connectionStatus,
+  }) {
+    final result = create();
+    if (exclusiveMode != null) result.exclusiveMode = exclusiveMode;
+    if (tabNotificationCounts != null)
+      result.tabNotificationCounts.addEntries(tabNotificationCounts);
+    if (visibleNotificationsCount != null)
+      result.visibleNotificationsCount = visibleNotificationsCount;
+    if (connectionStatus != null) result.connectionStatus = connectionStatus;
+    return result;
+  }
+
+  ServerSignature._();
+
+  factory ServerSignature.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ServerSignature.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ServerSignature',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'antinote'),
+      createEmptyInstance: create)
+    ..aOB(1, _omitFieldNames ? '' : 'exclusiveMode', protoName: 'exclusiveMode')
+    ..m<$core.int, $core.int>(2, _omitFieldNames ? '' : 'tabNotificationCounts',
+        entryClassName: 'ServerSignature.TabNotificationCountsEntry',
+        keyFieldType: $pb.PbFieldType.OU3,
+        valueFieldType: $pb.PbFieldType.OU3,
+        packageName: const $pb.PackageName('antinote'))
+    ..aI(3, _omitFieldNames ? '' : 'visibleNotificationsCount',
+        fieldType: $pb.PbFieldType.OU3)
+    ..aE<ServerSignature_ConnectionStatus>(
+        4, _omitFieldNames ? '' : 'connectionStatus',
+        enumValues: ServerSignature_ConnectionStatus.values)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ServerSignature clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ServerSignature copyWith(void Function(ServerSignature) updates) =>
+      super.copyWith((message) => updates(message as ServerSignature))
+          as ServerSignature;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ServerSignature create() => ServerSignature._();
+  @$core.override
+  ServerSignature createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ServerSignature getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ServerSignature>(create);
+  static ServerSignature? _defaultInstance;
+
+  /// Whether the app is in the "exclusive" mode. If true, no edit requests can be sent (it is recommended the UI should update accordingly).
+  @$pb.TagNumber(1)
+  $core.bool get exclusiveMode => $_getBF(0);
+  @$pb.TagNumber(1)
+  set exclusiveMode($core.bool value) => $_setBool(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasExclusiveMode() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearExclusiveMode() => $_clearField(1);
+
+  /// Tells how many notifications are active for relevant tabs.
+  @$pb.TagNumber(2)
+  $pb.PbMap<$core.int, $core.int> get tabNotificationCounts => $_getMap(1);
+
+  /// Used to know how many notifications are currently active.
+  @$pb.TagNumber(3)
+  $core.int get visibleNotificationsCount => $_getIZ(2);
+  @$pb.TagNumber(3)
+  set visibleNotificationsCount($core.int value) =>
+      $_setUnsignedInt32(2, value);
+  @$pb.TagNumber(3)
+  $core.bool hasVisibleNotificationsCount() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearVisibleNotificationsCount() => $_clearField(3);
+
+  /// The status for the current account (used for communication).
+  @$pb.TagNumber(4)
+  ServerSignature_ConnectionStatus get connectionStatus => $_getN(3);
+  @$pb.TagNumber(4)
+  set connectionStatus(ServerSignature_ConnectionStatus value) =>
+      $_setField(4, value);
+  @$pb.TagNumber(4)
+  $core.bool hasConnectionStatus() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearConnectionStatus() => $_clearField(4);
+}
+
+class ClientSignature_Member extends $pb.GeneratedMessage {
+  factory ClientSignature_Member({
+    $core.String? id,
+    $core.int? type,
+  }) {
+    final result = create();
+    if (id != null) result.id = id;
+    if (type != null) result.type = type;
+    return result;
+  }
+
+  ClientSignature_Member._();
+
+  factory ClientSignature_Member.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ClientSignature_Member.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ClientSignature.Member',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'antinote'),
+      createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'id')
+    ..aI(2, _omitFieldNames ? '' : 'type', fieldType: $pb.PbFieldType.OU3)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ClientSignature_Member clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ClientSignature_Member copyWith(
+          void Function(ClientSignature_Member) updates) =>
+      super.copyWith((message) => updates(message as ClientSignature_Member))
+          as ClientSignature_Member;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ClientSignature_Member create() => ClientSignature_Member._();
+  @$core.override
+  ClientSignature_Member createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ClientSignature_Member getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ClientSignature_Member>(create);
+  static ClientSignature_Member? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set id($core.String value) => $_setString(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearId() => $_clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.int get type => $_getIZ(1);
+  @$pb.TagNumber(2)
+  set type($core.int value) => $_setUnsignedInt32(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasType() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearType() => $_clearField(2);
+}
+
+class ClientSignature extends $pb.GeneratedMessage {
+  factory ClientSignature({
+    $core.int? tab,
+    ClientSignature_Member? member,
+  }) {
+    final result = create();
+    if (tab != null) result.tab = tab;
+    if (member != null) result.member = member;
+    return result;
+  }
+
+  ClientSignature._();
+
+  factory ClientSignature.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory ClientSignature.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'ClientSignature',
+      package: const $pb.PackageName(_omitMessageNames ? '' : 'antinote'),
+      createEmptyInstance: create)
+    ..aI(1, _omitFieldNames ? '' : 'tab', fieldType: $pb.PbFieldType.OS3)
+    ..aOM<ClientSignature_Member>(2, _omitFieldNames ? '' : 'member',
+        subBuilder: ClientSignature_Member.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ClientSignature clone() => deepCopy();
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  ClientSignature copyWith(void Function(ClientSignature) updates) =>
+      super.copyWith((message) => updates(message as ClientSignature))
+          as ClientSignature;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static ClientSignature create() => ClientSignature._();
+  @$core.override
+  ClientSignature createEmptyInstance() => create();
+  @$core.pragma('dart2js:noInline')
+  static ClientSignature getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<ClientSignature>(create);
+  static ClientSignature? _defaultInstance;
+
+  /// The currently selected tab.
+  @$pb.TagNumber(1)
+  $core.int get tab => $_getIZ(0);
+  @$pb.TagNumber(1)
+  set tab($core.int value) => $_setSignedInt32(0, value);
+  @$pb.TagNumber(1)
+  $core.bool hasTab() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearTab() => $_clearField(1);
+
+  /// The currently selected member.
+  @$pb.TagNumber(2)
+  ClientSignature_Member get member => $_getN(1);
+  @$pb.TagNumber(2)
+  set member(ClientSignature_Member value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasMember() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearMember() => $_clearField(2);
+  @$pb.TagNumber(2)
+  ClientSignature_Member ensureMember() => $_ensure(1);
+}
+
 class SerializedNetworkStack extends $pb.GeneratedMessage {
   factory SerializedNetworkStack({
     SerializedCrypto? crypto,
@@ -134,8 +371,8 @@ class SerializedNetworkStack extends $pb.GeneratedMessage {
     $core.int? sessionId,
     $core.String? tokenId,
     $core.String? tokenKey,
-    $core.String? clientSignature,
-    $core.String? serverSignature,
+    ClientSignature? clientSignature,
+    ServerSignature? serverSignature,
     $core.Iterable<$core.MapEntry<$core.String, $core.int>>? orders,
   }) {
     final result = create();
@@ -190,8 +427,10 @@ class SerializedNetworkStack extends $pb.GeneratedMessage {
     ..aI(13, _omitFieldNames ? '' : 'sessionId', fieldType: $pb.PbFieldType.OU3)
     ..aOS(14, _omitFieldNames ? '' : 'tokenId')
     ..aOS(15, _omitFieldNames ? '' : 'tokenKey')
-    ..aOS(16, _omitFieldNames ? '' : 'clientSignature')
-    ..aOS(17, _omitFieldNames ? '' : 'serverSignature')
+    ..aOM<ClientSignature>(16, _omitFieldNames ? '' : 'clientSignature',
+        subBuilder: ClientSignature.create)
+    ..aOM<ServerSignature>(17, _omitFieldNames ? '' : 'serverSignature',
+        subBuilder: ServerSignature.create)
     ..m<$core.String, $core.int>(18, _omitFieldNames ? '' : 'orders',
         entryClassName: 'SerializedNetworkStack.OrdersEntry',
         keyFieldType: $pb.PbFieldType.OS,
@@ -353,22 +592,26 @@ class SerializedNetworkStack extends $pb.GeneratedMessage {
   void clearTokenKey() => $_clearField(15);
 
   @$pb.TagNumber(16)
-  $core.String get clientSignature => $_getSZ(15);
+  ClientSignature get clientSignature => $_getN(15);
   @$pb.TagNumber(16)
-  set clientSignature($core.String value) => $_setString(15, value);
+  set clientSignature(ClientSignature value) => $_setField(16, value);
   @$pb.TagNumber(16)
   $core.bool hasClientSignature() => $_has(15);
   @$pb.TagNumber(16)
   void clearClientSignature() => $_clearField(16);
+  @$pb.TagNumber(16)
+  ClientSignature ensureClientSignature() => $_ensure(15);
 
   @$pb.TagNumber(17)
-  $core.String get serverSignature => $_getSZ(16);
+  ServerSignature get serverSignature => $_getN(16);
   @$pb.TagNumber(17)
-  set serverSignature($core.String value) => $_setString(16, value);
+  set serverSignature(ServerSignature value) => $_setField(17, value);
   @$pb.TagNumber(17)
   $core.bool hasServerSignature() => $_has(16);
   @$pb.TagNumber(17)
   void clearServerSignature() => $_clearField(17);
+  @$pb.TagNumber(17)
+  ServerSignature ensureServerSignature() => $_ensure(16);
 
   @$pb.TagNumber(18)
   $pb.PbMap<$core.String, $core.int> get orders => $_getMap(17);

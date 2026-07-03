@@ -14,6 +14,38 @@ final class TimeSlot {
 
     required this.timing,
   });
+
+  bool operator <(Object other) => switch (other) {
+    DateTime(hour: final hour, minute: final minute) =>
+      hour > timing.hour ? true : minute > timing.minute,
+    TimeSlot(timing: (hour: final hour, minute: final minute)) =>
+      hour > timing.hour ? true : minute > timing.minute,
+    _ => false,
+  };
+
+  bool operator >(Object other) => switch (other) {
+    DateTime(hour: final hour, minute: final minute) =>
+      hour < timing.hour ? true : minute < timing.minute,
+    TimeSlot(timing: (hour: final hour, minute: final minute)) =>
+      hour < timing.hour ? true : minute < timing.minute,
+    _ => false,
+  };
+
+  @override
+  bool operator ==(Object other) => switch (other) {
+    DateTime(hour: final hour, minute: final minute) =>
+      hour == timing.hour && minute == timing.minute,
+    TimeSlot(timing: (hour: final hour, minute: final minute)) =>
+      hour == timing.hour && minute == timing.minute,
+    _ => false,
+  };
+
+  bool operator >=(Object other) => this > other || this == other;
+
+  bool operator <=(Object other) => this < other || this == other;
+
+  @override
+  int get hashCode => timing.hashCode;
 }
 
 extension AsTimeSlot on MapJsonNavigator {

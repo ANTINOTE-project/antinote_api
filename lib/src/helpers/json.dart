@@ -12,6 +12,17 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
     return value as T;
   }
 
+  bool getB(String key) {
+    return switch (this[key]) {
+      false => false,
+      0 => false,
+      0.0 => false,
+      "" => false,
+      num(isNaN: final isNaN) => isNaN,
+      _ => true,
+    };
+  }
+
   MapJsonNavigator goIterable(List<String> keys) {
     if (keys.isEmpty) return this;
 

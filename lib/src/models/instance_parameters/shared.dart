@@ -5,6 +5,7 @@ import 'dart:typed_data';
 
 import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/colors.dart';
+import 'package:antinote/src/helpers/datetime.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/grades/grade.dart';
@@ -46,7 +47,7 @@ final class SharedInstanceParameters {
   final String establishmentName;
   final String loginEstablishmentName;
   final String? urlPath;
-  final String schoolYear;
+  final String? schoolYear;
 
   const SharedInstanceParameters({
     required this.casToken,
@@ -79,10 +80,10 @@ extension AsSharedInstanceParameters on MapJsonNavigator {
     final mGen = mGetM('General') ?? this;
     return SharedInstanceParameters(
       casToken: casToken,
-      isShownInDW: get('estAfficheDansENT'),
+      isShownInDW: getB('estAfficheDansENT'),
       fontNames: getLM('listePolices').mapL((e) => e.get<String>('L')),
-      withMember: get('avecMembre'),
-      forNewCaledonia: get('pourNouvelleCaledonie'),
+      withMember: getB('avecMembre'),
+      forNewCaledonia: getB('pourNouvelleCaledonie'),
       loginImageType: get('genreImageConnexion'),
       loginImageUrl: Uri.tryParse(get<String>('urlImageConnexion')),
       cssProductLogo: get('logoProduitCss'),
@@ -95,8 +96,8 @@ extension AsSharedInstanceParameters on MapJsonNavigator {
       currentLanguageCode: mGen.get('langue'),
       currentLanguageId: mGen.get('langID'),
       languages: mGen.getLM('listeLangues').mapL((e) => e.asLanguage()),
-      publishMentions: mGen.get('publierMentions'),
-      nonComplyingAccessibility: mGen.get('accessibiliteNonConforme'),
+      publishMentions: mGen.getB('publierMentions'),
+      nonComplyingAccessibility: mGen.getB('accessibiliteNonConforme'),
       accessibilityDeclarationUrl: mGen.has('urlDeclarationAccessibilite')
           ? Uri.tryParse(mGen.get('urlDeclarationAccessibilite'))
           : null,
@@ -139,7 +140,7 @@ sealed class InstanceParameters with VisualIdMixin {
   final Uri? accessibilityDeclarationUrl;
   final String establishmentName;
   final String loginEstablishmentName;
-  final String schoolYear;
+  final String? schoolYear;
 
   const InstanceParameters({
     required this.casToken,

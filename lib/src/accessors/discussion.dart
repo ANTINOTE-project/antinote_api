@@ -14,6 +14,9 @@ class DiscussionAccessor extends StatelessAccessor<Discussion> {
   const DiscussionAccessor({required this.node, this.markAsRead = true});
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

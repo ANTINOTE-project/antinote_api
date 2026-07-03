@@ -13,6 +13,9 @@ class ChangeHomeworkStateAccessor extends StatelessAccessor<void> {
   final Map<Homework, bool?> homeworksToUpdate;
 
   @override
+  bool get exclusiveFriendly => false;
+
+  @override
   Future<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

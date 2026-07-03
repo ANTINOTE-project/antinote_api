@@ -14,6 +14,79 @@ message SerializedCrypto {
   optional string rsa_exponent = 4;
 }
 
+message ServerSignature {
+  enum ConnectionStatus {
+    AVAILABLE = 0;
+    IN_CLASS = 1;
+    DO_NOT_DISTURB = 2;
+    DISCONNECTED = 3;
+  }
+  /*
+    final bool exclusiveMode;
+
+  final Map<int, int> notificationCountPerTab;
+
+  // final bool updateMessages; Just send the update through a listener or an equivalent (actualisationMessage or notificationsChatVS != null)
+  // final bool updateKiosk; Just send the update through a listener or an equivalent (notificationsKiosque)
+
+  // final List<Alert> alerts; We don't do alerts yet (notificationsChatVS)
+
+  final int visibleNotificationsCount; // compteurCentraleNotif
+  final int connectionStatus; // statutConnexion
+
+  // unused notification types: dureeMAJServeur, MAJAnnulation, tokenOAuth2, and actualisation_postForum
+  // unused data notification types (at listeDonnees) :
+
+   for 2, THND_ListeGroupe for 3, THND_ListeProfesseur for 4, and THND_ListeDocJointEtablissement for 0
+  final Map<String, dynamic>? extraData;*/
+
+  // Whether the app is in the "exclusive" mode. If true, no edit requests can be sent (it is recommended the UI should update accordingly).
+  bool exclusiveMode = 1;
+  // Tells how many notifications are active for relevant tabs.
+  map<uint32, uint32> tab_notification_counts = 2;
+  // Used to know how many notifications are currently active.
+  uint32 visible_notifications_count = 3;
+  // The status for the current account (used for communication).
+  ConnectionStatus connection_status = 4;
+
+  // Unused data goes here, when information is not parsed successfully, it is stored as its raw for here.
+  // Currently, here are the fields that are not parsed:
+  // ```json
+  // {
+  //   "droits": {
+  //     "...": true // Rights management is not implemented yet.
+  //   }
+  //   "notifications": {
+  //     "dureeMAJServeur": 1000, // In milliseconds.
+  //     "MAJAnnulation": true, // Actual type is unknown, this will probably be available as an event.
+  //     "tokenOAuth2": {
+  //       "ok": true, // Whether login was successful.
+  //       "message": "Error" // Only present when [ok] field is false (or maybe absent).
+  //     },
+  //     "actualisation_postForum": true, // Actual type is unknown, this will probably be available as an event.
+  //     "listeDonnees": {
+  //       "2": [], // Visibly unused (class list per level).
+  //       "3": [], // Visibly unused (group list).
+  //       "4": [], // Visibly unused (teacher list).
+  //       "0": [] // Used (attachment list for an establishment). No instance was found where this is actually used. Although, this seems to be an element list.
+  //     }
+  //   }
+  // }
+  // ```
+}
+
+message ClientSignature {
+  message Member {
+    string id = 1;
+    uint32 type = 2;
+  }
+
+  // The currently selected tab.
+  sint32 tab = 1;
+  // The currently selected member.
+  optional Member member = 2;
+}
+
 message SerializedNetworkStack {
   SerializedCrypto crypto = 1;
   string instance_version = 2;
@@ -30,8 +103,8 @@ message SerializedNetworkStack {
   uint32 session_id = 13;
   optional string token_id = 14;
   optional string token_key = 15;
-  optional string client_signature = 16;
-  optional string server_signature = 17;
+  optional ClientSignature client_signature = 16;
+  optional ServerSignature server_signature = 17;
   map<string, sint32> orders = 18;
 }
 

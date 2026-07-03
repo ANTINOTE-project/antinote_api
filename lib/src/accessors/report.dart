@@ -15,6 +15,9 @@ class ReportAccessor extends StatelessAccessor<BaseReport> {
   const ReportAccessor({required this.period});
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

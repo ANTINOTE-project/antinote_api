@@ -70,7 +70,7 @@ sealed class Credentials {
 
     await session.access(UserParametersAccessor());
 
-    session.stack.updateClientSignature({'onglet': 7});
+    session.stack.changeTab(7);
     session.currentUserResourceId = 0;
 
     return (

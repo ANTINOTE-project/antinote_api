@@ -16,6 +16,9 @@ class DiscussionPageAccessor extends StatelessAccessor<DiscussionPage> {
   });
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

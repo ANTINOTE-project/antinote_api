@@ -20,6 +20,9 @@ class ChangeHomeworkSubmissionAccessor extends StatelessAccessor<void> {
   static String callName = 'SaisieTAFARendreEleve';
 
   @override
+  bool get exclusiveFriendly => false;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

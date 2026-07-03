@@ -1,9 +1,11 @@
 import 'dart:async';
 
-
 import '../../antinote.dart';
 
 class PollingAccessor extends StatelessAccessor<MapJsonNavigator> {
+  @override
+  bool get exclusiveFriendly => true;
+
   @override
   Future<Map<String, dynamic>> access(
     NetworkStack stack,

@@ -8,6 +8,9 @@ import 'package:antinote/src/models/notification/center.dart';
 
 class NotificationCenterAccessor extends StatelessAccessor<NotificationCenter> {
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

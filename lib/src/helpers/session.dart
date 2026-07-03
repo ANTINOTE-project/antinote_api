@@ -105,13 +105,13 @@ class PronoteSession {
   Uint8List exportBinary() => serialize().writeToBuffer();
 
   Future<void> ensurePage(int page) async {
-    final oldPage = stack.clientSignature?.get('onglet');
+    final oldPage = stack.clientSignature?.tab;
 
     if (oldPage == page) {
       return;
     }
 
-    stack.updateClientSignature({'onglet': page});
+    stack.changeTab(page);
 
     if (options.saveNavigationRequests) {
       return;
@@ -161,58 +161,16 @@ class PronoteSession {
 
   set currentUserResourceId(int value) {
     _currentUserResourceId = value;
+
     if (user.resources.length > 1) {
-      stack.updateClientSignature({
-        'membre': {'G': userResource.type, 'N': userResource.id},
-      });
+      stack.changeUserResource(userResource);
     }
   }
 
   UserResource get userResource => user.resources[currentUserResourceId];
 
-  Stream<NotificationPreviewState>? _notifications;
-
-  Stream<NotificationPreviewState> get notifications {
-    _notifications ??= _doNotifications();
-
-    return _notifications!;
-  }
-
-  NotificationPreviewState? currentNotificationState;
-
-  Stream<NotificationPreviewState> _doNotifications() async* {
-    await for (final signature in stack.serverSignatureStream) {
-      List<NotificationPreview>? buildingNotifications;
-
-      for (final commNotif
-          in signature.mGetLM('notificationsCommunication') ??
-              <MapJsonNavigator>[]) {
-        buildingNotifications ??= <NotificationPreview>[];
-        buildingNotifications.add(commNotif.asNotificationPreview());
-      }
-
-      buildingNotifications ??=
-          currentNotificationState?.notifications ?? <NotificationPreview>[];
-
-      currentNotificationState = NotificationPreviewState(
-        notificationCount:
-            signature.mGo('notifications')?.get('compteurCentraleNotif') ??
-            currentNotificationState?.notificationCount ??
-            buildingNotifications.fold(
-              0,
-              (previousValue, element) => previousValue! + element.count,
-            ) ??
-            0,
-        notifications: buildingNotifications,
-        refreshMessages: signature.get('actualisationMessage') == true,
-      );
-
-      yield currentNotificationState!;
-    }
-  }
-
-  static const _startMatch = 'Start(';
-  static const _endMatch = ')}catch';
+  static final _startMatch = RegExp(r'Start\(');
+  static final _endMatch = RegExp(r'\);?}catch');
   static const casBypassParameters = {'login': 'true'};
   static const redirectBypassParameters = {'fd': '1'};
   static const delegationBypassParameters = {

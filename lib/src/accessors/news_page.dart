@@ -17,6 +17,9 @@ class NewsPageAccessor extends StatelessAccessor<NewsPage> {
     : modes = const [NewsDisplayMode.reception];
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

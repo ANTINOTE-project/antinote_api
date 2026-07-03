@@ -156,5 +156,33 @@ class CacheType extends $pb.ProtobufEnum {
   const CacheType._(super.value, super.name);
 }
 
+class ServerSignature_ConnectionStatus extends $pb.ProtobufEnum {
+  static const ServerSignature_ConnectionStatus AVAILABLE =
+      ServerSignature_ConnectionStatus._(0, _omitEnumNames ? '' : 'AVAILABLE');
+  static const ServerSignature_ConnectionStatus IN_CLASS =
+      ServerSignature_ConnectionStatus._(1, _omitEnumNames ? '' : 'IN_CLASS');
+  static const ServerSignature_ConnectionStatus DO_NOT_DISTURB =
+      ServerSignature_ConnectionStatus._(
+          2, _omitEnumNames ? '' : 'DO_NOT_DISTURB');
+  static const ServerSignature_ConnectionStatus DISCONNECTED =
+      ServerSignature_ConnectionStatus._(
+          3, _omitEnumNames ? '' : 'DISCONNECTED');
+
+  static const $core.List<ServerSignature_ConnectionStatus> values =
+      <ServerSignature_ConnectionStatus>[
+    AVAILABLE,
+    IN_CLASS,
+    DO_NOT_DISTURB,
+    DISCONNECTED,
+  ];
+
+  static final $core.List<ServerSignature_ConnectionStatus?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 3);
+  static ServerSignature_ConnectionStatus? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const ServerSignature_ConnectionStatus._(super.value, super.name);
+}
+
 const $core.bool _omitEnumNames =
     $core.bool.fromEnvironment('protobuf.omit_enum_names');

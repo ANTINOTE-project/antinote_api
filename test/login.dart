@@ -19,7 +19,15 @@ void main() {
         await credentials.login();
 
     try {
-      //
+      await session.ensurePage(16);
+      final timetable = await session.access(
+        TimetableAccessor.forYear(
+          resource: session.userResource,
+          session: session,
+        ),
+      );
+
+      print(timetable);
     } catch (_) {}
 
     await session.access(DisconnectionAccessor.logged());

@@ -68,15 +68,14 @@ final class SpecificInstanceParameters extends InstanceParameters {
   final int homeworkCommentSize;
   final bool withConnexionInformationRetrieval;
   final bool? parentAuthorisesPasswordChange;
-  final String font;
-  final int fontSize;
+  final String? font;
+  final int? fontSize;
   final bool withAttachedStudents;
   final String phoneMask;
   final int ectsMaximum;
   final List<int> appreciationMaxSize;
   final List<Holiday> holidays;
   final bool showSequences;
-  final DateTime firstHour;
   final List<TimeSlot> starts;
   final List<TimeSlot> endings;
   final List<TimeSlot> endingsForSL;
@@ -165,7 +164,6 @@ final class SpecificInstanceParameters extends InstanceParameters {
     required this.appreciationMaxSize,
     required this.holidays,
     required this.showSequences,
-    required this.firstHour,
     required this.starts,
     required this.endings,
     required this.endingsForSL,
@@ -196,6 +194,16 @@ final class SpecificInstanceParameters extends InstanceParameters {
     return day.copyWith(hour: slot.timing.hour, minute: slot.timing.minute);
   }
 
+  int daySlotForTime(DateTime time) {
+    for (int i = 0; i < starts.length; i++) {
+      if (starts[i] <= time && endings[i] > time) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
   bool isBusinessDay(DateTime day) {
     day = day.copyWith(isUtc: true);
 
@@ -217,6 +225,25 @@ final class SpecificInstanceParameters extends InstanceParameters {
     }
 
     return true;
+  }
+
+  bool isBusinessHalfDay(DateTime time) {
+    if (!isBusinessDay(time.toDay())) return false;
+
+    final slot = daySlotForTime(time);
+
+    if (slot < 0) return false;
+
+    final int halfDay;
+    if (slot < lunchStartSlot) {
+      halfDay = 0; // Morning
+    } else if (slot >= lunchEndSlot) {
+      halfDay = 1; // Afternoon
+    } else {
+      halfDay = 0; // Somewhere in-between, considered morning afaik
+    }
+
+    return businessHalfDays[halfDay].contains(time.weekday);
   }
 
   DateTime findBusinessDay(
@@ -391,22 +418,22 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
         label: get('Nom'),
         pathSegment: temporaryWorkspace.pathSegment,
       ),
-      hostedInFrance: general.get('estHebergeEnFrance'),
-      withForum: general.get('avecForum'),
-      helpUrl: Uri.tryParse(general.get('UrlAide')),
-      videosAccessUrl: Uri.tryParse(general.get('urlAccesVideos')),
-      twitterAccessUrl: Uri.tryParse(general.get('urlAccesTwitter')),
+      hostedInFrance: general.getB('estHebergeEnFrance'),
+      withForum: general.getB('avecForum'),
+      helpUrl: Uri.tryParse(general.get('UrlAide') ?? ""),
+      videosAccessUrl: Uri.tryParse(general.get('urlAccesVideos') ?? ""),
+      twitterAccessUrl: Uri.tryParse(general.get('urlAccesTwitter') ?? ""),
       doubleAuthRegistrationFAQUrl: Uri.tryParse(
-        general.get('urlFAQEnregistrementDoubleAuth'),
+        general.get('urlFAQEnregistrementDoubleAuth') ?? "",
       ),
       devicesRegisterTutorialUrl: Uri.tryParse(
-        general.get('urlTutoEnregistrerAppareils'),
+        general.get('urlTutoEnregistrerAppareils') ?? "",
       ),
-      canopeUrl: Uri.tryParse(general.get('urlCanope')),
+      canopeUrl: Uri.tryParse(general.get('urlCanope') ?? ""),
       securityVideoTutorialUrl: Uri.tryParse(
-        general.get('urlTutoVideoSecurite'),
+        general.get('urlTutoVideoSecurite') ?? "",
       ),
-      withConnexionChoice: general.get('AvecChoixConnexion'),
+      withConnexionChoice: general.getB('AvecChoixConnexion'),
       firstWeekNumber: general.get('numeroPremiereSemaine'),
       firstCycleStartDate: general.get('dateDebutPremierCycle'),
       firstMonday: general.get('PremierLundi'),
@@ -420,18 +447,18 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       defaultPresenceExemptionValue: general.get(
         'valeurDefautPresenceDispense',
       ),
-      lunchActivation: general.get('activationDemiPension'),
+      lunchActivation: general.getB('activationDemiPension'),
       lunchStartSlot: general.get('debutDemiPension'),
       lunchEndSlot: general.get('finDemiPension'),
-      fullHoursAfterNoon: general.get('AvecHeuresPleinesApresMidi'),
+      fullHoursAfterNoon: general.getB('AvecHeuresPleinesApresMidi'),
       nextBusinessDay: general.get('JourOuvre'),
       businessDays: general.getL<int>('JoursOuvres'),
       lunchDays: general.get('JoursDemiPension'),
-      discussionBetweenParentsActivated: general.get(
+      discussionBetweenParentsActivated: general.getB(
         'ActivationMessagerieEntreParents',
       ),
-      excellenceParcoursGestion: general.get('GestionParcoursExcellence'),
-      blogActivation: general.get('activerBlog'),
+      excellenceParcoursGestion: general.getB('GestionParcoursExcellence'),
+      blogActivation: general.getB('activerBlog'),
       businessDaysPerCycle: general.get('joursOuvresParCycle'),
       firstWeekday: general.get('premierJourSemaine'),
       scheduleGridInCycle: general.get('grillesEDTEnCycle'),
@@ -448,30 +475,30 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       publicationIntervalForParents: general.get(
         'NbJDecalagePublicationAuxParents',
       ),
-      withGradesPublicationIntervalDisplayToParents:
-          general.get('AvecAffichageDecalagePublicationNotesAuxParents') ??
-          false,
-      withTestsPublicationIntervalDisplayToParents:
-          general.get('AvecAffichageDecalagePublicationEvalsAuxParents') ??
-          false,
+      withGradesPublicationIntervalDisplayToParents: general.getB(
+        'AvecAffichageDecalagePublicationNotesAuxParents',
+      ),
+      withTestsPublicationIntervalDisplayToParents: general.getB(
+        'AvecAffichageDecalagePublicationEvalsAuxParents',
+      ),
       allowedAnnotations: general.get('listeAnnotationsAutorisees'),
       acquirementLevels: general.getL<Map<String, dynamic>>(
         'ListeNiveauxDAcquisitions',
       ),
-      showShorthandForAcquirementLevel: general.get(
+      showShorthandForAcquirementLevel: general.getB(
         'AfficherAbbreviationNiveauDAcquisition',
       ),
-      withHistoricalTests: general.get('AvecEvaluationHistorique'),
-      withoutIntermediaryLevelValidationExamInAutomaticValidation: general.get(
+      withHistoricalTests: general.getB('AvecEvaluationHistorique'),
+      withoutIntermediaryLevelValidationExamInAutomaticValidation: general.getB(
         'SansValidationNivIntermediairesDsValidAuto',
       ),
-      onlyCountExamsForSchoolYearInAutomaticValidation: general.get(
+      onlyCountExamsForSchoolYearInAutomaticValidation: general.getB(
         'NeComptabiliserQueEvalsAnneeScoDsValidAuto',
       ),
       ponderateSubjectsRelativeToTheirCoefficientDomain: general.get(
         'PondererMatieresSelonLeurCoeffDsDomaine',
       ),
-      cecrlLevelManagement: general.get('AvecGestionNiveauxCECRL'),
+      cecrlLevelManagement: general.getB('AvecGestionNiveauxCECRL'),
       langActivityColor: general
           .get<String>('couleurActiviteLangagiere')
           .asRGB(),
@@ -483,19 +510,18 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
         'tailleLibelleElementGrilleCompetence',
       ),
       homeworkCommentSize: general.get('tailleCommentaireDevoir'),
-      withConnexionInformationRetrieval: general.get(
+      withConnexionInformationRetrieval: general.getB(
         'AvecRecuperationInfosConnexion',
       ),
-      parentAuthorisesPasswordChange: general.get('parentAutoriseChangerMDP'),
+      parentAuthorisesPasswordChange: general.getB('parentAutoriseChangerMDP'),
       font: general.get('Police'),
       fontSize: general.get('TaillePolice'),
-      withAttachedStudents: general.get('AvecElevesRattaches'),
+      withAttachedStudents: general.getB('AvecElevesRattaches'),
       phoneMask: general.get('maskTelephone'),
       ectsMaximum: general.get('maxECTS'),
       appreciationMaxSize: general.getL<int>('TailleMaxAppreciation'),
       holidays: general.getLM('listeJoursFeries').mapL((e) => e.asHoliday()),
-      showSequences: general.get('afficherSequences'),
-      firstHour: general.get('PremiereHeure'),
+      showSequences: general.getB('afficherSequences'),
       starts: general.getLM('ListeHeures').mapL((e) => e.asTimeSlot()),
       endings: general.getLM('ListeHeuresFin').mapL((e) => e.asTimeSlot()),
       endingsForSL: general

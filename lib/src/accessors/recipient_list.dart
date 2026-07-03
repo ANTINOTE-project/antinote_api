@@ -20,6 +20,9 @@ class RecipientListAccessor extends StatelessAccessor<List<Person>> {
       _estPublicParticipant = true;
 
   @override
+  bool get exclusiveFriendly => false;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

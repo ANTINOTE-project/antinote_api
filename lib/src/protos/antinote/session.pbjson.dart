@@ -122,6 +122,109 @@ final $typed_data.Uint8List serializedCryptoDescriptor = $convert.base64Decode(
     'tyc2FfbW9kdWx1cxgDIAEoCUgAUgpyc2FNb2R1bHVziAEBEiYKDHJzYV9leHBvbmVudBgEIAEo'
     'CUgBUgtyc2FFeHBvbmVudIgBAUIOCgxfcnNhX21vZHVsdXNCDwoNX3JzYV9leHBvbmVudA==');
 
+@$core.Deprecated('Use serverSignatureDescriptor instead')
+const ServerSignature$json = {
+  '1': 'ServerSignature',
+  '2': [
+    {'1': 'exclusiveMode', '3': 1, '4': 1, '5': 8, '10': 'exclusiveMode'},
+    {
+      '1': 'tab_notification_counts',
+      '3': 2,
+      '4': 3,
+      '5': 11,
+      '6': '.antinote.ServerSignature.TabNotificationCountsEntry',
+      '10': 'tabNotificationCounts'
+    },
+    {
+      '1': 'visible_notifications_count',
+      '3': 3,
+      '4': 1,
+      '5': 13,
+      '10': 'visibleNotificationsCount'
+    },
+    {
+      '1': 'connection_status',
+      '3': 4,
+      '4': 1,
+      '5': 14,
+      '6': '.antinote.ServerSignature.ConnectionStatus',
+      '10': 'connectionStatus'
+    },
+  ],
+  '3': [ServerSignature_TabNotificationCountsEntry$json],
+  '4': [ServerSignature_ConnectionStatus$json],
+};
+
+@$core.Deprecated('Use serverSignatureDescriptor instead')
+const ServerSignature_TabNotificationCountsEntry$json = {
+  '1': 'TabNotificationCountsEntry',
+  '2': [
+    {'1': 'key', '3': 1, '4': 1, '5': 13, '10': 'key'},
+    {'1': 'value', '3': 2, '4': 1, '5': 13, '10': 'value'},
+  ],
+  '7': {'7': true},
+};
+
+@$core.Deprecated('Use serverSignatureDescriptor instead')
+const ServerSignature_ConnectionStatus$json = {
+  '1': 'ConnectionStatus',
+  '2': [
+    {'1': 'AVAILABLE', '2': 0},
+    {'1': 'IN_CLASS', '2': 1},
+    {'1': 'DO_NOT_DISTURB', '2': 2},
+    {'1': 'DISCONNECTED', '2': 3},
+  ],
+};
+
+/// Descriptor for `ServerSignature`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List serverSignatureDescriptor = $convert.base64Decode(
+    'Cg9TZXJ2ZXJTaWduYXR1cmUSJAoNZXhjbHVzaXZlTW9kZRgBIAEoCFINZXhjbHVzaXZlTW9kZR'
+    'JsChd0YWJfbm90aWZpY2F0aW9uX2NvdW50cxgCIAMoCzI0LmFudGlub3RlLlNlcnZlclNpZ25h'
+    'dHVyZS5UYWJOb3RpZmljYXRpb25Db3VudHNFbnRyeVIVdGFiTm90aWZpY2F0aW9uQ291bnRzEj'
+    '4KG3Zpc2libGVfbm90aWZpY2F0aW9uc19jb3VudBgDIAEoDVIZdmlzaWJsZU5vdGlmaWNhdGlv'
+    'bnNDb3VudBJXChFjb25uZWN0aW9uX3N0YXR1cxgEIAEoDjIqLmFudGlub3RlLlNlcnZlclNpZ2'
+    '5hdHVyZS5Db25uZWN0aW9uU3RhdHVzUhBjb25uZWN0aW9uU3RhdHVzGkgKGlRhYk5vdGlmaWNh'
+    'dGlvbkNvdW50c0VudHJ5EhAKA2tleRgBIAEoDVIDa2V5EhQKBXZhbHVlGAIgASgNUgV2YWx1ZT'
+    'oCOAEiVQoQQ29ubmVjdGlvblN0YXR1cxINCglBVkFJTEFCTEUQABIMCghJTl9DTEFTUxABEhIK'
+    'DkRPX05PVF9ESVNUVVJCEAISEAoMRElTQ09OTkVDVEVEEAM=');
+
+@$core.Deprecated('Use clientSignatureDescriptor instead')
+const ClientSignature$json = {
+  '1': 'ClientSignature',
+  '2': [
+    {'1': 'tab', '3': 1, '4': 1, '5': 17, '10': 'tab'},
+    {
+      '1': 'member',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.antinote.ClientSignature.Member',
+      '9': 0,
+      '10': 'member',
+      '17': true
+    },
+  ],
+  '3': [ClientSignature_Member$json],
+  '8': [
+    {'1': '_member'},
+  ],
+};
+
+@$core.Deprecated('Use clientSignatureDescriptor instead')
+const ClientSignature_Member$json = {
+  '1': 'Member',
+  '2': [
+    {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    {'1': 'type', '3': 2, '4': 1, '5': 13, '10': 'type'},
+  ],
+};
+
+/// Descriptor for `ClientSignature`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List clientSignatureDescriptor = $convert.base64Decode(
+    'Cg9DbGllbnRTaWduYXR1cmUSEAoDdGFiGAEgASgRUgN0YWISPQoGbWVtYmVyGAIgASgLMiAuYW'
+    '50aW5vdGUuQ2xpZW50U2lnbmF0dXJlLk1lbWJlckgAUgZtZW1iZXKIAQEaLAoGTWVtYmVyEg4K'
+    'AmlkGAEgASgJUgJpZBISCgR0eXBlGAIgASgNUgR0eXBlQgkKB19tZW1iZXI=');
+
 @$core.Deprecated('Use serializedNetworkStackDescriptor instead')
 const SerializedNetworkStack$json = {
   '1': 'SerializedNetworkStack',
@@ -181,7 +284,8 @@ const SerializedNetworkStack$json = {
       '1': 'client_signature',
       '3': 16,
       '4': 1,
-      '5': 9,
+      '5': 11,
+      '6': '.antinote.ClientSignature',
       '9': 2,
       '10': 'clientSignature',
       '17': true
@@ -190,7 +294,8 @@ const SerializedNetworkStack$json = {
       '1': 'server_signature',
       '3': 17,
       '4': 1,
-      '5': 9,
+      '5': 11,
+      '6': '.antinote.ServerSignature',
       '9': 3,
       '10': 'serverSignature',
       '17': true
@@ -235,12 +340,13 @@ final $typed_data.Uint8List serializedNetworkStackDescriptor = $convert.base64De
     'Npb24SEgoEaHR0cBgKIAEoCFIEaHR0cBISCgRwb2xsGAsgASgIUgRwb2xsEhoKCHVzZXJuYW1l'
     'GAwgASgJUgh1c2VybmFtZRIdCgpzZXNzaW9uX2lkGA0gASgNUglzZXNzaW9uSWQSHgoIdG9rZW'
     '5faWQYDiABKAlIAFIHdG9rZW5JZIgBARIgCgl0b2tlbl9rZXkYDyABKAlIAVIIdG9rZW5LZXmI'
-    'AQESLgoQY2xpZW50X3NpZ25hdHVyZRgQIAEoCUgCUg9jbGllbnRTaWduYXR1cmWIAQESLgoQc2'
-    'VydmVyX3NpZ25hdHVyZRgRIAEoCUgDUg9zZXJ2ZXJTaWduYXR1cmWIAQESRAoGb3JkZXJzGBIg'
-    'AygLMiwuYW50aW5vdGUuU2VyaWFsaXplZE5ldHdvcmtTdGFjay5PcmRlcnNFbnRyeVIGb3JkZX'
-    'JzGjkKC09yZGVyc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgRUgV2YWx1'
-    'ZToCOAFCCwoJX3Rva2VuX2lkQgwKCl90b2tlbl9rZXlCEwoRX2NsaWVudF9zaWduYXR1cmVCEw'
-    'oRX3NlcnZlcl9zaWduYXR1cmU=');
+    'AQESSQoQY2xpZW50X3NpZ25hdHVyZRgQIAEoCzIZLmFudGlub3RlLkNsaWVudFNpZ25hdHVyZU'
+    'gCUg9jbGllbnRTaWduYXR1cmWIAQESSQoQc2VydmVyX3NpZ25hdHVyZRgRIAEoCzIZLmFudGlu'
+    'b3RlLlNlcnZlclNpZ25hdHVyZUgDUg9zZXJ2ZXJTaWduYXR1cmWIAQESRAoGb3JkZXJzGBIgAy'
+    'gLMiwuYW50aW5vdGUuU2VyaWFsaXplZE5ldHdvcmtTdGFjay5PcmRlcnNFbnRyeVIGb3JkZXJz'
+    'GjkKC09yZGVyc0VudHJ5EhAKA2tleRgBIAEoCVIDa2V5EhQKBXZhbHVlGAIgASgRUgV2YWx1ZT'
+    'oCOAFCCwoJX3Rva2VuX2lkQgwKCl90b2tlbl9rZXlCEwoRX2NsaWVudF9zaWduYXR1cmVCEwoR'
+    'X3NlcnZlcl9zaWduYXR1cmU=');
 
 @$core.Deprecated('Use cacheSectionDescriptor instead')
 const CacheSection$json = {

@@ -13,6 +13,9 @@ class UserParametersAccessor extends StatelessAccessor<UserParameters> {
   const UserParametersAccessor();
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   Future<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,

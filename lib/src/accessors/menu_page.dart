@@ -13,6 +13,9 @@ class MenuPageAccessor extends StatelessAccessor<MenuPage> {
   const MenuPageAccessor({required this.date});
 
   @override
+  bool get exclusiveFriendly => true;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     NetworkStack stack,
     Completer<void>? cancellationSignal,
