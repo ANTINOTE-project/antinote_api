@@ -39,6 +39,6 @@ extension MergeServerSignature on ServerSignature {
               .AVAILABLE;
         }
       }
-    });
+    })..freeze();
   }
 }
