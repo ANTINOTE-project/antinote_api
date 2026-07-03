@@ -8,6 +8,7 @@ import 'dart:typed_data';
 import 'package:antinote/src/helpers/enum_id.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/signatures/client.dart';
 import 'package:http/http.dart';
 
 part 'disconnection.dart';
@@ -95,7 +96,7 @@ sealed class Call {
         addSignature
             ? {
                 if (stack.clientSignature != null)
-                  stack.vocab.signature: stack.clientSignature,
+                  stack.vocab.signature: stack.clientSignature?.toJson() ?? {},
               }
             : {},
       ),

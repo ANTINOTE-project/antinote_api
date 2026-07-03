@@ -13,4 +13,9 @@ extension MergeClientSignature on ClientSignature {
       sig.member = ClientSignature_Member(id: resource.id, type: resource.type);
     });
   }
+
+  Map<String, dynamic> toJson() => {
+    'onglet': tab,
+    if (hasMember()) 'membre': {'N': member.id, 'G': member.type},
+  };
 }
