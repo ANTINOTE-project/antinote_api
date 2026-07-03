@@ -228,7 +228,7 @@ final class SpecificInstanceParameters extends InstanceParameters {
     return true;
   }
 
-  bool isBusinessHalfDay(DateTime time, int? slot) {
+  bool isBusinessHalfDay(DateTime time, [int? slot]) {
     if (!isBusinessDay(time.toDay())) return false;
 
     final placeSlot = slot ?? daySlotForTime(time);
