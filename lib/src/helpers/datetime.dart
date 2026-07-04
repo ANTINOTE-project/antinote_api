@@ -29,8 +29,8 @@ class Date extends DateTime {
 }
 
 extension DateTimeSimplification on DateTime {
-  DateTime toDay() {
-    final constructor = isUtc ? Date.utc : Date.new;
+  DateTime toDay([bool forceUtc = false]) {
+    final constructor = (isUtc || forceUtc) ? Date.utc : Date.new;
 
     return constructor(
       year,
@@ -49,7 +49,7 @@ extension DateTimeSimplification on DateTime {
   }
 
   int toPronoteWeekNumber(PronoteSession session) {
-    return 1 +
+    return session.instance.firstWeekNumber +
         ((toUtc().millisecondsSinceEpoch -
                     session.instance.firstMonday
                         .toUtc()
