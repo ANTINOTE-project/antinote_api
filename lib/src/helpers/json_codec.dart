@@ -8,11 +8,11 @@ import 'package:antinote/src/models/grades/grade.dart';
 const _intSetType = -1;
 const _resolvedJsonReferenceType = -2;
 
-class PronoteJsonDecoder {
+class RemoteJsonDecoder {
   final String data;
   List<JsonReference> references = [];
 
-  PronoteJsonDecoder({required this.data});
+  RemoteJsonDecoder({required this.data});
 
   Map<String, dynamic> decode() {
     final result = JsonDecoder(revive).convert(data);
@@ -45,9 +45,9 @@ class PronoteJsonDecoder {
           assert(value is String);
           parsedValue = (value as String).asDomain();
         case 7:
-          // That's a PRONOTE DateTime.
+          // That's a remote DateTime.
           assert(value is String);
-          parsedValue = (value as String).asPronoteDate();
+          parsedValue = (value as String).asRemoteDate();
         case 10:
           // It's a grade.
           if (value is String) {
@@ -114,10 +114,10 @@ class PronoteJsonDecoder {
 }
 
 // TODO: Make this WAY more useful...
-class PronoteJsonEncoder {
+class RemoteJsonEncoder {
   final Map<String, dynamic> data;
 
-  PronoteJsonEncoder({required this.data});
+  RemoteJsonEncoder({required this.data});
 
   String encode() => JsonEncoder(toEncodable).convert(data);
 
@@ -125,7 +125,7 @@ class PronoteJsonEncoder {
     if (value is Set<int>) {
       return {'_T': _intSetType, 'V': value.toList(growable: false)};
     } else if (value is DateTime) {
-      return {'_T': 7, 'V': value.asPronoteDate()};
+      return {'_T': 7, 'V': value.asRemoteDate()};
     } else if (value is Grade) {
       return {'_T': 10, 'V': value.rawContent ?? value.value};
     } else if (value is JsonReference) {

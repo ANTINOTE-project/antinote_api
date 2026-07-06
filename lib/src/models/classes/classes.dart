@@ -46,7 +46,7 @@ final class ClassMessage {
 }
 
 extension AsClassMessage on MapJsonNavigator {
-  ClassMessage asClassMessage(PronoteSession session) {
+  ClassMessage asClassMessage(RemoteSession session) {
     final startDate = get<DateTime>('DateDuCours');
     final int blockSlot = get('place');
     final int blockLength = get('duree');
@@ -70,8 +70,7 @@ extension AsClassMessage on MapJsonNavigator {
       endDate: endDate,
       blockLength: blockLength,
       blockSlot: blockSlot,
-      weekNumber:
-          get('numeroSemaine') ?? startDate.toPronoteWeekNumber(session),
+      weekNumber: get('numeroSemaine') ?? startDate.toRemoteWeekNumber(session),
       studentCountString: get('strNbEleves'),
     );
   }
@@ -117,7 +116,7 @@ sealed class Class with VisualIdMixin {
 }
 
 extension AsClass on MapJsonNavigator {
-  Class asClass(PronoteSession session) {
+  Class asClass(RemoteSession session) {
     final classMessage = asClassMessage(session);
 
     return switch (this) {

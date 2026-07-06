@@ -81,7 +81,7 @@ final class RecurringClass<T extends Class> {
 }
 
 extension AsRecurringClass on List<Class> {
-  RecurringClass asRecurringClass(PronoteSession session) {
+  RecurringClass asRecurringClass(RemoteSession session) {
     Map<String, List<Class>> classes = {};
     for (final (visualId, clazz) in map((e) => (e.visualId, e))) {
       if (classes.containsKey(visualId)) {
@@ -236,7 +236,7 @@ final class RecurringTimetable {
 }
 
 extension AsRecurringTimetable on Timetable {
-  RecurringTimetable asRecurringTimetable(PronoteSession session) {
+  RecurringTimetable asRecurringTimetable(RemoteSession session) {
     final Map<String, List<Class>> classes = {};
 
     for (final clazz in this.classes) {

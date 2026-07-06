@@ -27,7 +27,7 @@ final class InvalidInstanceException implements Exception {
 
   @override
   String toString() =>
-      'Base URL pointed to a page that does\'t seem to be a PRONOTE instance';
+      'Base URL pointed to a page that does\'t seem to be a valid instance';
 }
 
 final class ExclusiveModeException implements Exception {

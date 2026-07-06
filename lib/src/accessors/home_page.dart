@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:antinote/antinote.dart';
 
-class HomePageAccessor extends StatefulAccessor<HomePage, PronoteSession> {
+class HomePageAccessor extends StatefulAccessor<HomePage, RemoteSession> {
   final int weekNumber;
   final DateTime nextWorkingDay;
   final List<HomePageWidgetType>? widgets;
@@ -24,7 +24,7 @@ class HomePageAccessor extends StatefulAccessor<HomePage, PronoteSession> {
     Completer<void>? cancellationSignal,
   ) {
     final weekNumberObject = {'numeroSemaine': weekNumber};
-    final businessDayObject = {'_T': 7, 'V': nextWorkingDay.asPronoteDate()};
+    final businessDayObject = {'_T': 7, 'V': nextWorkingDay.asRemoteDate()};
     return stack
         .post(
           Call.function(
@@ -64,10 +64,10 @@ class HomePageAccessor extends StatefulAccessor<HomePage, PronoteSession> {
   }
 
   @override
-  FutureOr<PronoteSession> collectState(PronoteSession session) => session;
+  FutureOr<RemoteSession> collectState(RemoteSession session) => session;
 
   @override
-  FutureOr<HomePage> interpret(MapJsonNavigator nav, PronoteSession state) =>
+  FutureOr<HomePage> interpret(MapJsonNavigator nav, RemoteSession state) =>
       HomePage.decode(nav, state);
 
   @override

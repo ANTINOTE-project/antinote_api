@@ -45,7 +45,7 @@ class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
             dataSec: {
               stack.vocab.data: {
                 if (weeks != null) 'domaine': {'_T': 8, 'V': weeks!.asDomain()},
-                if (date != null) 'date': {'_T': 7, 'V': date!.asPronoteDate()},
+                if (date != null) 'date': {'_T': 7, 'V': date!.asRemoteDate()},
                 if (onlyAccessResources == true) 'estRequeteRP': true,
                 if (onlyAccessResources == false) 'sansRequeteRP': true,
               },

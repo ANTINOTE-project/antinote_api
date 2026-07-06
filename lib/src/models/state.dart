@@ -1,6 +1,6 @@
 import 'package:antinote/src/helpers/enum_id.dart';
 
-enum PronoteState implements EnumId {
+enum ElementState implements EnumId {
   none(0),
   creation(1),
   edit(2),
@@ -12,5 +12,5 @@ enum PronoteState implements EnumId {
   @override
   final int id;
 
-  const PronoteState(this.id);
+  const ElementState(this.id);
 }

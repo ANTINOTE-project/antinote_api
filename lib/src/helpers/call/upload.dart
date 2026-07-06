@@ -84,7 +84,7 @@ final class _FileUploadCall extends Call {
     HttpClientRequest req,
     String orderId,
   ) async {
-    // The capitalization isn't the right one, but it's the one PRONOTE uses.
+    // The capitalization isn't the right one, but it's the one remote uses.
     req.headers.add(
       'content-range',
       'bytes ${data.viewOffset}-${data.viewOffset + data.dataView.length - 1}/${data.contentLength}',

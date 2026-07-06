@@ -8,14 +8,14 @@ class QrCodeCredentials extends Credentials {
   @override
   final Workspace workspace;
   @override
-  final Uri pronoteBaseUrl;
+  final Uri baseUrl;
 
   const QrCodeCredentials({
     required this.encryptedUsername,
     required this.encryptedToken,
     required this.pin,
     required this.workspace,
-    required this.pronoteBaseUrl,
+    required this.baseUrl,
     required super.deviceUuid,
     super.navIdentifier,
   });
@@ -27,8 +27,8 @@ class QrCodeCredentials extends Credentials {
   }) async {
     final parsedQrCode = Map<String, dynamic>.from(jsonDecode(qrCode));
 
-    var pronoteBaseUrl = Uri.parse(parsedQrCode.get<String>('url'));
-    final urlPathSegment = pronoteBaseUrl.pathSegments
+    var baseUrl = Uri.parse(parsedQrCode.get<String>('url'));
+    final urlPathSegment = baseUrl.pathSegments
         .toList()
         .skipWhile((value) => value != 'pronote')
         .skip(1)
@@ -39,9 +39,9 @@ class QrCodeCredentials extends Credentials {
       label: urlPathSegment,
       pathSegment: urlPathSegment,
     );
-    pronoteBaseUrl = pronoteBaseUrl.replace(
+    baseUrl = baseUrl.replace(
       pathSegments: [
-        ...pronoteBaseUrl.pathSegments.takeWhile((value) => value != 'pronote'),
+        ...baseUrl.pathSegments.takeWhile((value) => value != 'pronote'),
         'pronote',
       ],
     );
@@ -52,7 +52,7 @@ class QrCodeCredentials extends Credentials {
       encryptedUsername: parsedQrCode.get('login'),
       encryptedToken: parsedQrCode.get('jeton'),
       workspace: tempWorkspace,
-      pronoteBaseUrl: pronoteBaseUrl,
+      baseUrl: baseUrl,
       pin: pin,
       deviceUuid: deviceUuid,
     );
@@ -61,16 +61,16 @@ class QrCodeCredentials extends Credentials {
   }
 
   @override
-  Future<PronoteSession> createSession(SessionOptions options) =>
-      PronoteSession.init(
-        pronoteBaseUrl,
+  Future<RemoteSession> createSession(SessionOptions options) =>
+      RemoteSession.init(
+        baseUrl,
         workspace: workspace,
         cookies: [Cookie('appliMobile', '1')],
         options: options,
       );
 
   @override
-  Future<LoginResult> loginBody(PronoteSession session) async {
+  Future<LoginResult> loginBody(RemoteSession session) async {
     await accessInstanceParameters(session);
 
     final pinWand = await session.stack.crypto.createAesWand(utf8.encode(pin));

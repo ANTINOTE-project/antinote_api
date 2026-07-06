@@ -1,7 +1,7 @@
 import 'package:antinote/src/helpers/json.dart';
 
-extension FromPronoteDate on String {
-  DateTime asPronoteDate() {
+extension FromRemoteDate on String {
+  DateTime asRemoteDate() {
     final shortDateRe = RegExp(r'^\d{1,2}/\d{1,2}/\d{4}$');
     final longDateLongHoursRe = RegExp(
       r'^\d{1,2}/\d{1,2}/\d{4} \d{1,2}:\d{1,2}:\d{1,2}$',
@@ -35,8 +35,8 @@ extension FromPronoteDate on String {
   }
 }
 
-extension ToPronoteDate on DateTime {
-  String asPronoteDate() {
+extension ToRemoteDate on DateTime {
+  String asRemoteDate() {
     return '$day/$month/$year $hour:$minute:$second';
   }
 }

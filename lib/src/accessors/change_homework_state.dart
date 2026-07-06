@@ -30,7 +30,7 @@ class ChangeHomeworkStateAccessor extends StatelessAccessor<void> {
                   for (final homework in homeworksToUpdate.entries)
                     {
                       'G': homework.key.type,
-                      'E': PronoteState.edit,
+                      'E': ElementState.edit,
                       'N': homework.key.id,
                       'TAFFait': homework.value ?? homework.key.isDone,
                     },

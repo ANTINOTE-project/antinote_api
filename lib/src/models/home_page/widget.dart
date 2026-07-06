@@ -37,10 +37,9 @@ List<WidgetDefinition> widgetDefinitions = [
 @immutable
 class WidgetDefinition<T extends HomePageWidget> {
   final HomePageWidgetType type;
-  final bool Function(MapJsonNavigator nav, PronoteSession session)
-  shouldCreate;
-  final T Function(MapJsonNavigator nav, PronoteSession session) create;
-  final T Function(T old, MapJsonNavigator nav, PronoteSession session)? update;
+  final bool Function(MapJsonNavigator nav, RemoteSession session) shouldCreate;
+  final T Function(MapJsonNavigator nav, RemoteSession session) create;
+  final T Function(T old, MapJsonNavigator nav, RemoteSession session)? update;
 
   const WidgetDefinition({
     required this.type,

@@ -10,18 +10,18 @@ import 'package:antinote/src/helpers/json_codec.dart';
 import 'package:antinote/src/models/authentication_response.dart';
 import 'package:version/version.dart';
 
-class PronoteSession {
+class RemoteSession {
   final NetworkStack stack;
   late final SerializableCacheStore serializableCache;
   final CacheStore cache = {for (final val in CacheType.values) val: {}};
 
   final SessionOptions options;
 
-  static Future<PronoteSession> restore(
+  static Future<RemoteSession> restore(
     SerializedSession serialized, {
     SessionOptions? options,
   }) async {
-    final session = PronoteSession(
+    final session = RemoteSession(
       stack: await NetworkStack.restore(serialized.stack),
       serializableCache: {
         for (final entry in serialized.cache) entry.type: entry.values,
@@ -34,12 +34,12 @@ class PronoteSession {
     return session;
   }
 
-  static Future<PronoteSession> restoreBinary(
+  static Future<RemoteSession> restoreBinary(
     Uint8List data, {
     SessionOptions? options,
   }) async => restore(SerializedSession.fromBuffer(data), options: options);
 
-  static Future<PronoteSession> restoreJson(
+  static Future<RemoteSession> restoreJson(
     String data, {
     SessionOptions? options,
   }) async => restore(SerializedSession.fromJson(data), options: options);
@@ -58,7 +58,7 @@ class PronoteSession {
     for (final MapEntry(key: cacheType, value: cached)
         in serializableCache.entries) {
       for (final MapEntry(key: visualId, value: rawContent) in cached.entries) {
-        final content = PronoteJsonDecoder(data: rawContent).decode();
+        final content = RemoteJsonDecoder(data: rawContent).decode();
 
         final dynamic parsedValue;
         if (visualId == _instanceParametersKey) {
@@ -181,7 +181,7 @@ class PronoteSession {
     ...redirectBypassParameters,
   };
 
-  static Future<PronoteSession> init(
+  static Future<RemoteSession> init(
     Uri baseUri, {
     Map<String, String> parameters = baseParameters,
     List<Cookie>? cookies,
@@ -243,18 +243,18 @@ class PronoteSession {
     }
 
     if (seedPageResponse.statusCode != 200) {
-      throw HttpException('PRONOTE page not available.');
+      throw HttpException('Remote page not available.');
     }
 
-    Version? pronoteVersion;
+    Version? remoteVersion;
     final splitServerHeader = seedPageResponse.headers
         .value('server')
         ?.split(' ');
     if (splitServerHeader != null && splitServerHeader[0] == 'PRONOTE') {
-      pronoteVersion = Version.parse(splitServerHeader[1]);
+      remoteVersion = Version.parse(splitServerHeader[1]);
     } else {
       // TODO: Add scraping for this.
-      pronoteVersion = Version(0, 0, 0);
+      remoteVersion = Version(0, 0, 0);
     }
 
     final body = await seedPageResponse
@@ -266,7 +266,7 @@ class PronoteSession {
     final seedEnd = _endMatch.allMatches(body).firstOrNull?.start;
 
     if (seedStart == null || seedEnd == null) {
-      print('Could not find delimitations for the PRONOTE seed...');
+      print('Could not find delimitations for the seed...');
       throw InvalidInstanceException();
     }
 
@@ -293,7 +293,7 @@ class PronoteSession {
     bool skipEncryption;
     bool skipCompression;
 
-    if (pronoteVersion >= Version(2025, 1, 3)) {
+    if (remoteVersion >= Version(2025, 1, 3)) {
       skipEncryption = !(seed.containsKey('CrA') && seed['CrA']);
       skipCompression = !(seed.containsKey('CoA') && seed['CoA']);
     } else {
@@ -321,18 +321,18 @@ class PronoteSession {
     );
     await crypto.setAesKey(crypto.aesKey);
 
-    return PronoteSession(
+    return RemoteSession(
       stack: NetworkStack(
         cookies: cookies ?? [],
-        vocab: ApiVocabulary.forVersion(pronoteVersion),
+        vocab: ApiVocabulary.forVersion(remoteVersion),
         crypto: crypto,
         baseUrl: baseUri,
-        pronoteVersion: pronoteVersion,
+        remoteVersion: remoteVersion,
         demo: seed['d'] ?? false,
         http: (seed.containsKey('http') && seed['http']),
         poll:
             (seed.containsKey('poll') && seed['poll']) ||
-            pronoteVersion >= Version(2025, 1, 3),
+            remoteVersion >= Version(2025, 1, 3),
         rsaFromConstants: rsaFromConstants,
         skipCompression: skipCompression,
         skipEncryption: skipEncryption,
@@ -349,7 +349,7 @@ class PronoteSession {
     );
   }
 
-  PronoteSession({
+  RemoteSession({
     required this.stack,
     SerializableCacheStore? serializableCache,
     required this.options,

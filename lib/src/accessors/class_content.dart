@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:antinote/antinote.dart';
 
 class ClassContentAccessor
-    extends StatefulAccessor<List<Class>, PronoteSession> {
+    extends StatefulAccessor<List<Class>, RemoteSession> {
   final bool withStudentList;
   final bool withStudentCount;
 
@@ -47,12 +47,12 @@ class ClassContentAccessor
   }
 
   @override
-  FutureOr<PronoteSession> collectState(PronoteSession session) => session;
+  FutureOr<RemoteSession> collectState(RemoteSession session) => session;
 
   @override
   FutureOr<List<Class>> interpret(
     MapJsonNavigator<dynamic> nav,
-    PronoteSession session,
+    RemoteSession session,
   ) => nav.getLM('listeCours').mapL((e) => e.asClass(session));
 
   @override

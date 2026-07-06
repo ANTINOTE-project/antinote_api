@@ -8,32 +8,32 @@ class PasswordCredentials extends Credentials {
   final Workspace workspace;
 
   @override
-  /// Stops at /pronote
-  final Uri pronoteBaseUrl;
+  /// Stops at /<product_name>
+  final Uri baseUrl;
 
   const PasswordCredentials({
     required this.username,
     required this.password,
     required this.workspace,
-    required this.pronoteBaseUrl,
+    required this.baseUrl,
     required super.deviceUuid,
     super.navIdentifier,
   });
 
   @override
-  Future<PronoteSession> createSession(SessionOptions options) =>
-      PronoteSession.init(
-        pronoteBaseUrl,
+  Future<RemoteSession> createSession(SessionOptions options) =>
+      RemoteSession.init(
+        baseUrl,
         workspace: workspace,
         parameters: {
-          ...PronoteSession.baseParameters,
+          ...RemoteSession.baseParameters,
           'bydlg': 'A6ABB224-12DD-4E31-AD3E-8A39A1C2C335',
         },
         options: options,
       );
 
   @override
-  Future<LoginResult> loginBody(PronoteSession session) async {
+  Future<LoginResult> loginBody(RemoteSession session) async {
     await accessInstanceParameters(session);
 
     final challenge = await session.access(

@@ -42,11 +42,11 @@ class ChangeNewsStateAccessor extends StatelessAccessor<void> {
                     {
                       'genrePublic': news.recipientType,
                       'L': news.label,
-                      // TODO: Figure out the weird cases when PronoteState.editChildren is called (when a textual response is given?)
-                      // The actual check is not good enough right now
+                      // TODO: Create custom edit system that automagically
+                      // TODO: figures out element states.
                       'E': news.isInformation
-                          ? PronoteState.edit
-                          : PronoteState.editChildren,
+                          ? ElementState.edit
+                          : ElementState.editChildren,
                       'listeQuestions': [
                         for (final MapEntry(key: baseQuestion, value: answer)
                             in updates.answersToChange.entries)
@@ -54,13 +54,13 @@ class ChangeNewsStateAccessor extends StatelessAccessor<void> {
                             'N': baseQuestion.id,
                             'L': baseQuestion.label,
                             // TODO: Change this for news creation
-                            'E': PronoteState.edit,
+                            'E': ElementState.edit,
                             'genreReponse': baseQuestion.responseType.id,
                             'reponse': {
                               'N': int.tryParse(answer.id) ?? answer.id,
                               'E': baseQuestion.answer.withAnswer
-                                  ? PronoteState.edit
-                                  : PronoteState.creation,
+                                  ? ElementState.edit
+                                  : ElementState.creation,
                               'avecReponse': answer.withAnswer,
                               'estReponseAttendue': answer.answerAwaited,
                               if (answer.withAnswer &&
@@ -69,8 +69,6 @@ class ChangeNewsStateAccessor extends StatelessAccessor<void> {
                               if (answer.withAnswer &&
                                   answer.freeResponseValue != null)
                                 'valeurReponseLibre': answer.freeResponseValue,
-
-                              // TODO: Check if _validationSaisie and Actif are leftovers from the PRONOTE client or actually required
                             },
                           },
                       ],

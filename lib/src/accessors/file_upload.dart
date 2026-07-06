@@ -20,7 +20,7 @@ class FileUploadAccessor extends StatelessAccessor<String> {
     required this.nextCallName,
   });
 
-  static const int _chunkSize = 100 * 1024; // Same as PRONOTE
+  static const int _chunkSize = 100 * 1024; // Same as remote
 
   @override
   bool get exclusiveFriendly => false;
@@ -76,7 +76,7 @@ class FileUploadAccessor extends StatelessAccessor<String> {
                 fileId: fileId,
                 md5DataHash: null,
                 // TODO: Calculate when the file is already in memory or in the
-                // TODO: same cases as PRONOTE (e.g. blobs)
+                // TODO: same cases as remote (e.g. blobs)
                 uploadStartTime: uploadStart,
               ),
               name: nextCallName,

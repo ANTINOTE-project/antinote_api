@@ -7,7 +7,7 @@ final class HomePage {
 
   const HomePage({required this.widgets});
 
-  factory HomePage.decode(MapJsonNavigator nav, PronoteSession session) {
+  factory HomePage.decode(MapJsonNavigator nav, RemoteSession session) {
     final elements = widgetDefinitions
         .where((element) => element.shouldCreate(nav, session))
         .map((e) => e.create(nav, session))

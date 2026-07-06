@@ -26,7 +26,7 @@ class MenuPageAccessor extends StatelessAccessor<MenuPage> {
             name: 'PageMenus',
             dataSec: {
               stack.vocab.data: {
-                'date': {'_T': 7, 'V': date.asPronoteDate()},
+                'date': {'_T': 7, 'V': date.asRemoteDate()},
               },
             },
             cancellationSignal: cancellationSignal,

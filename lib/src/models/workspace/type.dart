@@ -11,7 +11,7 @@ enum WorkspaceCategory {
   mcqExecution,
   withHomePage,
   couldEditInformation,
-  hasNoLocker;
+  hasNoLocker,
 }
 
 enum WorkspaceType implements EnumId {
@@ -19,7 +19,7 @@ enum WorkspaceType implements EnumId {
   // Find field: \"(?<prefix>.*?)Eleve(?<suffix>.*?)\"\, categories\: \[
   // Replace field: "${prefix}Eleve${suffix}", categories: [.student
 
-  // Or use a macro by putting the PRONOTE names in a list and using the relevant macro:
+  // Or use a macro by putting the remote names in a list and using the relevant macro:
   /*
       <macro name="Add something">
       <action id="EditorNextWordWithSelection" />
@@ -95,9 +95,8 @@ enum WorkspaceType implements EnumId {
 
   @override
   final int id;
-  final String pronoteId;
+  final String remoteId;
   final List<WorkspaceCategory> categories;
 
-  const WorkspaceType(this.id, this.pronoteId,
-      {required this.categories});
+  const WorkspaceType(this.id, this.remoteId, {required this.categories});
 }

@@ -7,14 +7,14 @@ class TokenCredentials extends Credentials {
   @override
   final Workspace workspace;
   @override
-  final Uri pronoteBaseUrl;
+  final Uri baseUrl;
   final List<Cookie> cookies;
 
   const TokenCredentials({
     required this.username,
     required this.token,
     required this.workspace,
-    required this.pronoteBaseUrl,
+    required this.baseUrl,
     required this.cookies,
     required super.deviceUuid,
     super.navIdentifier,
@@ -25,7 +25,7 @@ class TokenCredentials extends Credentials {
       username: serialized.username,
       token: serialized.token,
       workspace: Workspace.restore(serialized.workspace),
-      pronoteBaseUrl: Uri.parse(serialized.baseUrl),
+      baseUrl: Uri.parse(serialized.baseUrl),
       cookies: serialized.cookies.mapL((e) => Cookie.fromSetCookieValue(e)),
       deviceUuid: serialized.deviceUuid,
       navIdentifier: serialized.navIdentifier,
@@ -43,7 +43,7 @@ class TokenCredentials extends Credentials {
       username: username,
       token: token,
       workspace: workspace.serialize(),
-      baseUrl: pronoteBaseUrl.toString(),
+      baseUrl: baseUrl.toString(),
       cookies: cookies.map((e) => e.toString()),
       deviceUuid: deviceUuid,
       navIdentifier: navIdentifier,
@@ -57,16 +57,16 @@ class TokenCredentials extends Credentials {
   Uint8List exportBinary() => serialize().writeToBuffer();
 
   @override
-  Future<PronoteSession> createSession(SessionOptions options) =>
-      PronoteSession.init(
-        pronoteBaseUrl,
+  Future<RemoteSession> createSession(SessionOptions options) =>
+      RemoteSession.init(
+        baseUrl,
         workspace: workspace,
         cookies: cookies,
         options: options,
       );
 
   @override
-  Future<LoginResult> loginBody(PronoteSession session) async {
+  Future<LoginResult> loginBody(RemoteSession session) async {
     await accessInstanceParameters(session);
 
     final challenge = await session.access(

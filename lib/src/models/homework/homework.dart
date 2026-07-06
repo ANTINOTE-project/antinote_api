@@ -4,17 +4,17 @@ import 'package:antinote/antinote.dart';
 import 'package:antinote/src/models/theme.dart';
 
 enum HomeworkRenderType implements EnumId {
-  noRender(0, renderOnPronote: false),
-  paperRender(1, renderOnPronote: false),
-  pronoteRender(2, renderOnPronote: true),
-  kiosqueRender(3, renderOnPronote: true), // TODO: Figure out what this is.
-  pronoteAudioRecordingRender(4, renderOnPronote: true);
+  noRender(0, renderOnRemote: false),
+  paperRender(1, renderOnRemote: false),
+  remoteRender(2, renderOnRemote: true),
+  kiosqueRender(3, renderOnRemote: true), // TODO: Figure out what this is.
+  remoteAudioRecordingRender(4, renderOnRemote: true);
 
   @override
   final int id;
-  final bool renderOnPronote;
+  final bool renderOnRemote;
 
-  const HomeworkRenderType(this.id, {required this.renderOnPronote});
+  const HomeworkRenderType(this.id, {required this.renderOnRemote});
 }
 
 final class HandedAssignment with VisualIdMixin {

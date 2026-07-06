@@ -16,7 +16,7 @@ class VieScolaire extends HomePageWidget {
   @override
   HomePageWidgetType get widgetId => HomePageWidgetType.vieScolaire;
 
-  VieScolaire.decode(MapJsonNavigator nav, PronoteSession _)
+  VieScolaire.decode(MapJsonNavigator nav, RemoteSession _)
     : elementTypes = nav.go('vieScolaire').get('L'),
       absences = nav
           .go('vieScolaire')

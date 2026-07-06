@@ -65,7 +65,7 @@ final class ICalInformation {
     required this.scheduleExport,
   });
 
-  Uri buildUri(PronoteSession session) => session.stack.baseUrl.replace(
+  Uri buildUri(RemoteSession session) => session.stack.baseUrl.replace(
     pathSegments: [
       ...session.stack.baseUrl.pathSegments,
       'ical',
@@ -73,7 +73,7 @@ final class ICalInformation {
     ],
     queryParameters: {
       'icalsecurise': mainParameter,
-      'version': session.stack.pronoteVersion.toString(),
+      'version': session.stack.remoteVersion.toString(),
       'param': extraParameter,
     },
   );
@@ -129,7 +129,7 @@ final class AccountSecurityInformation {
     required this.connexionSources,
   });
 
-  bool canEdit(PronoteSession session) {
+  bool canEdit(RemoteSession session) {
     // TODO: Mess around with the permission thingy.
     return session.instance.workspace.type.categories.contains(
       WorkspaceCategory.couldEditInformation,

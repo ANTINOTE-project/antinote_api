@@ -44,7 +44,7 @@ class InstanceParametersAccessor
       .thenField(stack.vocab.data);
 
   @override
-  FutureOr<Workspace> collectState(PronoteSession session) =>
+  FutureOr<Workspace> collectState(RemoteSession session) =>
       session.stack.temporaryWorkspace;
 
   @override

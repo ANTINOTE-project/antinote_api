@@ -48,7 +48,7 @@ extension DateTimeSimplification on DateTime {
     return copyWith(year: 1970, month: 1, day: 1);
   }
 
-  int toPronoteWeekNumber(PronoteSession session) {
+  int toRemoteWeekNumber(RemoteSession session) {
     return session.instance.firstWeekNumber +
         ((toUtc().millisecondsSinceEpoch -
                     session.instance.firstMonday
@@ -63,6 +63,6 @@ extension DateTimeSimplification on DateTime {
 }
 
 extension AsTimings on int {
-  ({int hour, int minute}) asTimings(PronoteSession session) =>
+  ({int hour, int minute}) asTimings(RemoteSession session) =>
       session.instance.endings[this % session.instance.endings.length].timing;
 }

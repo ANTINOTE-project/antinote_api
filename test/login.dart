@@ -11,7 +11,7 @@ void main() {
         label: '',
         pathSegment: 'mobile.eleve.html',
       ),
-      pronoteBaseUrl: Uri.parse('https://demo.index-education.net/pronote'),
+      baseUrl: Uri.parse('https://demo.index-education.net/pronote'),
       deviceUuid: Credentials.generateDeviceUuid(),
     );
 

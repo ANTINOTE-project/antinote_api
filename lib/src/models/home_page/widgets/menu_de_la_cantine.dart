@@ -8,7 +8,7 @@ class MenuDeLaCantine extends HomePageWidget {
   @override
   HomePageWidgetType get widgetId => HomePageWidgetType.menuDeLaCantine;
 
-  MenuDeLaCantine.decode(MapJsonNavigator nav, PronoteSession _)
+  MenuDeLaCantine.decode(MapJsonNavigator nav, RemoteSession _)
     : currentMenu = Menu.decode(nav.go('menuDeLaCantine'));
 
   static final definition = WidgetDefinition(

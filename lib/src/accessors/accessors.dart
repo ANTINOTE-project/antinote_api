@@ -9,7 +9,7 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class StatefulAccessor<R, S> {
-  FutureOr<S> collectState(PronoteSession session);
+  FutureOr<S> collectState(RemoteSession session);
 
   bool get exclusiveFriendly;
 
@@ -23,7 +23,7 @@ abstract class StatefulAccessor<R, S> {
   List<VisualIdMixin> store(R result);
 
   Future<R> fetch(
-    PronoteSession session,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) async {
     final accessed = await access(session.stack, cancellationSignal);
@@ -46,7 +46,7 @@ abstract class StatelessAccessor<R> extends StatefulAccessor<R, void> {
 
   @override
   Future<R> fetch(
-    PronoteSession session,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) async {
     final accessed = await access(session.stack, cancellationSignal);
@@ -58,7 +58,7 @@ abstract class StatelessAccessor<R> extends StatefulAccessor<R, void> {
   }
 
   @override
-  Future<void> collectState(PronoteSession session) => Future.value(null);
+  Future<void> collectState(RemoteSession session) => Future.value(null);
 
   const StatelessAccessor();
 }

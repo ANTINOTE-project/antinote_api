@@ -56,7 +56,7 @@ sealed class Attachment with VisualIdMixin {
 
       if (fileExtension.isEmpty) continue;
 
-      // The same file extensions as PRONOTE, with some added (mainly the ones
+      // The same file extensions as remote, with some added (mainly the ones
       // for OpenDocument)
       type = switch (fileExtension.substring(1)) {
         'doc' || 'docx' || 'txt' || 'odt' => FileAttachmentType.text,
@@ -98,7 +98,7 @@ class FileAttachment extends Attachment {
   }
 
   Future<Uri> getLinkToAttachment(
-    PronoteSession session, {
+    RemoteSession session, {
     Map<String, dynamic>? extras,
   }) async {
     final payload = await session.stack.crypto.aesEncrypt(

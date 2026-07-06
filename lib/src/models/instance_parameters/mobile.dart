@@ -32,19 +32,19 @@ final class MobileInstanceParameters {
     required this.casToken,
   });
 
-  static Future<MobileInstanceParameters?> fetch(Uri pronoteBaseUrl) async {
+  static Future<MobileInstanceParameters?> fetch(Uri baseUrl) async {
     try {
       final page = await http.get(
-        pronoteBaseUrl.replace(
-          pathSegments: [...pronoteBaseUrl.pathSegments, 'InfoMobileApp.json'],
-          // That's a hard-coded constant in the PRONOTE mobile app
+        baseUrl.replace(
+          pathSegments: [...baseUrl.pathSegments, 'InfoMobileApp.json'],
+          // That's a hard-coded constant in the official mobile app
           queryParameters: {'id': '0D264427-EEFC-4810-A9E9-346942A862A4'},
         ),
-        /*headers: {'x-requested-with': 'com.IndexEducation.Pronote'},*/
+        /*headers: {'x-requested-with': 'com.IndexEducation.<Redacted>'},*/
       );
 
       return (jsonDecode(page.body) as Map<String, dynamic>)
-          .asMobileInstanceParameters(pronoteBaseUrl);
+          .asMobileInstanceParameters(baseUrl);
     } catch (e) {
       rethrow;
       // return null;

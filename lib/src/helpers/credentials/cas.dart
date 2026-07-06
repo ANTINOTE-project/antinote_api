@@ -7,11 +7,11 @@ final class CasCredentials extends PasswordCredentials {
     Workspace? workspace,
   ) async {
     final deviceUuid = Credentials.generateDeviceUuid();
-    final session = await PronoteSession.init(
+    final session = await RemoteSession.init(
       uri,
       followRedirects: true,
       keepBaseUrl: true,
-      parameters: {...PronoteSession.redirectBypassParameters},
+      parameters: {...RemoteSession.redirectBypassParameters},
       cookies: [
         if (casToken != null) Cookie('validationAppliMobile', casToken),
         Cookie('uuidAppliMobile', deviceUuid),
@@ -24,7 +24,7 @@ final class CasCredentials extends PasswordCredentials {
       deviceUuid: deviceUuid,
       tokenId: session.stack.tokenId!,
       tokenKey: session.stack.tokenKey!,
-      pronoteBaseUrl: session.stack.baseUrl,
+      baseUrl: session.stack.baseUrl,
       workspace: workspace ?? session.stack.temporaryWorkspace,
     ).loginBody(session);
   }
@@ -34,12 +34,12 @@ final class CasCredentials extends PasswordCredentials {
     super.navIdentifier,
     required String tokenId,
     required String tokenKey,
-    required super.pronoteBaseUrl,
+    required super.baseUrl,
     required super.workspace,
   }) : super(username: tokenId, password: tokenKey);
 
   @override
-  Future<LoginResult> loginBody(PronoteSession session) async {
+  Future<LoginResult> loginBody(RemoteSession session) async {
     await accessInstanceParameters(session);
 
     final challenge = await session.access(

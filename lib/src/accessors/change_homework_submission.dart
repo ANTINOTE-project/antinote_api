@@ -36,7 +36,7 @@ class ChangeHomeworkSubmissionAccessor extends StatelessAccessor<void> {
               stack.vocab.data: {
                 'listeFichiers': [
                   {
-                    'E': PronoteState.creation,
+                    'E': ElementState.creation,
                     'G': 1,
                     'L': filename,
                     'N': stack.order(OrderBehavior.idCreation),

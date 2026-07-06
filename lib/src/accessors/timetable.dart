@@ -11,7 +11,7 @@ import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/timetable.dart';
 import 'package:antinote/src/models/user/resource.dart';
 
-class TimetableAccessor extends StatefulAccessor<Timetable, PronoteSession> {
+class TimetableAccessor extends StatefulAccessor<Timetable, RemoteSession> {
   final UserResource resource;
   final Map<String, dynamic> extra;
 
@@ -27,12 +27,12 @@ class TimetableAccessor extends StatefulAccessor<Timetable, PronoteSession> {
       extra: {
         ...propertyCaseInsensitive('dateDebut', {
           '_T': 7,
-          'V': from.asPronoteDate(),
+          'V': from.asRemoteDate(),
         }),
         if (to != null)
           ...propertyCaseInsensitive('dateFin', {
             '_T': 7,
-            'V': to.asPronoteDate(),
+            'V': to.asRemoteDate(),
           }),
       },
     );
@@ -55,7 +55,7 @@ class TimetableAccessor extends StatefulAccessor<Timetable, PronoteSession> {
 
   factory TimetableAccessor.forYear({
     required UserResource resource,
-    required PronoteSession session,
+    required RemoteSession session,
   }) {
     return TimetableAccessor.forRange(
       resource: resource,
@@ -99,10 +99,10 @@ class TimetableAccessor extends StatefulAccessor<Timetable, PronoteSession> {
   }
 
   @override
-  FutureOr<PronoteSession> collectState(PronoteSession session) => session;
+  FutureOr<RemoteSession> collectState(RemoteSession session) => session;
 
   @override
-  FutureOr<Timetable> interpret(MapJsonNavigator nav, PronoteSession state) {
+  FutureOr<Timetable> interpret(MapJsonNavigator nav, RemoteSession state) {
     return Timetable(
       absences: nav.get('absences'),
       withCanceledClasses: nav.get('avecCoursAnnule') ?? true,

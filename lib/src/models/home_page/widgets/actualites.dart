@@ -8,7 +8,7 @@ class Actualites extends HomePageWidget {
   @override
   HomePageWidgetType get widgetId => HomePageWidgetType.actualites;
 
-  Actualites.decode(MapJsonNavigator nav, PronoteSession _)
+  Actualites.decode(MapJsonNavigator nav, RemoteSession _)
     : news = nav
           .go('actualites')
           .getL('listeModesAff')

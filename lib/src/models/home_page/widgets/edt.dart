@@ -14,7 +14,7 @@ class EDT extends HomePageWidget {
   @override
   HomePageWidgetType get widgetId => HomePageWidgetType.edt;
 
-  EDT.decodeUpdate(EDT old, MapJsonNavigator nav, PronoteSession session)
+  EDT.decodeUpdate(EDT old, MapJsonNavigator nav, RemoteSession session)
     : timetable = Timetable(
         withCanceledClasses: nav.get('avecCoursAnnule'),
         classes: nav.getLM('ListeCours').mapL((e) => e.asClass(session))
@@ -32,7 +32,7 @@ class EDT extends HomePageWidget {
       selectedCycleDay = nav.get('jourCycleSelectionne'),
       currentSlot = nav.get('placeCourante') ?? old.currentSlot;
 
-  EDT.decode(MapJsonNavigator nav, PronoteSession session)
+  EDT.decode(MapJsonNavigator nav, RemoteSession session)
     : timetable = Timetable(
         withCanceledClasses: nav.get('avecCoursAnnule'),
         classes: nav.getLM('ListeCours').mapL((e) => e.asClass(session))

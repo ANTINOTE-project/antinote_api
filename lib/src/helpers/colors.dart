@@ -198,7 +198,7 @@ extension AsHSV on int {
     return (this & 0xFF000000) | (r << 16) | (g << 8) | b;
   }
 
-  /// Input is RGB. Behavior is the same as PRONOTE's when [isLightTheme] is
+  /// Input is RGB. Behavior is the same as remote's when [isLightTheme] is
   /// `true`. Behavior for when [isLightTheme] is `false` is custom.
   int classAccentToBackgroundColor({bool isLightTheme = true}) {
     var r = (this & 0x00FF0000) >> 16;

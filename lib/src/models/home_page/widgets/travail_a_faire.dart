@@ -8,7 +8,7 @@ class TravailAFaire extends HomePageWidget {
   @override
   HomePageWidgetType get widgetId => HomePageWidgetType.travailAFaire;
 
-  TravailAFaire.decode(MapJsonNavigator nav, PronoteSession _)
+  TravailAFaire.decode(MapJsonNavigator nav, RemoteSession _)
     : homeworks = nav
           .go('travailAFaire')
           .getLM('listeTAF')

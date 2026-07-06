@@ -55,7 +55,7 @@ final class Notification {
     );
   }
 
-  int tabLocationForNotification(PronoteSession session) {
+  int tabLocationForNotification(RemoteSession session) {
     if (tabList != null) {
       for (final tab in tabList!) {
         if (session.user.hasAccessToTab(tab)) {

@@ -17,14 +17,14 @@ part 'token.dart';
 final _uuid = Uuid();
 
 typedef LoginResult = ({
-  PronoteSession session,
+  RemoteSession session,
   TokenCredentials refreshCredentials,
 });
 
 sealed class Credentials {
   Workspace get workspace;
 
-  Uri get pronoteBaseUrl;
+  Uri get baseUrl;
 
   final String deviceUuid;
   final String? navIdentifier;
@@ -34,7 +34,7 @@ sealed class Credentials {
   }
 
   Future<LoginResult> finalizeLogin({
-    required PronoteSession session,
+    required RemoteSession session,
     required Challenge challenge,
     required String username,
     required String mod,
@@ -84,7 +84,7 @@ sealed class Credentials {
         username: challenge.username ?? username,
         token: authentication.relogToken ?? mod,
         workspace: workspace ?? session.instance.workspace,
-        pronoteBaseUrl: pronoteBaseUrl,
+        baseUrl: baseUrl,
         deviceUuid: deviceUuid,
         navIdentifier: /*session.instance.navigatorIdentifier ?? */
             navIdentifier, // TODO: Find the exact scenario where navigatorIdentifier is present.
@@ -98,9 +98,9 @@ sealed class Credentials {
     return loginBody(session);
   }
 
-  Future<PronoteSession> createSession(SessionOptions options);
+  Future<RemoteSession> createSession(SessionOptions options);
 
-  Future<void> accessInstanceParameters(PronoteSession session) async {
+  Future<void> accessInstanceParameters(RemoteSession session) async {
     if (!session.hasAccessorNamed("InstanceParameters")) {
       await session.access(
         InstanceParametersAccessor(
@@ -111,7 +111,7 @@ sealed class Credentials {
     }
   }
 
-  Future<LoginResult> loginBody(PronoteSession session);
+  Future<LoginResult> loginBody(RemoteSession session);
 
   const Credentials({required this.deviceUuid, this.navIdentifier});
 }

@@ -22,7 +22,7 @@ class NetworkStack {
     required this.crypto,
     required this.baseUrl,
     this.temporaryWorkspace = Workspace.commonMobile,
-    required this.pronoteVersion,
+    required this.remoteVersion,
     required this.demo,
     required this.rsaFromConstants,
     required this.skipEncryption,
@@ -47,7 +47,7 @@ class NetworkStack {
       baseUrl: Uri.parse(serialized.baseUrl),
       // Maybe add back the check to remove query part of URL?
       temporaryWorkspace: Workspace.restore(serialized.tempWorkspace),
-      pronoteVersion: pnVersion,
+      remoteVersion: pnVersion,
       demo: serialized.demo,
       rsaFromConstants: serialized.rsaFromConstants,
       skipEncryption: serialized.skipEncryption,
@@ -77,7 +77,7 @@ class NetworkStack {
   SerializedNetworkStack serialize() {
     return SerializedNetworkStack(
       crypto: crypto.serialize(),
-      instanceVersion: pronoteVersion.toString(),
+      instanceVersion: remoteVersion.toString(),
       baseUrl: baseUrl.toString(),
       cookies: cookies.map((e) => e.toString()),
       tempWorkspace: temporaryWorkspace.serialize(),
@@ -98,24 +98,24 @@ class NetworkStack {
   }
 
   // Server state
-  /// Gives often-used field names by PRONOTE which differ in name but not in
+  /// Gives often-used field names by remote which differ in name but not in
   /// behavior between versions. We adapt it depending on the version given by
   /// the server to **try** to ensure backwards-compatibility in that regard.
   final ApiVocabulary vocab;
 
-  /// The base URL of the PRONOTE instance this session is linked to. From it,
+  /// The base URL of the remote instance this session is linked to. From it,
   /// every query URL is formed.
   final Uri baseUrl;
 
-  /// The version of the PRONOTE instance the [baseUrl] points to.
-  final Version pronoteVersion;
+  /// The version of the remote instance the [baseUrl] points to.
+  final Version remoteVersion;
 
-  /// Whether the PRONOTE instance the [baseUrl] points to is a
+  /// Whether the remote instance the [baseUrl] points to is a
   /// demonstration instance.
   final bool demo;
 
-  /// Whether the PRONOTE instance the [baseUrl] points to gives custom
-  /// RSA constants (this is deprecated in PRONOTE.)
+  /// Whether the remote instance the [baseUrl] points to gives custom
+  /// RSA constants (this is deprecated in remote.)
   final bool rsaFromConstants;
 
   /// Whether to skip encryption. Encryption is enabled when the SSL certificate
@@ -123,7 +123,7 @@ class NetworkStack {
   final bool skipEncryption;
 
   /// Whether to skip compression. Compression is deprecated but essentially
-  /// GZip-compresses requests sent to the PRONOTE instance.
+  /// GZip-compresses requests sent to the remote instance.
   final bool skipCompression;
 
   /// Documentation N/A.
@@ -170,7 +170,7 @@ class NetworkStack {
       _clientSignatureSubject.stream;
 
   /// The global signature is appended mainly to function calls after login
-  /// which is used by PRONOTE to know some kinds of actions taken by the client
+  /// which is used by remote to know some kinds of actions taken by the client
   /// (resource swaps, page navigation...)
   ClientSignature? get clientSignature => _clientSignatureSubject.valueOrNull;
 
@@ -193,7 +193,7 @@ class NetworkStack {
   ValueStream<ServerSignature> get serverSignatureStream =>
       _serverSignatureSubject.stream;
 
-  /// The current configuration asked by the PRONOTE server.
+  /// The current configuration asked by the remote server.
   ServerSignature? get serverSignature => _serverSignatureSubject.valueOrNull;
 
   /// Updates [serverSignature] by merging the existing one with the new data.
@@ -254,7 +254,7 @@ class NetworkStack {
   }
 
   /// The "executor" ensures no request is sent before another one gets its
-  /// response, as PRONOTE requires.
+  /// response, as remote requires.
   Future<void> _startExecutor() async {
     while (_callsQueue.isNotEmpty) {
       final call = _callsQueue.first;
@@ -292,7 +292,7 @@ class NetworkStack {
       'at ${payload.uri.toString()}',
     );
 
-    final List<PronoteJsonDecoder> decoders = [];
+    final List<RemoteJsonDecoder> decoders = [];
 
     late final Map<String, dynamic> response;
 
@@ -309,7 +309,7 @@ class NetworkStack {
       if (rawResponse.isEmpty) rawResponse = '{}';
 
       // Don't ask me why I made this so complicated. TODO
-      final decoder = PronoteJsonDecoder(data: rawResponse);
+      final decoder = RemoteJsonDecoder(data: rawResponse);
       decoders.add(decoder);
       response = decoder.decode();
     } on RequestAbortedException {
@@ -389,7 +389,7 @@ class NetworkStack {
     Map<String, dynamic> data = {};
     for (var dataSource in rawDataSources) {
       if (dataSource is String) {
-        final decoder = PronoteJsonDecoder(data: dataSource);
+        final decoder = RemoteJsonDecoder(data: dataSource);
         decoders.add(decoder);
         dataSource = decoder.decode();
       }
@@ -414,7 +414,7 @@ class NetworkStack {
 
   /// Adds a request for the executor to execute.
   ///
-  /// This is the main way anyone should send anything to PRONOTE (excepted
+  /// This is the main way anyone should send anything to remote (excepted
   /// special endpoints which do not use any complicated logic.)
   Call post(Call call) {
     final executorRunning = _callsQueue.isNotEmpty;

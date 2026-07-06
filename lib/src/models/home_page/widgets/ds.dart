@@ -8,7 +8,7 @@ class DS extends HomePageWidget {
   @override
   HomePageWidgetType get widgetId => HomePageWidgetType.ds;
 
-  DS.decode(MapJsonNavigator nav, PronoteSession _)
+  DS.decode(MapJsonNavigator nav, RemoteSession _)
     : exams = nav
           .go('devoirSurveille')
           .getLM('listeDS')

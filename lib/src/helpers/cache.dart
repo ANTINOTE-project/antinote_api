@@ -20,11 +20,11 @@ final class VisualReference<T> {
 
   const VisualReference(this.type, this.cachedVisualReference);
 
-  T resolve(PronoteSession session) =>
+  T resolve(RemoteSession session) =>
       session.cache[type]![cachedVisualReference]!;
 }
 
-extension CacheExtension on PronoteSession {
+extension CacheExtension on RemoteSession {
   void updateCache(
     List<VisualIdMixin> objects,
     Map<String, dynamic>? rawRequest,
@@ -40,7 +40,7 @@ extension CacheExtension on PronoteSession {
         serializableCache.putIfAbsent(
           toStore.cacheType!,
           () => {},
-        )[toStore.visualId] = PronoteJsonEncoder(
+        )[toStore.visualId] = RemoteJsonEncoder(
           data: rawRequest,
         ).encode();
       }
