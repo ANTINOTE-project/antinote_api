@@ -158,6 +158,7 @@ enum CacheType {
   CLASSROOM = 41;
   CLASS_GROUP = 42;
   STUDENT_CLASS = 43;
+  CLASS_CONTENT = 44;
 }
 
 message CacheSection {

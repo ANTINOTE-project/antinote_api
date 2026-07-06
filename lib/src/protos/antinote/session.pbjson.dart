@@ -63,6 +63,7 @@ const CacheType$json = {
     {'1': 'CLASSROOM', '2': 41},
     {'1': 'CLASS_GROUP', '2': 42},
     {'1': 'STUDENT_CLASS', '2': 43},
+    {'1': 'CLASS_CONTENT', '2': 44},
   ],
 };
 
@@ -83,7 +84,7 @@ final $typed_data.Uint8List cacheTypeDescriptor = $convert.base64Decode(
     'T09NECMSFQoRU0NIT09MX0xJRkVfRVZFTlQQJBIcChhTQ0hPT0xfTElGRV9FVkVOVF9SRUFTT0'
     '4QJRIdChlTQ0hPT0xfTElGRV9FVkVOVF9TRUNUSU9OECYSEQoNVVNFUl9SRVNPVVJDRRAnEgsK'
     'B0hPTElEQVkQKBINCglDTEFTU1JPT00QKRIPCgtDTEFTU19HUk9VUBAqEhEKDVNUVURFTlRfQ0'
-    'xBU1MQKw==');
+    'xBU1MQKxIRCg1DTEFTU19DT05URU5UECw=');
 
 @$core.Deprecated('Use serializedCryptoDescriptor instead')
 const SerializedCrypto$json = {

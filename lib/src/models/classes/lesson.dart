@@ -117,17 +117,13 @@ final class Lesson extends Class {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield classType.byteVisualIdData();
-    yield status?.visualIdData();
-    yield canceled.visualIdData();
-    yield exemptedLabel?.visualIdData();
-    yield* virtualClassrooms.map((e) => e.toString()).visualIdData();
-    yield* personals.visualIdForEach();
-    yield* teachers.visualIdForEach();
-    yield* classrooms.visualIdForEach();
-    yield* groups.visualIdForEach();
     yield* subject?.collectVisualIdData() ?? [];
-    yield backgroundColor?.colorVisualIdData();
-    yield backgroundColor?.colorVisualIdData();
+    yield startDate.millisecondsSinceEpoch.bytesVisualIdData();
+    yield endDate.millisecondsSinceEpoch.bytesVisualIdData();
+
+    for (final content in contents) {
+      yield* content.collectVisualIdData();
+    }
   }
 
   @override

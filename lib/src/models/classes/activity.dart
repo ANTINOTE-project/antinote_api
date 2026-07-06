@@ -74,7 +74,7 @@ final class Activity extends Class {
     yield resourceTypeName.visualIdData();
     yield resourceValue.visualIdData();
     yield backgroundColor?.colorVisualIdData();
-    yield blockLength.byteVisualIdData();
-    yield notes?.visualIdData();
+    yield startDate.millisecondsSinceEpoch.bytesVisualIdData();
+    yield endDate.millisecondsSinceEpoch.bytesVisualIdData();
   }
 }

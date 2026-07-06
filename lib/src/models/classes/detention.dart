@@ -72,11 +72,11 @@ final class Detention extends Class {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield title?.visualIdData();
-    yield* personals.visualIdForEach();
-    yield* teachers.visualIdForEach();
-    yield* classrooms.visualIdForEach();
+    for (final content in contents) {
+      yield* content.collectVisualIdData();
+    }
     yield backgroundColor?.colorVisualIdData();
-    yield blockLength.byteVisualIdData();
-    yield notes?.visualIdData();
+    yield startDate.millisecondsSinceEpoch.bytesVisualIdData();
+    yield endDate.millisecondsSinceEpoch.bytesVisualIdData();
   }
 }
