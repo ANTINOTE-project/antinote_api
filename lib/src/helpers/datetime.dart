@@ -29,7 +29,7 @@ class Date extends DateTime {
 }
 
 extension DateTimeSimplification on DateTime {
-  DateTime toDay([bool forceUtc = false]) {
+  Date toDay([bool forceUtc = false]) {
     final constructor = (isUtc || forceUtc) ? Date.utc : Date.new;
 
     return constructor(
