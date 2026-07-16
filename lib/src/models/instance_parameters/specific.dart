@@ -79,6 +79,7 @@ final class SpecificInstanceParameters extends InstanceParameters {
   final List<TimeSlot> starts;
   final List<TimeSlot> endings;
   final List<TimeSlot> endingsForSL;
+  final List<({DateTime start, DateTime end})> transferTimes;
   final List<String> sequences;
   final List<Period> periods;
   final List<Pause> pauses;
@@ -167,6 +168,7 @@ final class SpecificInstanceParameters extends InstanceParameters {
     required this.starts,
     required this.endings,
     required this.endingsForSL,
+    required this.transferTimes,
     required this.sequences,
     required this.periods,
     required this.pauses,
@@ -197,7 +199,7 @@ final class SpecificInstanceParameters extends InstanceParameters {
   // TODO: fix, when in nether regions (pauses), 0 is returned.
   int daySlotForTime(DateTime time) {
     for (int i = 0; i < starts.length; i++) {
-      if (starts[i] <= time && endings[i] > time) {
+      if (!starts[i].timing.isAfter(time) && endings[i].timing.isAfter(time)) {
         return i;
       }
     }
@@ -402,13 +404,43 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
     );
   }
 
+  /// Pauses aren't accounted for.
+  List<({DateTime start, DateTime end})> _buildTransferTimes(
+    List<TimeSlot> starts,
+    List<TimeSlot> endings,
+  ) {
+    assert(starts.length == endings.length);
+
+    final transferTimes = <({DateTime start, DateTime end})>[];
+
+    DateTime curTime = starts.first.timing;
+    for (int i = 0; i < starts.length; i++) {
+      final start = starts[i];
+      final end = endings[i];
+
+      if (!curTime.isAtSameMomentAs(start.timing)) {
+        transferTimes.add((start: curTime, end: start.timing));
+      }
+
+      curTime = end.timing;
+    }
+
+    return transferTimes;
+  }
+
   SpecificInstanceParameters asSpecificInstanceParameters(
     SharedInstanceParameters shared,
     Workspace temporaryWorkspace,
   ) {
     final general = getM('General');
+
     final (frequency, frequencyPeriodicity, followingFrequencies) =
         _buildWeekFrequenciesAndPeriodicity();
+
+    final starts = general.getLM('ListeHeures').mapL((e) => e.asTimeSlot());
+    final endings = general.getLM('ListeHeuresFin').mapL((e) => e.asTimeSlot());
+
+    final transferTimes = _buildTransferTimes(starts, endings);
 
     return SpecificInstanceParameters(
       shared: shared,
@@ -523,11 +555,12 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       appreciationMaxSize: general.getL<int>('TailleMaxAppreciation'),
       holidays: general.getLM('listeJoursFeries').mapL((e) => e.asHoliday()),
       showSequences: general.getB('afficherSequences'),
-      starts: general.getLM('ListeHeures').mapL((e) => e.asTimeSlot()),
-      endings: general.getLM('ListeHeuresFin').mapL((e) => e.asTimeSlot()),
+      starts: starts,
+      endings: endings,
       endingsForSL: general
           .getLM('ListeHeuresFinPourVS')
           .mapL((e) => e.asTimeSlot()),
+      transferTimes: transferTimes,
       sequences: general.getL<String>('sequences'),
       periods: general.getLM('ListePeriodes').mapL((e) => e.asPeriod()),
       pauses: general.getLM('recreations').mapL((e) => e.asPause()),

@@ -63,6 +63,6 @@ extension DateTimeSimplification on DateTime {
 }
 
 extension AsTimings on int {
-  ({int hour, int minute}) asTimings(RemoteSession session) =>
+  DateTime asTimings(RemoteSession session) =>
       session.instance.endings[this % session.instance.endings.length].timing;
 }

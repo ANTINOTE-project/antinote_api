@@ -27,7 +27,7 @@ void main() {
         ),
       );
 
-      print(timetable);
+      print(session.instance.transferTimes);
     } catch (_) {}
 
     await session.access(DisconnectionAccessor.logged());

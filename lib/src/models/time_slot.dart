@@ -5,7 +5,7 @@ final class TimeSlot {
   final String label;
   final bool active;
 
-  final ({int hour, int minute}) timing;
+  final DateTime timing;
 
   const TimeSlot({
     required this.index,
@@ -14,38 +14,6 @@ final class TimeSlot {
 
     required this.timing,
   });
-
-  bool operator <(Object other) => switch (other) {
-    DateTime(hour: final hour, minute: final minute) =>
-      hour > timing.hour ? true : minute > timing.minute,
-    TimeSlot(timing: (hour: final hour, minute: final minute)) =>
-      hour > timing.hour ? true : minute > timing.minute,
-    _ => false,
-  };
-
-  bool operator >(Object other) => switch (other) {
-    DateTime(hour: final hour, minute: final minute) =>
-      hour < timing.hour ? true : minute < timing.minute,
-    TimeSlot(timing: (hour: final hour, minute: final minute)) =>
-      hour < timing.hour ? true : minute < timing.minute,
-    _ => false,
-  };
-
-  @override
-  bool operator ==(Object other) => switch (other) {
-    DateTime(hour: final hour, minute: final minute) =>
-      hour == timing.hour && minute == timing.minute,
-    TimeSlot(timing: (hour: final hour, minute: final minute)) =>
-      hour == timing.hour && minute == timing.minute,
-    _ => false,
-  };
-
-  bool operator >=(Object other) => this > other || this == other;
-
-  bool operator <=(Object other) => this < other || this == other;
-
-  @override
-  int get hashCode => timing.hashCode;
 }
 
 extension AsTimeSlot on MapJsonNavigator {
@@ -57,7 +25,7 @@ extension AsTimeSlot on MapJsonNavigator {
       index: get('G'),
       label: get('L'),
       active: get('A') ?? true,
-      timing: (hour: hour, minute: minute),
+      timing: DateTime.utc(1970, 1, 1, hour, minute),
     );
   }
 }
