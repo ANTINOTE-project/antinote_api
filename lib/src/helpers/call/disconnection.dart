@@ -27,12 +27,18 @@ final class _DisconnectionCall extends Call {
   HttpClientRequest serialize(
     NetworkStack stack,
     HttpClientRequest req,
-    String orderId,
-  ) {
+    String orderId, {
+    bool debugMode = false,
+  }) {
     final rawJson = jsonEncode({
       stack.vocab.orderNumber: orderId,
       stack.vocab.sessionNumber: stack.sessionId,
     }, toEncodable: _helpEncode);
+
+    if (debugMode) {
+      print("Sending:");
+      print(rawJson);
+    }
 
     req.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
 

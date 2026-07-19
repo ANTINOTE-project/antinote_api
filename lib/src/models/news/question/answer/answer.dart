@@ -128,10 +128,7 @@ sealed class ChoiceNewsQuestionAnswer extends NewsQuestionAnswer {
   @override
   get responseValue => {'_T': 26, 'V': answers.asDomain()};
 
-  ChoiceNewsQuestionAnswer buildAnswered(
-    final Set<int> picked,
-    final String? freeResponse,
-  );
+  ChoiceNewsQuestionAnswer buildAnswered(Set<int> picked, String? freeResponse);
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
@@ -158,8 +155,8 @@ final class SingleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
 
   @override
   SingleChoiceNewsQuestionAnswer buildAnswered(
-    final Set<int> picked,
-    final String? freeResponse,
+    Set<int> picked,
+    String? freeResponse,
   ) {
     return SingleChoiceNewsQuestionAnswer(
       id: id,
@@ -190,8 +187,8 @@ final class MultipleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
 
   @override
   MultipleChoiceNewsQuestionAnswer buildAnswered(
-    final Set<int> picked,
-    final String? freeResponse,
+    Set<int> picked,
+    String? freeResponse,
   ) {
     return MultipleChoiceNewsQuestionAnswer(
       id: id,
@@ -245,7 +242,7 @@ final class TextualResponseNewsQuestionAnswer extends NewsQuestionAnswer {
   @override
   String get responseValue => answer;
 
-  TextualResponseNewsQuestionAnswer buildAnswered(final String response) {
+  TextualResponseNewsQuestionAnswer buildAnswered(String response) {
     return TextualResponseNewsQuestionAnswer(
       id: id,
       withAnswer: true,

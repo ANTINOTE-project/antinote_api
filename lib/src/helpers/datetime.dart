@@ -60,6 +60,9 @@ extension DateTimeSimplification on DateTime {
                     Duration.hoursPerDay)) ~/
             7;
   }
+
+  DateTime withDate(Date date) =>
+      copyWith(year: date.year, month: date.month, day: date.day);
 }
 
 extension AsTimings on int {

@@ -46,6 +46,7 @@ export 'src/models/challenge.dart';
 export 'src/models/classes/classes.dart';
 export 'src/models/classes/content.dart';
 export 'src/models/date.dart';
+export 'src/models/disconnection_period_data.dart';
 export 'src/models/discussion/button.dart';
 export 'src/models/discussion/discussion.dart';
 export 'src/models/discussion/draft.dart';

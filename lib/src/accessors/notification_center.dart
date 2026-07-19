@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/notification/center.dart';
 
@@ -12,10 +13,10 @@ class NotificationCenterAccessor extends StatelessAccessor<NotificationCenter> {
 
   @override
   FutureOr<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) async {
-    return stack
+    return session.stack
         .post(
           Call.function(
             name: 'CentraleNotifications',
@@ -25,7 +26,7 @@ class NotificationCenterAccessor extends StatelessAccessor<NotificationCenter> {
         )
         .resultCompleter
         .future
-        .thenField(stack.vocab.data);
+        .thenField(session.stack.vocab.data);
   }
 
   @override

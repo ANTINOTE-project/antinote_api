@@ -1,12 +1,15 @@
 part of '../widget.dart';
 
 class DS extends HomePageWidget {
+  static HomePageModule module() =>
+      HomePageModule(widget: .ds, data: (session) => {});
+
   final List<ExamPreview> exams;
 
   const DS({required this.exams});
 
   @override
-  HomePageWidgetType get widgetId => HomePageWidgetType.ds;
+  HomePageWidgetType get widgetId => .ds;
 
   DS.decode(MapJsonNavigator nav, RemoteSession _)
     : exams = nav
@@ -15,7 +18,7 @@ class DS extends HomePageWidget {
           .mapL((e) => e.asExamPreview());
 
   static final definition = WidgetDefinition(
-    type: HomePageWidgetType.ds,
+    type: .ds,
     shouldCreate: (nav, _) =>
         nav
             .mGo('devoirSurveille')

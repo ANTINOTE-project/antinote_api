@@ -25,14 +25,14 @@ class InstanceParametersAccessor
 
   @override
   Future<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
-  ) => stack
+  ) => session.stack
       .post(
         Call.function(
           name: 'FonctionParametres',
           dataSec: {
-            stack.vocab.data: {
+            session.stack.vocab.data: {
               if (navIdentifier != null) 'identifiantNav': navIdentifier,
               if (ivUuid != null) 'Uuid': ivUuid,
             },
@@ -41,7 +41,7 @@ class InstanceParametersAccessor
           waitForResponse: false,
         ),
       )
-      .thenField(stack.vocab.data);
+      .thenField(session.stack.vocab.data);
 
   @override
   FutureOr<Workspace> collectState(RemoteSession session) =>

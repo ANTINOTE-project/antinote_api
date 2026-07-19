@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:meta/meta.dart';
@@ -14,7 +13,7 @@ abstract class StatefulAccessor<R, S> {
   bool get exclusiveFriendly;
 
   FutureOr<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   );
 
@@ -26,7 +25,7 @@ abstract class StatefulAccessor<R, S> {
     RemoteSession session,
     Completer<void>? cancellationSignal,
   ) async {
-    final accessed = await access(session.stack, cancellationSignal);
+    final accessed = await access(session, cancellationSignal);
     final interpreted = await interpret(accessed, await collectState(session));
 
     session.updateCache(store(interpreted), accessed);
@@ -49,7 +48,7 @@ abstract class StatelessAccessor<R> extends StatefulAccessor<R, void> {
     RemoteSession session,
     Completer<void>? cancellationSignal,
   ) async {
-    final accessed = await access(session.stack, cancellationSignal);
+    final accessed = await access(session, cancellationSignal);
     final interpreted = await interpretStateless(accessed);
 
     session.updateCache(store(interpreted), accessed);

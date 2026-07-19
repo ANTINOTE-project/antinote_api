@@ -22,15 +22,15 @@ class ClassContentAccessor
 
   @override
   FutureOr<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) {
-    return stack
+    return session.stack
         .post(
           .function(
             cancellationSignal: cancellationSignal,
             dataSec: {
-              stack.vocab.data: {
+              session.stack.vocab.data: {
                 'avecListeEleves': withStudentList,
                 'avecNbEleves': withStudentCount,
                 'cours': {'G': classToAccess.type.index, 'N': classToAccess.id},
@@ -43,7 +43,7 @@ class ClassContentAccessor
         )
         .resultCompleter
         .future
-        .thenField(stack.vocab.data);
+        .thenField(session.stack.vocab.data);
   }
 
   @override

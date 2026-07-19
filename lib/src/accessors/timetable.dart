@@ -69,15 +69,15 @@ class TimetableAccessor extends StatefulAccessor<Timetable, RemoteSession> {
 
   @override
   FutureOr<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) {
-    return stack
+    return session.stack
         .post(
           Call.function(
             name: "PageEmploiDuTemps",
             dataSec: {
-              stack.vocab.data: {
+              session.stack.vocab.data: {
                 'estEDTPermanence': false,
                 'avecAbsencesEleve': false,
                 'avecRessourcesLibrePiedHoraire': false,
@@ -95,7 +95,7 @@ class TimetableAccessor extends StatefulAccessor<Timetable, RemoteSession> {
             cancellationSignal: cancellationSignal,
           ),
         )
-        .thenField(stack.vocab.data);
+        .thenField(session.stack.vocab.data);
   }
 
   @override

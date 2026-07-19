@@ -1,12 +1,15 @@
 part of '../widget.dart';
 
 class Actualites extends HomePageWidget {
+  static HomePageModule module() =>
+      HomePageModule(widget: .actualites, data: (session) => {});
+
   final List<News> news;
 
   const Actualites({required this.news});
 
   @override
-  HomePageWidgetType get widgetId => HomePageWidgetType.actualites;
+  HomePageWidgetType get widgetId => .actualites;
 
   Actualites.decode(MapJsonNavigator nav, RemoteSession _)
     : news = nav
@@ -17,7 +20,7 @@ class Actualites extends HomePageWidget {
           .mapL((e) => e.asNews());
 
   static final definition = WidgetDefinition(
-    type: HomePageWidgetType.actualites,
+    type: .actualites,
     shouldCreate: (nav, _) =>
         nav
             .mGo('actualites')

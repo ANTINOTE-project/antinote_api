@@ -89,14 +89,14 @@ extension AsExam on MapJsonNavigator {
       period: getM('periode').asPeriod(),
       themes: getLM('ListeThemes').mapL((e) => e.asTheme()),
       classAverage: get('moyenne'),
-      isInGroups: get('estEnGroupe'),
+      isInGroups: getB('estEnGroupe'),
       maxGrade: get('noteMax'),
       minGrade: get('noteMin'),
       comment: get('commentaire'),
       coefficient: get('coefficient'),
-      isOptional: get('estFacultatif'),
-      isBonus: get('estBonus'),
-      isCountedAs20TheoreticalMaxGrade: get('estRamenerSur20'),
+      isOptional: getB('estFacultatif'),
+      isBonus: getB('estBonus'),
+      isCountedAs20TheoreticalMaxGrade: getB('estRamenerSur20'),
     );
   }
 }

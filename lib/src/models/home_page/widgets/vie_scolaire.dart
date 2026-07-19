@@ -1,6 +1,9 @@
 part of '../widget.dart';
 
 class VieScolaire extends HomePageWidget {
+  static HomePageModule module() =>
+      HomePageModule(widget: .vieScolaire, data: (session) => {});
+
   final String elementTypes;
   final List<SchoolLifeEvent> absences;
   final bool absenceCommentRequired;
@@ -14,7 +17,7 @@ class VieScolaire extends HomePageWidget {
   });
 
   @override
-  HomePageWidgetType get widgetId => HomePageWidgetType.vieScolaire;
+  HomePageWidgetType get widgetId => .vieScolaire;
 
   VieScolaire.decode(MapJsonNavigator nav, RemoteSession _)
     : elementTypes = nav.go('vieScolaire').get('L'),
@@ -24,13 +27,13 @@ class VieScolaire extends HomePageWidget {
           .mapL((e) => e.asSchoolLifeEvent()),
       absenceCommentRequired = nav
           .go('vieScolaire')
-          .get('commentaireAbsenceObligatoire'),
+          .getB('commentaireAbsenceObligatoire'),
       lateArrivalCommentRequired = nav
           .go('vieScolaire')
-          .get('commentaireRetardObligatoire');
+          .getB('commentaireRetardObligatoire');
 
   static final definition = WidgetDefinition(
-    type: HomePageWidgetType.vieScolaire,
+    type: .vieScolaire,
     shouldCreate: (nav, _) {
       return nav.mGo('vieScolaire')?.mGetL('listeAbsences')?.isNotEmpty ??
           false;

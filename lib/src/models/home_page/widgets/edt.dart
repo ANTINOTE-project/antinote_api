@@ -1,6 +1,14 @@
 part of '../widget.dart';
 
 class EDT extends HomePageWidget {
+  static HomePageModule module(Date date) => HomePageModule(
+    widget: .edt,
+    data: (session) => {
+      'numeroSemaine': date.toRemoteWeekNumber(session),
+      'date': {'_T': 7, 'V': date.asRemoteDate()},
+    },
+  );
+
   final Timetable timetable;
   final int selectedCycleDay;
   final int? currentSlot;
@@ -12,7 +20,7 @@ class EDT extends HomePageWidget {
   });
 
   @override
-  HomePageWidgetType get widgetId => HomePageWidgetType.edt;
+  HomePageWidgetType get widgetId => .edt;
 
   EDT.decodeUpdate(EDT old, MapJsonNavigator nav, RemoteSession session)
     : timetable = Timetable(
@@ -51,7 +59,7 @@ class EDT extends HomePageWidget {
       currentSlot = nav.get('placeCourante');
 
   static final definition = WidgetDefinition(
-    type: HomePageWidgetType.edt,
+    type: .edt,
     shouldCreate: (nav, session) {
       return nav.mGetL('ListeCours')?.isNotEmpty ?? false;
     },

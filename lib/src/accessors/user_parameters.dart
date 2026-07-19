@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/tab.dart';
 import 'package:antinote/src/models/user/authorizations.dart';
@@ -17,10 +18,10 @@ class UserParametersAccessor extends StatelessAccessor<UserParameters> {
 
   @override
   Future<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) {
-    return stack
+    return session.stack
         .post(
           Call.function(
             name: 'ParametresUtilisateur',
@@ -30,7 +31,7 @@ class UserParametersAccessor extends StatelessAccessor<UserParameters> {
         )
         .resultCompleter
         .future
-        .thenField(stack.vocab.data);
+        .thenField(session.stack.vocab.data);
   }
 
   @override

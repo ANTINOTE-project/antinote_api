@@ -32,6 +32,7 @@ class NetworkStack {
     required this.sessionId,
     required this.tokenId,
     required this.tokenKey,
+    this.debugMode = false,
   });
 
   static Future<NetworkStack> restore(SerializedNetworkStack serialized) async {
@@ -113,6 +114,9 @@ class NetworkStack {
   /// Whether the remote instance the [baseUrl] points to is a
   /// demonstration instance.
   final bool demo;
+
+  /// Whether to print resquest and response contents to the console.
+  final bool debugMode;
 
   /// Whether the remote instance the [baseUrl] points to gives custom
   /// RSA constants (this is deprecated in remote.)
@@ -302,11 +306,17 @@ class NetworkStack {
         await client.postUrl(payload.uri)
           ..cookies.addAll(cookies),
         payload.orderId,
+        debugMode: debugMode,
       );
       final res = await req.close();
       var rawResponse = await res.transform(utf8.decoder).join();
 
       if (rawResponse.isEmpty) rawResponse = '{}';
+
+      if (debugMode) {
+        print("Received:");
+        print(rawResponse);
+      }
 
       // Don't ask me why I made this so complicated. TODO
       final decoder = RemoteJsonDecoder(data: rawResponse);

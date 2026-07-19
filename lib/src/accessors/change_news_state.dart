@@ -27,15 +27,15 @@ class ChangeNewsStateAccessor extends StatelessAccessor<void> {
 
   @override
   FutureOr<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) {
-    return stack
+    return session.stack
         .post(
           Call.function(
             name: 'SaisieActualites',
             dataSec: {
-              stack.vocab.data: {
+              session.stack.vocab.data: {
                 'listeActualites': [
                   for (final MapEntry(key: news, value: updates)
                       in updatesToPerform.entries)

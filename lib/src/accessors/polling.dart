@@ -8,10 +8,10 @@ class PollingAccessor extends StatelessAccessor<MapJsonNavigator> {
 
   @override
   Future<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) {
-    return stack
+    return session.stack
         .post(
           Call.polling(
             name: 'polling',

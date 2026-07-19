@@ -82,8 +82,9 @@ final class _FileUploadCall extends Call {
   Future<HttpClientRequest> serialize(
     NetworkStack stack,
     HttpClientRequest req,
-    String orderId,
-  ) async {
+    String orderId, {
+    bool debugMode = false,
+  }) async {
     // The capitalization isn't the right one, but it's the one remote uses.
     req.headers.add(
       'content-range',
@@ -113,18 +114,6 @@ final class _FileUploadCall extends Call {
             : MediaType.parse(data.contentType!),
       ),
     ]);
-
-    final content = request.finalize();
-    for (final header in request.headers.entries) {
-      req.headers.add(header.key, header.value, preserveHeaderCase: true);
-    }
-    var totalLength = 0;
-    await for (final chunk in content) {
-      req.add(chunk);
-      totalLength += chunk.length;
-    }
-
-    print("Total length is $totalLength");
 
     return req;
   }

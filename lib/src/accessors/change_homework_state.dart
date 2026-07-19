@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/homework/homework.dart';
 import 'package:antinote/src/models/state.dart';
@@ -17,15 +18,15 @@ class ChangeHomeworkStateAccessor extends StatelessAccessor<void> {
 
   @override
   Future<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) {
-    return stack
+    return session.stack
         .post(
           Call.function(
             name: 'SaisieTAFFaitEleve',
             dataSec: {
-              stack.vocab.data: {
+              session.stack.vocab.data: {
                 'listeTAF': [
                   for (final homework in homeworksToUpdate.entries)
                     {
@@ -40,7 +41,7 @@ class ChangeHomeworkStateAccessor extends StatelessAccessor<void> {
             cancellationSignal: cancellationSignal,
           ),
         )
-        .thenField(stack.vocab.data);
+        .thenField(session.stack.vocab.data);
   }
 
   @override

@@ -1,12 +1,15 @@
 part of '../widget.dart';
 
 class TravailAFaire extends HomePageWidget {
+  static HomePageModule module() =>
+      HomePageModule(widget: .travailAFaire, data: (session) => {});
+
   final List<Homework> homeworks;
 
   const TravailAFaire({required this.homeworks});
 
   @override
-  HomePageWidgetType get widgetId => HomePageWidgetType.travailAFaire;
+  HomePageWidgetType get widgetId => .travailAFaire;
 
   TravailAFaire.decode(MapJsonNavigator nav, RemoteSession _)
     : homeworks = nav
@@ -15,7 +18,7 @@ class TravailAFaire extends HomePageWidget {
           .mapL((e) => e.asHomework());
 
   static final definition = WidgetDefinition(
-    type: HomePageWidgetType.travailAFaire,
+    type: .travailAFaire,
     shouldCreate: (nav, session) {
       if (session.instance.workspace.type.categories.contains(
         WorkspaceCategory.forPrimary,

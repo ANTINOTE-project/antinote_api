@@ -430,10 +430,11 @@ const SessionOptions$json = {
       '5': 8,
       '10': 'saveNavigationRequests'
     },
+    {'1': 'debugMode', '3': 2, '4': 1, '5': 8, '10': 'debugMode'},
   ],
 };
 
 /// Descriptor for `SessionOptions`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List sessionOptionsDescriptor = $convert.base64Decode(
     'Cg5TZXNzaW9uT3B0aW9ucxI2ChZzYXZlTmF2aWdhdGlvblJlcXVlc3RzGAEgASgIUhZzYXZlTm'
-    'F2aWdhdGlvblJlcXVlc3Rz');
+    'F2aWdhdGlvblJlcXVlc3RzEhwKCWRlYnVnTW9kZRgCIAEoCFIJZGVidWdNb2Rl');

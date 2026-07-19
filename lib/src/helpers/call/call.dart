@@ -83,8 +83,9 @@ sealed class Call {
   FutureOr<HttpClientRequest> serialize(
     NetworkStack stack,
     HttpClientRequest req,
-    String orderId,
-  ) {
+    String orderId, {
+    bool debugMode = false,
+  }) {
     req.headers.set(HttpHeaders.contentTypeHeader, 'application/json');
 
     final rawJson = jsonEncode({
@@ -101,6 +102,11 @@ sealed class Call {
             : {},
       ),
     }, toEncodable: _helpEncode);
+
+    if (debugMode) {
+      print("Sending:");
+      print(rawJson);
+    }
 
     req.add(utf8.encode(rawJson));
     cancellationSignal.future.then((value) => req.abort());

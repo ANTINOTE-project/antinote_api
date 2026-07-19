@@ -749,10 +749,12 @@ class SerializedSession extends $pb.GeneratedMessage {
 class SessionOptions extends $pb.GeneratedMessage {
   factory SessionOptions({
     $core.bool? saveNavigationRequests,
+    $core.bool? debugMode,
   }) {
     final result = create();
     if (saveNavigationRequests != null)
       result.saveNavigationRequests = saveNavigationRequests;
+    if (debugMode != null) result.debugMode = debugMode;
     return result;
   }
 
@@ -771,6 +773,7 @@ class SessionOptions extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..aOB(1, _omitFieldNames ? '' : 'saveNavigationRequests',
         protoName: 'saveNavigationRequests')
+    ..aOB(2, _omitFieldNames ? '' : 'debugMode', protoName: 'debugMode')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -792,7 +795,7 @@ class SessionOptions extends $pb.GeneratedMessage {
       $pb.GeneratedMessage.$_defaultFor<SessionOptions>(create);
   static SessionOptions? _defaultInstance;
 
-  /// When this field is true, Navigation requests won't be sent from ensurePage
+  /// When this field is true, Navigation requests won't be sent from ensurePage.
   @$pb.TagNumber(1)
   $core.bool get saveNavigationRequests => $_getBF(0);
   @$pb.TagNumber(1)
@@ -801,6 +804,16 @@ class SessionOptions extends $pb.GeneratedMessage {
   $core.bool hasSaveNavigationRequests() => $_has(0);
   @$pb.TagNumber(1)
   void clearSaveNavigationRequests() => $_clearField(1);
+
+  /// Will print every single request sent and received to/from remote.
+  @$pb.TagNumber(2)
+  $core.bool get debugMode => $_getBF(1);
+  @$pb.TagNumber(2)
+  set debugMode($core.bool value) => $_setBool(1, value);
+  @$pb.TagNumber(2)
+  $core.bool hasDebugMode() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearDebugMode() => $_clearField(2);
 }
 
 const $core.bool _omitFieldNames =

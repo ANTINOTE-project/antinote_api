@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart';
@@ -27,15 +28,15 @@ class FileUploadAccessor extends StatelessAccessor<String> {
 
   @override
   FutureOr<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) async {
-    final baseOrder = await stack.getEncryptedOrder(
+    final baseOrder = await session.stack.getEncryptedOrder(
       OrderBehavior.communication,
       forceNullIv: false,
     );
     final uploadStart = DateTime.now();
-    final fileId = UploadCallData.buildFileId(stack, fileCategory);
+    final fileId = UploadCallData.buildFileId(session.stack, fileCategory);
     print(
       'Starting an upload at ${uploadStart.millisecondsSinceEpoch} for $fileId',
     );
@@ -47,9 +48,8 @@ class FileUploadAccessor extends StatelessAccessor<String> {
     int currentOffset = 0;
     while (currentOffset < contentLength) {
       final viewEnd = min(contentLength, currentOffset + _chunkSize) /* - 1*/;
-      final viewData = await ByteStream(
-        file.openRead(currentOffset, viewEnd),
-      ).toBytes();
+      final viewData = await ByteStream(file.openRead(currentOffset, viewEnd))
+          .toBytes();
 
       mimeType ??= lookupMimeType(
         file.name,
@@ -62,7 +62,7 @@ class FileUploadAccessor extends StatelessAccessor<String> {
         'Uploading chunk $currentOffset-$viewEnd/$contentLength... (actual view data len = ${viewData.length}, requested = ${viewEnd - currentOffset})',
       );
 
-      final result = await stack
+      final result = await session.stack
           .post(
             Call.upload(
               cancellationSignal: cancellationSignal,

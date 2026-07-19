@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/period.dart';
 import 'package:antinote/src/models/report/report.dart';
@@ -19,14 +20,14 @@ class ReportAccessor extends StatelessAccessor<BaseReport> {
 
   @override
   FutureOr<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
-  ) => stack
+  ) => session.stack
       .post(
         Call.function(
           cancellationSignal: cancellationSignal,
           dataSec: {
-            stack.vocab.data: {
+            session.stack.vocab.data: {
               'classe': {},
               'eleve': {},
               'periode': {'G': 2, "L": period.name, 'N': period.id},
@@ -37,7 +38,7 @@ class ReportAccessor extends StatelessAccessor<BaseReport> {
       )
       .resultCompleter
       .future
-      .thenField(stack.vocab.data);
+      .thenField(session.stack.vocab.data);
 
   @override
   FutureOr<BaseReport> interpretStateless(MapJsonNavigator<dynamic> nav) =>

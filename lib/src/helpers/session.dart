@@ -321,6 +321,8 @@ class RemoteSession {
     );
     await crypto.setAesKey(crypto.aesKey);
 
+    options ??= SessionOptions.getDefault();
+
     return RemoteSession(
       stack: NetworkStack(
         cookies: cookies ?? [],
@@ -344,8 +346,9 @@ class RemoteSession {
         ),
         tokenId: seed['e'],
         tokenKey: seed['f'],
+        debugMode: options.debugMode,
       ),
-      options: options ?? SessionOptions.getDefault(),
+      options: options,
     );
   }
 

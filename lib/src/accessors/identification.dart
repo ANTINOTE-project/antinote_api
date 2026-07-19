@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/challenge.dart';
 
@@ -64,18 +65,18 @@ class IdentificationAccessor extends StatelessAccessor<Challenge> {
 
   @override
   Future<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) {
-    return stack
+    return session.stack
         .post(
           Call.function(
             name: 'Identification',
             dataSec: {
-              stack.vocab.data: {
+              session.stack.vocab.data: {
                 // EGenreConnexion (whether the teacher used the "In class"/"At home" picker)
                 'genreConnexion': 0,
-                'genreEspace': stack.temporaryWorkspace.type.id,
+                'genreEspace': session.stack.temporaryWorkspace.type.id,
                 'identifiant': username,
                 'uuidAppliMobile': deviceUuid,
                 'loginTokenSAV': '',
@@ -88,7 +89,7 @@ class IdentificationAccessor extends StatelessAccessor<Challenge> {
             cancellationSignal: cancellationSignal,
           ),
         )
-        .thenField(stack.vocab.data);
+        .thenField(session.stack.vocab.data);
   }
 
   @override

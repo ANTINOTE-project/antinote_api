@@ -40,7 +40,7 @@ final class UnpublishedReport implements BaseReport {
 extension AsUnpublishedReport on MapJsonNavigator {
   UnpublishedReport asUnpublishedReport() {
     return UnpublishedReport(
-      canEdit: get<bool?>('Editable') ?? false,
+      canEdit: getB('Editable'),
       publishDateString: get('Message'),
     );
   }

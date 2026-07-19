@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/domain.dart';
@@ -35,15 +36,15 @@ class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
 
   @override
   FutureOr<Map<String, dynamic>> access(
-    NetworkStack stack,
+    RemoteSession session,
     Completer<void>? cancellationSignal,
   ) {
-    return stack
+    return session.stack
         .post(
           Call.function(
             name: 'PageCahierDeTexte',
             dataSec: {
-              stack.vocab.data: {
+              session.stack.vocab.data: {
                 if (weeks != null) 'domaine': {'_T': 8, 'V': weeks!.asDomain()},
                 if (date != null) 'date': {'_T': 7, 'V': date!.asRemoteDate()},
                 if (onlyAccessResources == true) 'estRequeteRP': true,
@@ -55,7 +56,7 @@ class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
         )
         .resultCompleter
         .future
-        .thenField(stack.vocab.data);
+        .thenField(session.stack.vocab.data);
   }
 
   @override
