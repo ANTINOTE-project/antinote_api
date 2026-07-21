@@ -104,8 +104,8 @@ sealed class Call {
     }, toEncodable: _helpEncode);
 
     if (debugMode) {
-      print("Sending:");
-      print(rawJson);
+      stack.log.fine('Sending:');
+      stack.log.fine(rawJson);
     }
 
     req.add(utf8.encode(rawJson));

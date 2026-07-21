@@ -224,7 +224,7 @@ class RemoteSession {
 
     seedRequest.followRedirects = followRedirects;
 
-    print(
+    libLog.info(
       'Fetching  ${seedRequest.uri.pathSegments.last} at ${seedRequest.uri}',
     );
 
@@ -266,26 +266,20 @@ class RemoteSession {
     final seedEnd = _endMatch.allMatches(body).firstOrNull?.start;
 
     if (seedStart == null || seedEnd == null) {
-      print('Could not find delimitations for the seed...');
       throw InvalidInstanceException();
     }
 
     // Thank you Mikkel ALMONTE-RINGAUD from the Pawnote.js project for the RegEx.
     // Licensing information (GPL-3.0) available in the app. TODO: Credit properly
-    final seed =
-        jsonDecode(
-              body
-                  .substring(seedStart, seedEnd)
-                  .replaceAllMapped(
-                    RegExp(
-                      r'''(['"])?([a-z0-9A-Z_]+)(['"])?:''',
-                      unicode: true,
-                    ),
-                    (match) => '"${match.group(2)}": ',
-                  )
-                  .replaceAll("'", '"'),
-            )
-            as Map<String, dynamic>;
+    final seed = jsonDecode(
+      body
+          .substring(seedStart, seedEnd)
+          .replaceAllMapped(
+            RegExp(r'''(['"])?([a-z0-9A-Z_]+)(['"])?:''', unicode: true),
+            (match) => '"${match.group(2)}": ',
+          )
+          .replaceAll("'", '"'),
+    ) as Map<String, dynamic>;
 
     final rsaFromConstants =
         (!seed.containsKey('MR')) && (!seed.containsKey('ER'));

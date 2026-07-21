@@ -37,13 +37,13 @@ class FileUploadAccessor extends StatelessAccessor<String> {
     );
     final uploadStart = DateTime.now();
     final fileId = UploadCallData.buildFileId(session.stack, fileCategory);
-    print(
+    session.stack.log.info(
       'Starting an upload at ${uploadStart.millisecondsSinceEpoch} for $fileId',
     );
 
     int contentLength = await file.length();
     String? mimeType;
-    print('File size is $contentLength');
+    session.stack.log.fine('File size is $contentLength');
 
     int currentOffset = 0;
     while (currentOffset < contentLength) {
@@ -58,7 +58,7 @@ class FileUploadAccessor extends StatelessAccessor<String> {
             .toList(growable: false),
       );
 
-      print(
+      session.stack.log.fine(
         'Uploading chunk $currentOffset-$viewEnd/$contentLength... (actual view data len = ${viewData.length}, requested = ${viewEnd - currentOffset})',
       );
 
@@ -85,7 +85,8 @@ class FileUploadAccessor extends StatelessAccessor<String> {
           .resultCompleter
           .future;
 
-      print('Uploaded chunk. Got $result');
+      session.stack.log.fine('Uploaded chunk. Got $result');
+
       currentOffset += _chunkSize;
     }
 

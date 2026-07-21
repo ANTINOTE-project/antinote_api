@@ -1,4 +1,5 @@
 import 'package:antinote/antinote.dart';
+import 'package:logging/logging.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -15,8 +16,10 @@ void main() {
       deviceUuid: Credentials.generateDeviceUuid(),
     );
 
+    hierarchicalLoggingEnabled = true;
     final (session: session, refreshCredentials: refreshCredentials) =
         await credentials.login(options: .new(debugMode: true));
+    session.stack.log.level = .ALL;
 
     try {
       await session.ensurePage(7);

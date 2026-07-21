@@ -174,6 +174,6 @@ message SerializedSession {
 message SessionOptions {
   // When this field is true, Navigation requests won't be sent from ensurePage.
   bool saveNavigationRequests = 1;
-  // Will print every single request sent and received to/from remote.
+  // Will log every single request sent and received to/from remote.
   bool debugMode = 2;
 }

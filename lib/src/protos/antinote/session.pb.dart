@@ -805,7 +805,7 @@ class SessionOptions extends $pb.GeneratedMessage {
   @$pb.TagNumber(1)
   void clearSaveNavigationRequests() => $_clearField(1);
 
-  /// Will print every single request sent and received to/from remote.
+  /// Will log every single request sent and received to/from remote.
   @$pb.TagNumber(2)
   $core.bool get debugMode => $_getBF(1);
   @$pb.TagNumber(2)

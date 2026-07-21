@@ -1,5 +1,7 @@
 library;
 
+import 'package:logging/logging.dart';
+
 export 'src/accessors/accessors.dart';
 export 'src/accessors/account_page.dart';
 export 'src/accessors/authentication.dart';
@@ -114,3 +116,5 @@ export 'src/models/workspace/workspace.dart';
 export 'src/protos/antinote/credentials.pb.dart';
 export 'src/protos/antinote/session.pb.dart';
 export 'src/protos/antinote/workspace.pb.dart';
+
+final libLog = Logger('ANTINOTE');

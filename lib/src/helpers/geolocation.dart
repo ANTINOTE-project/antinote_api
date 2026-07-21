@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:antinote/src/helpers/json.dart';
+import 'package:antinote/antinote.dart';
 import 'package:http/http.dart' as http;
 
 final class GeolocatedInstance {
@@ -90,11 +90,10 @@ Future<List<GeolocatedInstance>> findNearbyInstances(
       (e) => (e as MapJsonNavigator).asGeolocatedInstance(lat, lon),
     )..sort((a, b) => a.distance.compareTo(b.distance));
   } catch (e, st) {
-    print("Could not read geolocated instances.");
-    print(e);
-    print(st);
-    print("Response is: $resBody");
-    print("Request was: ${req.body}");
+    libLog.severe('Could not read geolocated instances.', e, st);
+    libLog.severe('Response is: $resBody');
+    libLog.severe('Request was: ${req.body}');
+
     return [];
   }
 }

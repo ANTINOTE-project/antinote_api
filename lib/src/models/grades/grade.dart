@@ -60,9 +60,6 @@ final class Grade {
     }
 
     // TODO: Do some things with translation stuff at startup to better type this thing.
-    // print(
-    //   'TODO: Do some things with translation stuff at startup to better type this thing.',
-    // );
     return GradeType.note;
   }
 

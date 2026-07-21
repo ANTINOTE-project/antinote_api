@@ -46,11 +46,10 @@ class ChangeHomeworkStateAccessor extends StatelessAccessor<void> {
 
   @override
   FutureOr<void> interpretStateless(MapJsonNavigator nav) {
-    if (nav.mGetM('RapportSaisie')?.isNotEmpty ?? false) {
-      print(
-        'RapportSaisie in SaisieTAFFaitEleve is not empty!!! ${nav.toString()}',
-      );
-    }
+    assert(
+      nav.mGetM('RapportSaisie')?.isNotEmpty ?? true,
+      'Update request unsuccessful',
+    );
   }
 
   @override

@@ -10,6 +10,7 @@ import 'package:antinote/src/helpers/json_codec.dart';
 import 'package:antinote/src/helpers/signatures/client.dart';
 import 'package:antinote/src/helpers/signatures/server.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:version/version.dart';
 
@@ -33,7 +34,12 @@ class NetworkStack {
     required this.tokenId,
     required this.tokenKey,
     this.debugMode = false,
-  });
+  }) {
+    log.onRecord.listen((event) {
+      // ignore: avoid_print
+      print('[${event.level.name}]($sessionId) : ${event.message}');
+    });
+  }
 
   static Future<NetworkStack> restore(SerializedNetworkStack serialized) async {
     final pnVersion = Version.parse(serialized.instanceVersion);
@@ -115,7 +121,7 @@ class NetworkStack {
   /// demonstration instance.
   final bool demo;
 
-  /// Whether to print resquest and response contents to the console.
+  /// Whether to log resquest and response contents to the console.
   final bool debugMode;
 
   /// Whether the remote instance the [baseUrl] points to gives custom
@@ -160,6 +166,9 @@ class NetworkStack {
 
   /// The ID of the session. Changes for each login.
   final int sessionId;
+
+  /// The logger for the session. Outputs if [debugMode] is true.
+  late final Logger log = Logger('ANTINOTE-$sessionId');
 
   /// The "Token ID" is some form of encrypted username used on CAS login.
   final String? tokenId;
@@ -291,7 +300,7 @@ class NetworkStack {
 
     await networkPause.future;
 
-    print(
+    log.info(
       'Calling   ${call.name} (order=${order(call.orderBehavior)}) '
       'at ${payload.uri.toString()}',
     );
@@ -314,8 +323,8 @@ class NetworkStack {
       if (rawResponse.isEmpty) rawResponse = '{}';
 
       if (debugMode) {
-        print("Received:");
-        print(rawResponse);
+        log.fine("Received:");
+        log.fine(rawResponse);
       }
 
       // Don't ask me why I made this so complicated. TODO
@@ -323,14 +332,14 @@ class NetworkStack {
       decoders.add(decoder);
       response = decoder.decode();
     } on RequestAbortedException {
-      print(
+      log.severe(
         'Aborted   ${call.name} (estimated order=${order(call.orderBehavior)}) '
         'at ${payload.uri.toString()}',
       );
 
       return {};
     } on IOException catch (e) {
-      print(
+      log.severe(
         'Failed    ${call.name} (estimated order=${order(call.orderBehavior)}) '
         'at ${payload.uri.toString()} (${e.runtimeType} '
         '${e is HttpException ? e.message : 'no recognizable message'})',
@@ -358,22 +367,22 @@ class NetworkStack {
               ivMode: IvMode.zeros,
             ),
           );
-          print('Had to remove IV to decrypt order from request!');
+          log.fine('Had to remove IV to decrypt order from request.');
         } catch (e) {
           exactOrder = null;
-          print(
+          log.warning(
             'Could not decrypt order although it is present in the response...',
           );
         }
       }
-      print(
+      log.info(
         'Receiving ${call.name} '
         '(${exactOrder == null ? 'unsuccessfully estimated ' : ''}'
         'order=${exactOrder ?? order(call.orderBehavior)}) '
         'at ${payload.uri.toString()}',
       );
     } else {
-      print(
+      log.info(
         'Receiving ${call.name} (estimated order=${order(call.orderBehavior)}) '
         'at ${payload.uri.toString()}',
       );
@@ -415,7 +424,7 @@ class NetworkStack {
     }
 
     if (data.containsKey(vocab.signature)) {
-      print('${call.name} had signature, propagating...');
+      log.info('${call.name} had signature, propagating...');
       updateServerSignature(data[vocab.signature]);
     }
 

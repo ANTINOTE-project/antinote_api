@@ -55,7 +55,12 @@ class ChangeHomeworkSubmissionAccessor extends StatelessAccessor<void> {
   }
 
   @override
-  FutureOr<void> interpretStateless(MapJsonNavigator<dynamic> nav) => null;
+  FutureOr<void> interpretStateless(MapJsonNavigator<dynamic> nav) {
+    assert(
+      nav.mGetM('RapportSaisie')?.isNotEmpty ?? true,
+      'Update request unsuccessful',
+    );
+  }
 
   @override
   List<VisualIdMixin> store(void result) => [];

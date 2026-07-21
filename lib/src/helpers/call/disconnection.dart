@@ -36,8 +36,8 @@ final class _DisconnectionCall extends Call {
     }, toEncodable: _helpEncode);
 
     if (debugMode) {
-      print("Sending:");
-      print(rawJson);
+      stack.log.fine('Sending:');
+      stack.log.fine(rawJson);
     }
 
     req.headers.add(HttpHeaders.contentTypeHeader, 'application/json');
