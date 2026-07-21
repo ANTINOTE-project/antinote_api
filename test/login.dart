@@ -7,11 +7,11 @@ void main() {
       username: 'demonstration',
       password: 'pronotevs',
       workspace: Workspace(
-        type: WorkspaceType.mobileEleve,
+        type: .mobileEleve,
         label: '',
         pathSegment: 'mobile.eleve.html',
       ),
-      baseUrl: Uri.parse('https://demo.index-education.net/pronote'),
+      baseUrl: .parse('https://demo.index-education.net/pronote'),
       deviceUuid: Credentials.generateDeviceUuid(),
     );
 
@@ -21,9 +21,15 @@ void main() {
     try {
       await session.ensurePage(7);
 
-      // final focusedDay = session.instance.demoDateTime!.add(Duration(days: 28));
+      final day = session.instance.demoDateTime!.toDay();
       final homepage = await session.access(
-        HomePageAccessor(modules: const []),
+        HomePageAccessor(
+          modules: [
+            EDT.module(day),
+            MenuDeLaCantine.module(day),
+            TravailAFaire.module(),
+          ],
+        ),
       );
 
       print(homepage);
