@@ -115,9 +115,11 @@ Et d'accéder à la ressource souhaitée :
 final homePageWidgets = await session.access(
   HomePageAccessor(
     modules: [
-      EDT.module(),
-      MenuDeLaCantine.module(day),
       TravailAFaire.module(),
+      Notes.module(),
+      VieScolaire.module(),
+      Actualites.module(),
+      DS.module(),
     ]
   )
 );
