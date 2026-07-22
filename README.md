@@ -7,7 +7,7 @@
 > Veuillez suivre le lien suivant pour accéder à
 > **[l'application ANTINOTE](https://github.com/ANTINOTE-project/antinote_app)**.
 
-Librairie permettant de communiquer avec une instance PRONOTE d'Index-Education.
+Librairie Dart permettant de communiquer avec une instance PRONOTE d'Index-Education.
 
 ## Fonctionnalités
 
@@ -36,13 +36,12 @@ Actuellement, nous supportons les fonctionnalités suivantes :
 
 ## FAQ
 
-- Est-ce que cette librairie est "vibe-codée" (créée grâce à une intelligence artificielle générative en tant que "
-  conducteur" dans le processus de développement) ? Non, quasiment aucune utilisation de l'intelligence artificielle
-  générative n'a été effectué durant la conception de cette librairie.
+- Est-ce que cette librairie est générée par intelligence artificielle ? Non, quasiment aucune utilisation de l'intelligence artificielle
+  générative n'a été effectuée durant la conception de cette librairie.
 - Avez-vous comme projet de rajouter plus de pages à cette librairie ? Pas exactement, nous ne souhaitons pas
   réimplémenter chaque page de PRONOTE pour l'instant. Nous nous focalisons sur les fonctionnalités essentielles
-  (disponibles actuellement) et leur bon-fonctionnement sur la durée. Nous acceptons possiblement des contributions
-  pouvant rajouter des pages supplémentaires, si l'implémentation est à la qualité des autres pages déjà implémentées.
+  (disponibles actuellement) et leur bon fonctionnement sur la durée. Nous acceptons possiblement des contributions
+  pouvant rajouter des pages supplémentaires, si l'implémentation est de la même qualité que les autres pages déjà implémentées.
 - Allez-vous ajouter le support pour d'autres types de comptes ? Oui ! Nous souhaitons ajouter le compte parent puis le
   compte professeur. Pour l'instant, nous voulons nous assurer de la stabilité de la librairie.
 
@@ -55,7 +54,7 @@ dependencies:
 ```
 
 Pour l'instant, nous marquons l'entièreté de nos API publiques comme **instables**. Une version `1.0.0` sera publiée dès
-que nous serrons sûr de pouvoir honorer la stabilité de toutes les API que nous révélons.
+que nous serons sûrs de pouvoir honorer la stabilité de toutes les API que nous révélons.
 
 --- 
 
@@ -80,7 +79,7 @@ final credentials = PasswordCredentials(
 2. Le `label` peut être laissé vide ici. Le nom de l'espace peut être trouvé plus tard dans les paramètres d'instance de
    la session.
 3. Nous fournissons une méthode permettant de générer un identifiant d'appareil. Nous recommandons cependant de la
-   garder identique entre chaque interaction avec les services PRONOTE (quel-que-soit le compte).
+   garder identique entre chaque interaction avec les services PRONOTE (quel que soit le compte).
 
 Ensuite, il faut se connecter en utilisant les identifiants :
 ```dart
@@ -108,7 +107,8 @@ Un annuaire des numéros de pages n'est pas encore disponible.
 Pour savoir quelle page utiliser, rendez-vous sur un compte PRONOTE et naviguez vers la page désirée tout en ayant votre
 outil DevTools d'ouvert sur la page "réseau". Vous trouverez une requête POST sous format JSON avec un champ `id` égal à
 `Navigation`. Depuis, trouvez le champ `onglet` **dans la requête que vous envoyez**. L'identifiant est celui à
-renseigner dans `RemoteSession.ensurePage`.
+renseigner dans `RemoteSession.ensurePage`. À terme, cette méthode sera supprimée et le changement d'onglet sera
+automatiquement effectué par les requêtes elles-mêmes.
 
 Et d'accéder à la ressource souhaitée :
 ```dart
@@ -127,4 +127,30 @@ final homePageWidgets = await session.access(
 
 Durant toute interaction après la connexion à un compte, une requête incorrecte ou un problème autre peut arriver. Dans
 ces cas, une erreur `RemoteException` est envoyée et signifie la mort de la session. À partir de ce moment-là, se
-reconnecter est nécessaire pour continuer à intéragir avec le compte de connecté.
+reconnecter est nécessaire pour continuer à interagir avec le compte connecté.
+
+## Contribution
+Les contributions sont encouragées. Nous n'interdisons pas l'usage de l'intelligence artificielle. Cependant, nous
+demandons au contributeur d'être responsable de son code, de la comprendre, et de savoir le modifier en conséquence de
+nos commentaires.
+
+Veuillez vous rapprocher vers des contributeurs existants pour demander conseil. Ce contact peut se faire grâce à
+l'onglet discussion sur GitHub, dans les issues et pull requests, ou bien en contactant directement les membres de
+l'organisation sur leurs emails / réseaux sociaux listés publiquement.
+
+Ces intéractions sont en accord avec notre [Code de Conduite](CODE_OF_CONDUCT.md).
+
+L'utilisation du français pour toute intéraction en dehors de la documentation ou du code est privilégié, car PRONOTE
+est un produit manifestement français et nous voulons réduire la friction pour intégrer l'équipe de développement.
+L'anglais est toutefois toléré.
+
+Dans le code, nous demandons l'utilisation exclusive de l'anglais pour le nommage de symboles ainsi que pour la
+documentation.
+ 
+Ce projet a comme objectif la mise à disposition d'un outil permettant l'interopérabilité en détachant le client PRONOTE
+(l'application mobile, pour ordinateur, ou le site internet) de l'instance PRONOTE. Cette activité nous permet d'étudier
+le code des différents services de PRONOTE (surtout l'application mobile et la version web) afin d'améliorer cette
+librairie, en toute légalité (cf. Article L122-6-1 du Code de la Propriété Intellectuelle). L'utilisation de ce droit ne
+devrait pas être abusive (par définition). En pratique, nous limitons l'extraction d'information aux énumérations, aux
+champs et types attendus pour les objets reçus du serveur, et leur signification directe. Ces informations sont ensuite
+reformulées avant d'être intégrées au code de la librairie.
