@@ -1,3 +1,4 @@
+import 'package:antinote/src/helpers/datetime.dart';
 import 'package:antinote/src/helpers/json.dart';
 
 extension FromRemoteDate on String {
@@ -14,7 +15,7 @@ extension FromRemoteDate on String {
     if (shortDateRe.hasMatch(this)) {
       final [day, month, year] = split('/').mapL(int.parse);
 
-      return DateTime.utc(year, month, day);
+      return Date.utc(year, month, day);
     } else if (longDateLongHoursRe.hasMatch(this)) {
       final [date, time] = split(' ');
       final [day, month, year] = date.split('/').mapL(int.parse);

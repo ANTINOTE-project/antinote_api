@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:antinote/antinote.dart';
 
-class HomePageAccessor({required final List<HomePageModule> modules})
+class HomePageAccessor({required final List<HomePageModule>? modules})
     extends StatefulAccessor<HomePage, RemoteSession> {
   @override
   bool get exclusiveFriendly => true;
@@ -18,9 +18,11 @@ class HomePageAccessor({required final List<HomePageModule> modules})
             name: 'PageAccueil',
             dataSec: {
               session.stack.vocab.data: {
-                for (final module in modules) ...module.data(session),
+                for (final module in modules ?? <HomePageModule>[])
+                  ...module.data(session),
 
-                'widgets': modules.mapL((e) => e.widget.id),
+                if (modules != null)
+                  'widgets': modules!.mapL((e) => e.widget.id),
               },
             },
             cancellationSignal: cancellationSignal,
