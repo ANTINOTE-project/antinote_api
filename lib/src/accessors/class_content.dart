@@ -53,7 +53,7 @@ class ClassContentAccessor
   FutureOr<List<Class>> interpret(
     MapJsonNavigator<dynamic> nav,
     RemoteSession session,
-  ) => nav.getLM('listeCours').mapL((e) => e.asClass(session));
+  ) => nav.getLM('listeCours').mapL((e) => .decode(session, e));
 
   @override
   List<VisualIdMixin> store(List<Class> result) => result;

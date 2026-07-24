@@ -1,454 +1,122 @@
 part of 'shared.dart';
 
-final class SpecificInstanceParameters extends InstanceParameters {
-  final DateTime serverDateTime;
-  final DateTime? demoDateTime;
-  final Workspace workspace;
-  final bool hostedInFrance;
-  final bool withForum;
-  final Uri? helpUrl;
-  final Uri? videosAccessUrl;
-  final Uri? twitterAccessUrl;
-  final Uri? doubleAuthRegistrationFAQUrl;
-  final Uri? securityVideoTutorialUrl;
-  final Uri? devicesRegisterTutorialUrl;
-  final Uri? canopeUrl;
-  final bool withConnexionChoice;
-  final int firstWeekNumber;
-  final DateTime firstCycleStartDate;
-  final DateTime firstMonday;
-  final DateTime firstDate;
-  final DateTime lastDate;
-  final int slotsPerDay;
-  final int slotsPerHour;
-  final double sequenceLength;
-  final int halfDayAbsenceSlot;
-  final int typeAbsencesViaDJ;
-  final bool defaultPresenceExemptionValue;
-  final bool lunchActivation;
-  final int lunchStartSlot;
-  final int lunchEndSlot;
-  final bool fullHoursAfterNoon;
-  final DateTime nextBusinessDay;
-  final List<int> businessDays;
-  final Set<int> lunchDays;
-  final bool discussionBetweenParentsActivated;
-  final bool excellenceParcoursGestion;
-  final bool blogActivation;
-  final int businessDaysPerCycle;
-  final int firstWeekday;
-  final int scheduleGridInCycle;
-  final Set<int> businessCycleDays;
-  final List<Set<int>> businessHalfDays;
-  final Map<int, WeekFrequency> weekFrequencies;
-  final Map<WeekFrequency, int?> weekFrequenciesPeriodicity;
-  final Map<WeekFrequency, WeekFrequency?> followingFrequencies;
-  final Grade bareme;
-  final Grade maxBareme;
-  final int defaultPublicationInterval;
-  final int publicationIntervalForParents;
-  final bool withGradesPublicationIntervalDisplayToParents;
-  final bool withTestsPublicationIntervalDisplayToParents;
-  final Set<int> allowedAnnotations;
+final class SpecificInstanceParameters({
+  required super.shared,
 
-  // TODO: Create models this. (ListeNiveauxDAcquisitions)
-  final List<Map<String, dynamic>> acquirementLevels;
-  final bool showShorthandForAcquirementLevel;
-  final bool withHistoricalTests;
-  final bool withoutIntermediaryLevelValidationExamInAutomaticValidation;
-  final bool onlyCountExamsForSchoolYearInAutomaticValidation;
-  final bool ponderateSubjectsRelativeToTheirCoefficientDomain;
-  final bool cecrlLevelManagement;
-  final int langActivityColor;
-  final int minimumBaremeForMCQQuestion;
-  final int maximumBaremeForMCQQuestion;
-  final int maxPointsForMCQ;
-  final int maxLevelForMCQ;
-  final int skillGridElementLabelSize;
-  final int homeworkCommentSize;
-  final bool withConnexionInformationRetrieval;
-  final bool? parentAuthorisesPasswordChange;
-  final String? font;
-  final int? fontSize;
-  final bool withAttachedStudents;
-  final String phoneMask;
-  final int ectsMaximum;
-  final List<int> appreciationMaxSize;
-  final List<Holiday> holidays;
-  final bool showSequences;
-  final List<TimeSlot> starts;
-  final List<TimeSlot> endings;
-  final List<TimeSlot> endingsForSL;
-  final List<({DateTime start, DateTime end})> transferTimes;
-  final List<String> sequences;
-  final List<Period> periods;
-  final List<Pause> pauses;
-  final int audioRecordingHomeworkSubmissionMaxSize;
-  final Set<int> validHomeworkSubmissionTypes;
-  final String applicationCookieName;
+  required final DateTime serverDateTime,
+  required final DateTime? demoDateTime,
+  required final Workspace workspace,
+  required final bool hostedInFrance,
+  required final bool withForum,
+  required final Uri? helpUrl,
+  required final Uri? videosAccessUrl,
+  required final Uri? twitterAccessUrl,
+  required final Uri? doubleAuthRegistrationFAQUrl,
+  required final Uri? securityVideoTutorialUrl,
+  required final Uri? devicesRegisterTutorialUrl,
+  required final Uri? canopeUrl,
+  required final bool withConnexionChoice,
+  required final int firstWeekNumber,
+  required final DateTime firstCycleStartDate,
+  required final DateTime firstMonday,
+  required final DateTime firstDate,
+  required final DateTime lastDate,
+  required final int slotsPerDay,
+  required final int slotsPerHour,
+  required final double sequenceLength,
+  required final int halfDayAbsenceSlot,
+  required final int typeAbsencesViaDJ,
+  required final bool defaultPresenceExemptionValue,
+  required final bool lunchActivation,
+  required final int lunchStartSlot,
+  required final int lunchEndSlot,
+  required final bool fullHoursAfterNoon,
+  required final DateTime nextBusinessDay,
+  required final List<int> businessDays,
+  required final Set<int> lunchDays,
+  required final bool discussionBetweenParentsActivated,
+  required final bool excellenceParcoursGestion,
+  required final bool blogActivation,
+  required final int businessDaysPerCycle,
+  required final int firstWeekday,
+  required final int scheduleGridInCycle,
+  required final Set<int> businessCycleDays,
+  required final List<Set<int>> businessHalfDays,
+  required final Map<int, WeekFrequency> weekFrequencies,
+  required final Map<WeekFrequency, int?> weekFrequenciesPeriodicity,
+  required final Map<WeekFrequency, WeekFrequency?> followingFrequencies,
+  required final Grade bareme,
+  required final Grade maxBareme,
+  required final int defaultPublicationInterval,
+  required final int publicationIntervalForParents,
+  required final bool withGradesPublicationIntervalDisplayToParents,
+  required final bool withTestsPublicationIntervalDisplayToParents,
+  required final Set<int> allowedAnnotations,
+
+  // TODO: Create models for those. (ListeNiveauxDAcquisitions)
+  required final List<Map<String, dynamic>> acquirementLevels,
+  required final bool showShorthandForAcquirementLevel,
+  required final bool withHistoricalTests,
+  required final bool
+  withoutIntermediaryLevelValidationExamInAutomaticValidation,
+  required final bool onlyCountExamsForSchoolYearInAutomaticValidation,
+  required final bool ponderateSubjectsRelativeToTheirCoefficientDomain,
+  required final bool cecrlLevelManagement,
+  required final int langActivityColor,
+  required final int minimumBaremeForMCQQuestion,
+  required final int maximumBaremeForMCQQuestion,
+  required final int maxPointsForMCQ,
+  required final int maxLevelForMCQ,
+  required final int skillGridElementLabelSize,
+  required final int homeworkCommentSize,
+  required final bool withConnexionInformationRetrieval,
+  required final bool? parentAuthorisesPasswordChange,
+  required final String? font,
+  required final int? fontSize,
+  required final bool withAttachedStudents,
+  required final String phoneMask,
+  required final int ectsMaximum,
+  required final List<int> appreciationMaxSize,
+  required final List<Holiday> holidays,
+  required final bool showSequences,
+  required final List<TimeSlot> starts,
+  required final List<TimeSlot> endings,
+  required final List<TimeSlot> endingsForSL,
+  required final List<({DateTime start, DateTime end})> transferTimes,
+  required final List<String> sequences,
+  required final List<Period> periods,
+  required final List<Pause> pauses,
+  required final int audioRecordingHomeworkSubmissionMaxSize,
+  required final Set<int> validHomeworkSubmissionTypes,
+  required final String applicationCookieName,
 
   // TODO: Create a model for this. (aideContextuelle)
-  final Map<String, dynamic> contextualHelp;
-
-  SpecificInstanceParameters({
-    required super.shared,
-    required this.serverDateTime,
-    required this.demoDateTime,
-    required this.workspace,
-    required this.hostedInFrance,
-    required this.withForum,
-    required this.helpUrl,
-    required this.videosAccessUrl,
-    required this.twitterAccessUrl,
-    required this.doubleAuthRegistrationFAQUrl,
-    required this.securityVideoTutorialUrl,
-    required this.devicesRegisterTutorialUrl,
-    required this.canopeUrl,
-    required this.withConnexionChoice,
-    required this.firstWeekNumber,
-    required this.firstCycleStartDate,
-    required this.firstMonday,
-    required this.firstDate,
-    required this.lastDate,
-    required this.slotsPerDay,
-    required this.slotsPerHour,
-    required this.sequenceLength,
-    required this.halfDayAbsenceSlot,
-    required this.typeAbsencesViaDJ,
-    required this.defaultPresenceExemptionValue,
-    required this.lunchActivation,
-    required this.lunchStartSlot,
-    required this.lunchEndSlot,
-    required this.fullHoursAfterNoon,
-    required this.nextBusinessDay,
-    required this.businessDays,
-    required this.lunchDays,
-    required this.discussionBetweenParentsActivated,
-    required this.excellenceParcoursGestion,
-    required this.blogActivation,
-    required this.businessDaysPerCycle,
-    required this.firstWeekday,
-    required this.scheduleGridInCycle,
-    required this.businessCycleDays,
-    required this.businessHalfDays,
-    required this.weekFrequencies,
-    required this.weekFrequenciesPeriodicity,
-    required this.followingFrequencies,
-    required this.bareme,
-    required this.maxBareme,
-    required this.defaultPublicationInterval,
-    required this.publicationIntervalForParents,
-    required this.withGradesPublicationIntervalDisplayToParents,
-    required this.withTestsPublicationIntervalDisplayToParents,
-    required this.allowedAnnotations,
-    required this.acquirementLevels,
-    required this.showShorthandForAcquirementLevel,
-    required this.withHistoricalTests,
-    required this.withoutIntermediaryLevelValidationExamInAutomaticValidation,
-    required this.onlyCountExamsForSchoolYearInAutomaticValidation,
-    required this.ponderateSubjectsRelativeToTheirCoefficientDomain,
-    required this.cecrlLevelManagement,
-    required this.langActivityColor,
-    required this.minimumBaremeForMCQQuestion,
-    required this.maximumBaremeForMCQQuestion,
-    required this.maxPointsForMCQ,
-    required this.maxLevelForMCQ,
-    required this.skillGridElementLabelSize,
-    required this.homeworkCommentSize,
-    required this.withConnexionInformationRetrieval,
-    required this.parentAuthorisesPasswordChange,
-    required this.font,
-    required this.fontSize,
-    required this.withAttachedStudents,
-    required this.phoneMask,
-    required this.ectsMaximum,
-    required this.appreciationMaxSize,
-    required this.holidays,
-    required this.showSequences,
-    required this.starts,
-    required this.endings,
-    required this.endingsForSL,
-    required this.transferTimes,
-    required this.sequences,
-    required this.periods,
-    required this.pauses,
-    required this.audioRecordingHomeworkSubmissionMaxSize,
-    required this.validHomeworkSubmissionTypes,
-    required this.applicationCookieName,
-    required this.contextualHelp,
-  }) : super.shared();
-
-  int getWeekNumberForDate(DateTime date) =>
-      firstWeekNumber +
-      ((date.toUtc().millisecondsSinceEpoch -
-                  firstMonday.toUtc().millisecondsSinceEpoch) ~/
-              (Duration.millisecondsPerSecond *
-                  Duration.secondsPerMinute *
-                  Duration.minutesPerHour *
-                  Duration.hoursPerDay)) ~/
-          7;
-
-  DateTime getDateForWeekNumber(int weekNumber) {
-    return firstMonday.add(Duration(days: 7 * (weekNumber - firstWeekNumber)));
-  }
-
-  DateTime timeForSlot(TimeSlot slot, DateTime day) {
-    return day.copyWith(hour: slot.timing.hour, minute: slot.timing.minute);
-  }
-
-  // TODO: fix, when in nether regions (pauses), 0 is returned.
-  int daySlotForTime(DateTime time) {
-    for (int i = 0; i < starts.length; i++) {
-      if (!starts[i].timing.isAfter(time) && endings[i].timing.isAfter(time)) {
-        return i;
-      }
-    }
-
-    return -1;
-  }
-
-  bool isBusinessDay(DateTime day) {
-    day = day.copyWith(isUtc: true);
-
-    if (!businessDays.contains(day.weekday)) {
-      return false;
-    }
-
-    if (holidays.any(
-      (holiday) =>
-          !holiday.startDate.isAfter(day) && !holiday.endDate.isBefore(day),
-    )) {
-      return false;
-    }
-
-    final weekNumber = getWeekNumberForDate(day);
-
-    if (!weekFrequencies.containsKey(weekNumber)) {
-      return false;
-    }
-
-    return true;
-  }
-
-  bool isBusinessHalfDay(DateTime time, [int? slot]) {
-    if (!isBusinessDay(time.toDay())) return false;
-
-    final placeSlot = slot ?? daySlotForTime(time);
-
-    if (placeSlot < 0) return false;
-
-    final int halfDay;
-    if (placeSlot < lunchStartSlot) {
-      halfDay = 0; // Morning
-    } else if (placeSlot >= lunchEndSlot) {
-      halfDay = 1; // Afternoon
-    } else {
-      halfDay = 0; // Somewhere in-between, considered morning afaik
-    }
-
-    return businessHalfDays[halfDay].contains(time.weekday - 1);
-  }
-
-  DateTime findBusinessDay(
-    DateTime anchor,
-    Duration offset, {
-    bool canBeDifferent = false,
-  }) {
-    final startAnchor = anchor.copyWith();
-    while (((offset.isNegative
-                ? !anchor.isBefore(firstDate)
-                : !anchor.isAfter(lastDate)) &&
-            !isBusinessDay(anchor)) ||
-        (canBeDifferent ? false : startAnchor.isAtSameMomentAs(anchor))) {
-      anchor = anchor.add(offset);
-    }
-
-    return anchor;
-  }
-
-  List<DateTime> listBusinessDays() {
-    List<DateTime> days = [];
-    for (
-      DateTime date = firstDate.copyWith();
-      !date.isAfter(lastDate);
-      date = date.add(Duration(days: 1))
-    ) {
-      if (isBusinessDay(date)) days.add(date);
-    }
-
-    return days;
-  }
-
-  Period defaultPeriod(DateTime time) {
-    for (final period in periods) {
-      if (!period.startDate!.isAfter(time) && !period.endDate!.isBefore(time)) {
-        return period;
-      }
-    }
-
-    return periods.first;
-  }
-
-  @override
-  List<VisualIdMixin> get toStore => [...holidays, ...periods];
-}
-
-extension AsSpecificInstanceParameters on MapJsonNavigator {
-  (
-    Map<int, WeekFrequency>,
-    Map<WeekFrequency, int?>,
-    Map<WeekFrequency, WeekFrequency?>,
-  )
-  _buildWeekFrequenciesAndPeriodicity() {
-    Map<int, WeekFrequency> weekFrequencies = {};
-
-    for (final fortnight in [1, 2]) {
-      final frequency = go(
-        'General',
-      ).getL('DomainesFrequences').getL<int>(fortnight);
-      for (final week in frequency) {
-        weekFrequencies[week] = WeekFrequency(
-          label: go('General').getL('LibellesFrequences').get(fortnight),
-          fortnight: fortnight,
-        );
-      }
-    }
-
-    Map<
-      WeekFrequency,
-      ({int? periodicity, int lastWeekNumber, bool ignoreNext})
-    >
-    weekFrequenciesPeriodicity = HashMap();
-    final weekFrequenciesEntries = weekFrequencies.entries.toList(
-      growable: false,
-    );
-    weekFrequenciesEntries.sort((a, b) => a.key.compareTo(b.key));
-    for (
-      int i = weekFrequenciesEntries.first.key;
-      i <= weekFrequenciesEntries.last.key;
-      i++
-    ) {
-      final filtered = weekFrequenciesEntries.where(
-        (element) => element.key == i,
-      );
-
-      if (filtered.isEmpty) {
-        weekFrequenciesPeriodicity.updateAll(
-          (key, value) => (
-            ignoreNext: true,
-            lastWeekNumber: value.lastWeekNumber,
-            periodicity: value.periodicity,
-          ),
-        );
-        continue;
-      }
-
-      final MapEntry(key: weekNumber, value: frequency) = filtered.single;
-
-      if (!weekFrequenciesPeriodicity.containsKey(frequency)) {
-        weekFrequenciesPeriodicity[frequency] = (
-          periodicity: -1,
-          lastWeekNumber: weekNumber,
-          ignoreNext: false,
-        );
-      } else {
-        final value = weekFrequenciesPeriodicity[frequency]!;
-
-        final diff = weekNumber - value.lastWeekNumber;
-        if (value.periodicity != -1 &&
-            diff != value.periodicity &&
-            !value.ignoreNext) {
-          weekFrequenciesPeriodicity.update(
-            frequency,
-            (value) => (
-              periodicity: null,
-              lastWeekNumber: weekNumber,
-              ignoreNext: false,
-            ),
-          );
-        }
-
-        weekFrequenciesPeriodicity.update(
-          frequency,
-          (value) => (
-            periodicity: diff,
-            lastWeekNumber: weekNumber,
-            ignoreNext: false,
-          ),
-        );
-      }
-    }
-
-    Map<WeekFrequency, WeekFrequency?> followingFrequencies = HashMap();
-    for (final MapEntry(key: weekNumber, value: frequency)
-        in weekFrequencies.entries) {
-      final followingFrequency = weekFrequencies[weekNumber + 1];
-      if (followingFrequency == null) continue;
-
-      if (!followingFrequencies.containsKey(frequency)) {
-        followingFrequencies[frequency] = followingFrequency;
-      } else {
-        final expectedFrequency = followingFrequencies[frequency];
-        if (followingFrequency != expectedFrequency) {
-          followingFrequencies[frequency] = null;
-        }
-      }
-    }
-
-    return (
-      weekFrequencies,
-      weekFrequenciesPeriodicity.map(
-        (key, value) => MapEntry(key, value.periodicity),
-      ),
-      followingFrequencies,
-    );
-  }
-
-  /// Pauses aren't accounted for.
-  List<({DateTime start, DateTime end})> _buildTransferTimes(
-    List<TimeSlot> starts,
-    List<TimeSlot> endings,
-  ) {
-    assert(starts.length == endings.length);
-
-    final transferTimes = <({DateTime start, DateTime end})>[];
-
-    DateTime curTime = starts.first.timing;
-    for (int i = 0; i < starts.length; i++) {
-      final start = starts[i];
-      final end = endings[i];
-
-      if (!curTime.isAtSameMomentAs(start.timing)) {
-        transferTimes.add((start: curTime, end: start.timing));
-      }
-
-      curTime = end.timing;
-    }
-
-    return transferTimes;
-  }
-
-  SpecificInstanceParameters asSpecificInstanceParameters(
+  required final Map<String, dynamic> contextualHelp,
+}) extends InstanceParameters {
+  factory decode(
+    Map<String, dynamic> nav,
     SharedInstanceParameters shared,
     Workspace temporaryWorkspace,
   ) {
-    final general = getM('General');
+    final general = nav.getM('General');
 
     final (frequency, frequencyPeriodicity, followingFrequencies) =
-        _buildWeekFrequenciesAndPeriodicity();
+        _buildWeekFrequenciesAndPeriodicity(nav);
 
-    final starts = general.getLM('ListeHeures').mapL((e) => e.asTimeSlot());
-    final endings = general.getLM('ListeHeuresFin').mapL((e) => e.asTimeSlot());
+    final starts = general.getLM('ListeHeures').mapL((e) => TimeSlot.decode(e));
+    final endings = general
+        .getLM('ListeHeuresFin')
+        .mapL((e) => TimeSlot.decode(e));
 
     final transferTimes = _buildTransferTimes(starts, endings);
 
     return SpecificInstanceParameters(
       shared: shared,
-      serverDateTime: get('DateServeurHttp'),
-      demoDateTime: get('DateDemo'),
+      serverDateTime: nav.get('DateServeurHttp'),
+      demoDateTime: nav.get('DateDemo'),
       workspace: Workspace(
         type: temporaryWorkspace.type,
-        label: get('Nom'),
+        label: nav.get('Nom'),
         pathSegment: temporaryWorkspace.pathSegment,
       ),
       hostedInFrance: general.getB('estHebergeEnFrance'),
@@ -553,17 +221,17 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       phoneMask: general.get('maskTelephone'),
       ectsMaximum: general.get('maxECTS'),
       appreciationMaxSize: general.getL<int>('TailleMaxAppreciation'),
-      holidays: general.getLM('listeJoursFeries').mapL((e) => e.asHoliday()),
+      holidays: general.getLM('listeJoursFeries').mapL((e) => .decode(e)),
       showSequences: general.getB('afficherSequences'),
       starts: starts,
       endings: endings,
       endingsForSL: general
           .getLM('ListeHeuresFinPourVS')
-          .mapL((e) => e.asTimeSlot()),
+          .mapL((e) => .decode(e)),
       transferTimes: transferTimes,
       sequences: general.getL<String>('sequences'),
-      periods: general.getLM('ListePeriodes').mapL((e) => e.asPeriod()),
-      pauses: general.getLM('recreations').mapL((e) => e.asPause()),
+      periods: general.getLM('ListePeriodes').mapL((e) => .decode(e)),
+      pauses: general.getLM('recreations').mapL((e) => .decode(e)),
       audioRecordingHomeworkSubmissionMaxSize: general.get(
         'tailleMaxEnregistrementAudioRenduTAF',
       ),
@@ -572,4 +240,253 @@ extension AsSpecificInstanceParameters on MapJsonNavigator {
       contextualHelp: general.get('aideContextuelle'),
     );
   }
+
+  static (
+    Map<int, WeekFrequency>,
+    Map<WeekFrequency, int?>,
+    Map<WeekFrequency, WeekFrequency?>,
+  )
+  _buildWeekFrequenciesAndPeriodicity(Map<String, dynamic> nav) {
+    Map<int, WeekFrequency> weekFrequencies = {};
+
+    for (final fortnight in [1, 2]) {
+      final frequency = nav
+          .go('General')
+          .getL('DomainesFrequences')
+          .getL<int>(fortnight);
+      for (final week in frequency) {
+        weekFrequencies[week] = WeekFrequency(
+          label: nav.go('General').getL('LibellesFrequences').get(fortnight),
+          fortnight: fortnight,
+        );
+      }
+    }
+
+    Map<
+      WeekFrequency,
+      ({int? periodicity, int lastWeekNumber, bool ignoreNext})
+    >
+    weekFrequenciesPeriodicity = HashMap();
+    final weekFrequenciesEntries = weekFrequencies.entries.toList(
+      growable: false,
+    );
+    weekFrequenciesEntries.sort((a, b) => a.key.compareTo(b.key));
+    for (
+      int i = weekFrequenciesEntries.first.key;
+      i <= weekFrequenciesEntries.last.key;
+      i++
+    ) {
+      final filtered = weekFrequenciesEntries.where(
+        (element) => element.key == i,
+      );
+
+      if (filtered.isEmpty) {
+        weekFrequenciesPeriodicity.updateAll(
+          (key, value) => (
+            ignoreNext: true,
+            lastWeekNumber: value.lastWeekNumber,
+            periodicity: value.periodicity,
+          ),
+        );
+        continue;
+      }
+
+      final MapEntry(key: weekNumber, value: frequency) = filtered.single;
+
+      if (!weekFrequenciesPeriodicity.containsKey(frequency)) {
+        weekFrequenciesPeriodicity[frequency] = (
+          periodicity: -1,
+          lastWeekNumber: weekNumber,
+          ignoreNext: false,
+        );
+      } else {
+        final value = weekFrequenciesPeriodicity[frequency]!;
+
+        final diff = weekNumber - value.lastWeekNumber;
+        if (value.periodicity != -1 &&
+            diff != value.periodicity &&
+            !value.ignoreNext) {
+          weekFrequenciesPeriodicity.update(
+            frequency,
+            (value) => (
+              periodicity: null,
+              lastWeekNumber: weekNumber,
+              ignoreNext: false,
+            ),
+          );
+        }
+
+        weekFrequenciesPeriodicity.update(
+          frequency,
+          (value) => (
+            periodicity: diff,
+            lastWeekNumber: weekNumber,
+            ignoreNext: false,
+          ),
+        );
+      }
+    }
+
+    Map<WeekFrequency, WeekFrequency?> followingFrequencies = HashMap();
+    for (final MapEntry(key: weekNumber, value: frequency)
+        in weekFrequencies.entries) {
+      final followingFrequency = weekFrequencies[weekNumber + 1];
+      if (followingFrequency == null) continue;
+
+      if (!followingFrequencies.containsKey(frequency)) {
+        followingFrequencies[frequency] = followingFrequency;
+      } else {
+        final expectedFrequency = followingFrequencies[frequency];
+        if (followingFrequency != expectedFrequency) {
+          followingFrequencies[frequency] = null;
+        }
+      }
+    }
+
+    return (
+      weekFrequencies,
+      weekFrequenciesPeriodicity.map(
+        (key, value) => MapEntry(key, value.periodicity),
+      ),
+      followingFrequencies,
+    );
+  }
+
+  /// Pauses aren't accounted for.
+  static List<({DateTime start, DateTime end})> _buildTransferTimes(
+    List<TimeSlot> starts,
+    List<TimeSlot> endings,
+  ) {
+    assert(starts.length == endings.length);
+
+    final transferTimes = <({DateTime start, DateTime end})>[];
+
+    DateTime curTime = starts.first.timing;
+    for (int i = 0; i < starts.length; i++) {
+      final start = starts[i];
+      final end = endings[i];
+
+      if (!curTime.isAtSameMomentAs(start.timing)) {
+        transferTimes.add((start: curTime, end: start.timing));
+      }
+
+      curTime = end.timing;
+    }
+
+    return transferTimes;
+  }
+
+  int getWeekNumberForDate(DateTime date) =>
+      firstWeekNumber +
+      ((date.toUtc().millisecondsSinceEpoch -
+                  firstMonday.toUtc().millisecondsSinceEpoch) ~/
+              (Duration.millisecondsPerSecond *
+                  Duration.secondsPerMinute *
+                  Duration.minutesPerHour *
+                  Duration.hoursPerDay)) ~/
+          7;
+
+  DateTime getDateForWeekNumber(int weekNumber) {
+    return firstMonday.add(Duration(days: 7 * (weekNumber - firstWeekNumber)));
+  }
+
+  DateTime timeForSlot(TimeSlot slot, DateTime day) {
+    return day.copyWith(hour: slot.timing.hour, minute: slot.timing.minute);
+  }
+
+  // TODO: fix, when in nether regions (pauses), 0 is returned.
+  int daySlotForTime(DateTime time) {
+    for (int i = 0; i < starts.length; i++) {
+      if (!starts[i].timing.isAfter(time) && endings[i].timing.isAfter(time)) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
+  bool isBusinessDay(DateTime day) {
+    day = day.copyWith(isUtc: true);
+
+    if (!businessDays.contains(day.weekday)) {
+      return false;
+    }
+
+    if (holidays.any(
+      (holiday) =>
+          !holiday.startDate.isAfter(day) && !holiday.endDate.isBefore(day),
+    )) {
+      return false;
+    }
+
+    final weekNumber = getWeekNumberForDate(day);
+
+    if (!weekFrequencies.containsKey(weekNumber)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  bool isBusinessHalfDay(DateTime time, [int? slot]) {
+    if (!isBusinessDay(time.toDay())) return false;
+
+    final placeSlot = slot ?? daySlotForTime(time);
+
+    if (placeSlot < 0) return false;
+
+    final int halfDay;
+    if (placeSlot < lunchStartSlot) {
+      halfDay = 0; // Morning
+    } else if (placeSlot >= lunchEndSlot) {
+      halfDay = 1; // Afternoon
+    } else {
+      halfDay = 0; // Somewhere in-between, considered morning afaik
+    }
+
+    return businessHalfDays[halfDay].contains(time.weekday - 1);
+  }
+
+  DateTime findBusinessDay(
+    DateTime anchor,
+    Duration offset, {
+    bool canBeDifferent = false,
+  }) {
+    final startAnchor = anchor.copyWith();
+    while (((offset.isNegative
+                ? !anchor.isBefore(firstDate)
+                : !anchor.isAfter(lastDate)) &&
+            !isBusinessDay(anchor)) ||
+        (canBeDifferent ? false : startAnchor.isAtSameMomentAs(anchor))) {
+      anchor = anchor.add(offset);
+    }
+
+    return anchor;
+  }
+
+  List<DateTime> listBusinessDays() {
+    List<DateTime> days = [];
+    for (
+      DateTime date = firstDate.copyWith();
+      !date.isAfter(lastDate);
+      date = date.add(const Duration(days: 1))
+    ) {
+      if (isBusinessDay(date)) days.add(date);
+    }
+
+    return days;
+  }
+
+  Period defaultPeriod(DateTime time) {
+    for (final period in periods) {
+      if (!period.startDate!.isAfter(time) && !period.endDate!.isBefore(time)) {
+        return period;
+      }
+    }
+
+    return periods.first;
+  }
+
+  @override
+  List<VisualIdMixin> get toStore => [...holidays, ...periods];
 }

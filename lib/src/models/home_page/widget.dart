@@ -5,8 +5,6 @@ import 'package:antinote/src/helpers/datetime.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/break.dart';
-import 'package:antinote/src/models/classes/classes.dart';
 import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/exam/preview.dart';
 import 'package:antinote/src/models/grades/page.dart';
@@ -17,7 +15,6 @@ import 'package:antinote/src/models/news/news.dart';
 import 'package:antinote/src/models/school_life_events/school_life_events.dart';
 import 'package:antinote/src/models/timetable.dart';
 import 'package:antinote/src/models/workspace/type.dart';
-import 'package:meta/meta.dart';
 
 part 'widgets/actualites.dart';
 part 'widgets/ds.dart';
@@ -37,32 +34,21 @@ List<WidgetDefinition> widgetDefinitions = [
   Notes.definition,
 ];
 
-@immutable
-class WidgetDefinition<T extends HomePageWidget> {
-  final HomePageWidgetType type;
-  final bool Function(MapJsonNavigator nav, RemoteSession session) shouldCreate;
-  final T Function(MapJsonNavigator nav, RemoteSession session) create;
-  final T Function(T old, MapJsonNavigator nav, RemoteSession session)? update;
+final class const WidgetDefinition<T extends HomePageWidget>({
+  required final HomePageWidgetType type,
+  required final bool Function(MapJsonNavigator nav, RemoteSession session)
+  shouldCreate,
+  required final T Function(MapJsonNavigator nav, RemoteSession session) create,
+  final T Function(T old, MapJsonNavigator nav, RemoteSession session)? update,
+});
 
-  const WidgetDefinition({
-    required this.type,
-    required this.shouldCreate,
-    required this.create,
-    this.update,
-  });
-}
-
-sealed class HomePageWidget {
-  const HomePageWidget();
-
+sealed class const HomePageWidget() {
   HomePageWidgetType get widgetId;
-
-  HomePageWidget.decode(MapJsonNavigator nav);
 
   List<VisualIdMixin> get toStore;
 }
 
-/// Scrapped from EGenreWidget
+/// Scrapped from EGenreWidget, TODO localize.
 enum HomePageWidgetType {
   discussions("discussions", 0),
   casier("casier", 1),

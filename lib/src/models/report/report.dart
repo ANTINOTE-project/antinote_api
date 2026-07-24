@@ -12,161 +12,108 @@ import 'appreciation.dart';
 import 'display_information.dart';
 import 'service_category.dart';
 
-sealed class BaseReport {
-  final bool canEdit;
+sealed class const BaseReport({required final bool canEdit}) {
+  factory decode(Map<String, dynamic> nav) {
+    if (nav.has('Message')) return UnpublishedReport.decode(nav);
 
-  const BaseReport({required this.canEdit});
-}
-
-extension AsReport on MapJsonNavigator {
-  BaseReport asReport() {
-    if (has('Message')) return asUnpublishedReport();
-
-    return asPublishedReport();
+    return PublishedReport.decode(nav);
   }
 }
 
-final class UnpublishedReport implements BaseReport {
-  @override
-  final bool canEdit;
-  final String publishDateString;
-
-  const UnpublishedReport({
-    required this.canEdit,
-    required this.publishDateString,
-  });
+final class const UnpublishedReport({
+  @override required final bool canEdit,
+  required final String publishDateString,
+}) implements BaseReport {
+  factory decode(Map<String, dynamic> nav) => .new(
+    canEdit: nav.getB('Editable'),
+    publishDateString: nav.get('Message'),
+  );
 }
 
-extension AsUnpublishedReport on MapJsonNavigator {
-  UnpublishedReport asUnpublishedReport() {
-    return UnpublishedReport(
-      canEdit: getB('Editable'),
-      publishDateString: get('Message'),
-    );
-  }
-}
+final class PublishedReport({
+  @override required final bool canEdit,
 
-final class PublishedReport implements BaseReport {
-  @override
-  final bool canEdit;
+  required final StudentClass clazz,
 
-  final StudentClass clazz;
+  required final ReportDisplayInformation displayInformation,
 
-  final ReportDisplayInformation displayInformation;
+  required final List<ReportService> services,
+  required final List<ServiceCategory> serviceCategories,
 
-  final List<ReportService> services;
-  final List<ServiceCategory> serviceCategories;
+  required final bool serviceWithGradesExists,
+  required final bool serviceWithoutGradesExists,
 
-  final bool serviceWithGradesExists;
-  final bool serviceWithoutGradesExists;
+  required final Grade? studentAverage,
+  required final Grade classAverage,
 
-  final Grade? studentAverage;
-  final Grade classAverage;
+  required final String absenceString,
+  required final String tardnessString,
+  required final String punitionsString,
+  required final String sanctionsString,
 
-  final String absenceString;
-  final String tardnessString;
-  final String punitionsString;
-  final String sanctionsString;
+  required final Map<String, dynamic>? orientationData,
+  required final List<dynamic>? attestationData,
+  required final List<dynamic>? studentAttestationData,
 
-  final Map<String, dynamic>? orientationData;
-  final List<dynamic>? attestationData;
-  final List<dynamic>? studentAttestationData;
+  required final Person? student,
+  required final int? studentSortOrder,
 
-  final Person? student;
-  final int? studentSortOrder;
+  required final bool canEditAppreciations,
+  required final List<ReportAppreciation> appreciations,
 
-  final bool canEditAppreciations;
-  final List<ReportAppreciation> appreciations;
+  required final dynamic educativePathData,
+  required final dynamic engagements,
+  required final List<ReportMention>? possibleMentions,
+  required final List<dynamic>? annotations,
 
-  final dynamic educativePathData;
-  final dynamic engagements;
-  final List<ReportMention>? possibleMentions;
-  final List<dynamic>? annotations;
+  required final Uint8List? graph,
 
-  final Uint8List? graph;
+  required final Grade? defaultTheoreticalMaxGrade,
+}) implements BaseReport {
+  factory decode(Map<String, dynamic> nav) {
+    final List<ServiceCategory> categories = nav
+        .getLM('ListeSurMatieres')
+        .mapL((e) => .decode(e));
+    return .new(
+      canEdit: nav.get('Editable'),
+      clazz: .decode(nav.getM('Classe')),
+      displayInformation: .decode(nav.getM('ParametresAffichages')),
+      services: nav.getLM('ListeServices').mapL((e) => .decode(e, categories))
+        ..sort((a, b) {
+          final globalRank = a.regroupementRank.compareTo(b.regroupementRank);
+          if (globalRank != 0) return globalRank;
 
-  final Grade? defaultTheoreticalMaxGrade;
-
-  const PublishedReport({
-    required this.canEdit,
-    required this.clazz,
-    required this.displayInformation,
-    required this.services,
-    required this.serviceCategories,
-    required this.serviceWithGradesExists,
-    required this.serviceWithoutGradesExists,
-    required this.studentAverage,
-    required this.classAverage,
-    required this.absenceString,
-    required this.tardnessString,
-    required this.punitionsString,
-    required this.sanctionsString,
-    required this.orientationData,
-    required this.attestationData,
-    required this.studentAttestationData,
-    required this.student,
-    required this.studentSortOrder,
-    required this.canEditAppreciations,
-    required this.appreciations,
-    required this.educativePathData,
-    required this.engagements,
-    required this.possibleMentions,
-    required this.annotations,
-    required this.graph,
-    required this.defaultTheoreticalMaxGrade,
-  });
-}
-
-extension AsPublishedReport on MapJsonNavigator {
-  PublishedReport asPublishedReport() {
-    final categories = getLM(
-      'ListeSurMatieres',
-    ).mapL((e) => e.asServiceCategory());
-    return PublishedReport(
-      canEdit: get('Editable'),
-      clazz: getM('Classe').asStudentClass(),
-      displayInformation: getM(
-        'ParametresAffichages',
-      ).asReportDisplayInformation(),
-      services:
-          getLM(
-            'ListeServices',
-          ).mapL((e) => e.asReportService(categories))..sort((a, b) {
-            final globalRank = a.regroupementRank.compareTo(b.regroupementRank);
-            if (globalRank != 0) return globalRank;
-
-            return a.rankWithinRegroupement.compareTo(b.rankWithinRegroupement);
-          }),
+          return a.rankWithinRegroupement.compareTo(b.rankWithinRegroupement);
+        }),
       serviceCategories: categories,
-      serviceWithGradesExists: get('existeServiceAvecNotes'),
-      serviceWithoutGradesExists: get('existeServiceSansNotes'),
-      studentAverage: go('General').get('MoyenneEleve'),
-      classAverage: go('General').get('MoyenneClasse'),
-      absenceString: go('ListeAbsences').get('strAbsences'),
-      tardnessString: go('ListeAbsences').get('strRetards'),
-      punitionsString: go('ListeAbsences').get('strPunitions'),
-      sanctionsString: go('ListeAbsences').get('strSanctions'),
-      orientationData: mGo('Orientation'),
-      attestationData: mGetL('ListeAttestations'),
-      studentAttestationData: mGetL('listeAttestationsEleve'),
-      student: mGetM('eleve')?.asPerson(),
-      studentSortOrder: mGo('eleve')?.get('P'),
-      canEditAppreciations: go('ObjetListeAppreciations').get('Editable'),
-      appreciations: go(
-        'ObjetListeAppreciations',
-      ).getLM('ListeAppreciations').mapL((e) => e.asReportAppreciation()),
-      educativePathData: get('ParcoursEducatif'),
-      engagements: get('listeEngagements'),
-      possibleMentions: mGetLM(
-        'listeMentions',
-      )?.mapL((e) => e.asReportMention()),
-      annotations: mGetL('listeAnnotations'),
-      graph: has('graphe')
+      serviceWithGradesExists: nav.get('existeServiceAvecNotes'),
+      serviceWithoutGradesExists: nav.get('existeServiceSansNotes'),
+      studentAverage: nav.go('General').get('MoyenneEleve'),
+      classAverage: nav.go('General').get('MoyenneClasse'),
+      absenceString: nav.go('ListeAbsences').get('strAbsences'),
+      tardnessString: nav.go('ListeAbsences').get('strRetards'),
+      punitionsString: nav.go('ListeAbsences').get('strPunitions'),
+      sanctionsString: nav.go('ListeAbsences').get('strSanctions'),
+      orientationData: nav.mGo('Orientation'),
+      attestationData: nav.mGetL('ListeAttestations'),
+      studentAttestationData: nav.mGetL('listeAttestationsEleve'),
+      student: nav.mGetM('eleve').inn((value) => .decode(value)),
+      studentSortOrder: nav.mGo('eleve')?.get('P'),
+      canEditAppreciations: nav.go('ObjetListeAppreciations').get('Editable'),
+      appreciations: nav
+          .go('ObjetListeAppreciations')
+          .getLM('ListeAppreciations')
+          .mapL((e) => .decode(e)),
+      educativePathData: nav.get('ParcoursEducatif'),
+      engagements: nav.get('listeEngagements'),
+      possibleMentions: nav.mGetLM('listeMentions')?.mapL((e) => .decode(e)),
+      annotations: nav.mGetL('listeAnnotations'),
+      graph: nav.has('graphe')
           ? base64Decode(
-              get<String>('graphe').replaceAll(RegExp(r'[\r\n]'), ''),
+              nav.get<String>('graphe').replaceAll(RegExp(r'[\r\n]'), ''),
             )
           : null,
-      defaultTheoreticalMaxGrade: get('baremeParDefaut'),
+      defaultTheoreticalMaxGrade: nav.get('baremeParDefaut'),
     );
   }
 }

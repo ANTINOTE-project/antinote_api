@@ -41,7 +41,7 @@ class LatestGradesPageAccessor extends StatelessAccessor<LatestGradesPage> {
   @override
   FutureOr<LatestGradesPage> interpretStateless(
     MapJsonNavigator<dynamic> nav,
-  ) => nav.asLatestGradesPage();
+  ) => .decode(nav);
 
   @override
   List<VisualIdMixin> store(LatestGradesPage result) => [

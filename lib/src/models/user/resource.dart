@@ -6,11 +6,12 @@ import 'package:antinote/src/models/tab.dart';
 
 import '../../helpers/visual_id.dart';
 
-final class StudentClass with VisualIdMixin {
-  final String id;
-  final String name;
-
-  const StudentClass({required this.id, required this.name});
+final class const StudentClass({
+  required final String id,
+  required final String name,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(id: nav.get('N'), name: nav.get('L'));
 
   Map<String, dynamic> toRaw() => {'L': name, 'N': id};
 
@@ -23,36 +24,42 @@ final class StudentClass with VisualIdMixin {
   }
 }
 
-extension AsStudentClass on MapJsonNavigator {
-  StudentClass asStudentClass() {
-    return StudentClass(id: get('N'), name: get('L'));
+final class const UserResource({
+  required final String id,
+  required final int type,
+  required final String name,
+  required final StudentClass? studentClass,
+  required final String? establishmentName,
+  required final Uint8List? profilePicture,
+  required final bool isDirector,
+  required final bool isDelegate,
+  required final bool isMemberCa,
+  required final List<Tab> tabsForPeriods,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) {
+    List<Tab> tabs = [];
+
+    if (nav.has('listeOngletsPourPeriodes')) {
+      for (final rawTab in nav.getLM('listeOngletsPourPeriodes')) {
+        tabs.add(.decode(rawTab));
+      }
+    }
+
+    return .new(
+      id: nav.get('N'),
+      type: nav.get('G'),
+      name: nav.get('L'),
+      studentClass: nav.mGo('classeDEleve').inn((value) => .decode(value)),
+      establishmentName: nav.mGo('Etablissement')?.get('L'),
+      profilePicture: (nav.get('avecPhoto') ?? false)
+          ? nav.get('photoBase64')
+          : null,
+      isDirector: nav.get('estDirecteur') ?? false,
+      isDelegate: nav.get('estDelegue') ?? false,
+      isMemberCa: nav.get('estMembreCA') ?? false,
+      tabsForPeriods: tabs,
+    );
   }
-}
-
-final class UserResource with VisualIdMixin {
-  final String id;
-  final int type;
-  final String name;
-  final StudentClass? studentClass;
-  final String? establishmentName;
-  final Uint8List? profilePicture;
-  final bool isDirector;
-  final bool isDelegate;
-  final bool isMemberCa;
-  final List<Tab> tabsForPeriods;
-
-  const UserResource({
-    required this.id,
-    required this.type,
-    required this.name,
-    required this.studentClass,
-    required this.establishmentName,
-    required this.profilePicture,
-    required this.isDirector,
-    required this.isDelegate,
-    required this.isMemberCa,
-    required this.tabsForPeriods,
-  });
 
   Map<String, dynamic> toRaw() => {'G': type, 'L': name, 'N': id};
 
@@ -65,30 +72,5 @@ final class UserResource with VisualIdMixin {
     yield name.visualIdData();
     yield* studentClass?.collectVisualIdData() ?? [];
     yield establishmentName?.visualIdData();
-  }
-}
-
-extension AsUserResource on MapJsonNavigator {
-  UserResource asUserResource() {
-    List<Tab> tabs = [];
-
-    if (has('listeOngletsPourPeriodes')) {
-      for (final rawTab in getLM('listeOngletsPourPeriodes')) {
-        tabs.add(rawTab.asTab());
-      }
-    }
-
-    return UserResource(
-      id: get('N'),
-      type: get('G'),
-      name: get('L'),
-      studentClass: mGo('classeDEleve')?.asStudentClass(),
-      establishmentName: mGo('Etablissement')?.get('L'),
-      profilePicture: (get('avecPhoto') ?? false) ? get('photoBase64') : null,
-      isDirector: get('estDirecteur') ?? false,
-      isDelegate: get('estDelegue') ?? false,
-      isMemberCa: get('estMembreCA') ?? false,
-      tabsForPeriods: tabs,
-    );
   }
 }

@@ -1,19 +1,10 @@
 import 'package:antinote/src/helpers/json.dart';
 
-final class DiscussionLabel {
-  final String label;
-  final String id;
-  final int type;
-
-  const DiscussionLabel({
-    required this.label,
-    required this.id,
-    required this.type,
-  });
-}
-
-extension AsDiscussionLabel on MapJsonNavigator {
-  DiscussionLabel asDiscussionLabel() {
-    return DiscussionLabel(label: get('L'), id: get('N'), type: get('G'));
-  }
+final class const DiscussionLabel({
+  required final String label,
+  required final String id,
+  required final int type,
+}) {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(label: nav.get('L'), id: nav.get('N'), type: nav.get('G'));
 }

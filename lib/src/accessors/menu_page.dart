@@ -39,9 +39,7 @@ class MenuPageAccessor extends StatelessAccessor<MenuPage> {
   }
 
   @override
-  FutureOr<MenuPage> interpretStateless(MapJsonNavigator nav) {
-    return nav.asMenuPage();
-  }
+  FutureOr<MenuPage> interpretStateless(MapJsonNavigator nav) => .decode(nav);
 
   @override
   List<VisualIdMixin> store(MenuPage result) => [

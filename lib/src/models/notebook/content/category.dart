@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/enum_id.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/helpers/cache.dart';
 
 enum NotebookContentCategoryType implements EnumId {
   user(0),
@@ -28,18 +28,26 @@ enum NotebookContentCategoryType implements EnumId {
   const NotebookContentCategoryType(this.id);
 }
 
-final class NotebookContentCategory with VisualIdMixin {
-  final String? id;
-  final String? label;
-  final NotebookContentCategoryType type;
-  final String iconLabel;
+final class const NotebookContentCategory({
+  required final String? id,
+  required final String? label,
+  required final NotebookContentCategoryType type,
+  required final String iconLabel,
+}) with VisualIdMixin {
+  static bool canDecode(Map<String, dynamic> nav) =>
+      nav.has('L') && nav.get('N') != '0';
 
-  const NotebookContentCategory({
-    required this.id,
-    required this.label,
-    required this.type,
-    required this.iconLabel,
-  });
+  static NotebookContentCategory? tryDecode(Map<String, dynamic> nav) =>
+      !canDecode(nav) ? null : .decode(nav);
+
+  factory decode(Map<String, dynamic> nav) {
+    return .new(
+      id: nav.get('N'),
+      label: nav.get('L'),
+      type: NotebookContentCategoryType.values.byId(nav.get('G')),
+      iconLabel: nav.get('libelleIcone'),
+    );
+  }
 
   @override
   CacheType? get cacheType => .NOTEBOOK_CONTENT_CATEGORY;
@@ -49,18 +57,5 @@ final class NotebookContentCategory with VisualIdMixin {
     yield label?.visualIdData();
     yield type.id.byteVisualIdData();
     yield iconLabel.visualIdData();
-  }
-}
-
-extension AsNotebookContentCategory on MapJsonNavigator {
-  NotebookContentCategory? mAsNotebookContentCategory() {
-    if (!has('L') || get('N') == '0') return null;
-
-    return NotebookContentCategory(
-      id: get('N'),
-      label: get('L'),
-      type: NotebookContentCategoryType.values.byId(get('G')),
-      iconLabel: get('libelleIcone'),
-    );
   }
 }

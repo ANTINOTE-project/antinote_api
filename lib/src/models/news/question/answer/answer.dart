@@ -6,29 +6,32 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/news/question/answer/type.dart';
 
-sealed class NewsQuestionAnswer with VisualIdMixin {
+sealed class const NewsQuestionAnswer({
   /// If [withAnswer] is true, this is the ID of the answer as a String, or else
   /// it is the answer to give when giving the answer as a String with an int
   /// inside of it, it's some kind of slot.
-  final String id;
-  final bool withAnswer;
-  final bool answerAwaited;
-  final DateTime? answeredOn;
-  final String? respondentFullName;
-  final bool? isRespondent;
+  required final String id,
+  required final bool withAnswer,
+  required final bool answerAwaited,
+  required final DateTime? answeredOn,
+  required final String? respondentFullName,
+  required final bool? isRespondent,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav, NewsQuestionAnswerType type) {
+    final message = NewsQuestionAnswerMessage.decode(nav);
+    return switch (type) {
+      .receiptAcknowledgment => RANewsQuestionAnswer.decode(nav, message),
+      .withoutReceiptAcknowledgment => WithoutRANewsQuestionAnswer.decode(nav, message),
+      .singleChoice => SingleChoiceNewsQuestionAnswer.decode(nav, message),
+      .multipleChoices => MultipleChoiceNewsQuestionAnswer.decode(nav, message),
+      .withoutResponse => NoResponseNewsQuestionAnswer.decode(nav, message),
+      .textual => TextualResponseNewsQuestionAnswer.decode(nav, message),
+    };
+  }
 
   dynamic get responseValue;
 
   String? get freeResponseValue;
-
-  const NewsQuestionAnswer({
-    required this.id,
-    required this.withAnswer,
-    required this.answerAwaited,
-    required this.answeredOn,
-    required this.respondentFullName,
-    required this.isRespondent,
-  });
 
   @override
   CacheType? get cacheType => .NEWS_QUESTION_ANSWER;
@@ -43,26 +46,32 @@ sealed class NewsQuestionAnswer with VisualIdMixin {
   }
 }
 
-final class RANewsQuestionAnswer extends NewsQuestionAnswer {
-  final bool answered;
-
-  const RANewsQuestionAnswer({
-    required super.id,
-    required super.withAnswer,
-    required super.answerAwaited,
-    required super.answeredOn,
-    required super.respondentFullName,
-    required super.isRespondent,
-  }) : answered = withAnswer;
+final class const RANewsQuestionAnswer({
+  required super.id,
+  required super.withAnswer,
+  required super.answerAwaited,
+  required super.answeredOn,
+  required super.respondentFullName,
+  required super.isRespondent,
+}) extends NewsQuestionAnswer {
+  factory decode(Map<String, dynamic> nav, NewsQuestionAnswerMessage message) =>
+      .new(
+        id: message.id,
+        withAnswer: message.withAnswer,
+        answerAwaited: message.answerAwaited,
+        answeredOn: message.answeredOn,
+        respondentFullName: message.respondentFullName,
+        isRespondent: message.isRespondent,
+      );
 
   @override
   String? get freeResponseValue => null;
 
   @override
-  get responseValue => answered ? '' : null;
+  get responseValue => withAnswer ? '' : null;
 
   RANewsQuestionAnswer buildAnswered() {
-    return RANewsQuestionAnswer(
+    return .new(
       id: id,
       withAnswer: true,
       answerAwaited: answerAwaited,
@@ -75,21 +84,26 @@ final class RANewsQuestionAnswer extends NewsQuestionAnswer {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield* super.collectVisualIdData();
-    yield answered.visualIdData();
+    yield withAnswer.visualIdData();
   }
 }
 
-final class WithoutRANewsQuestionAnswer extends NewsQuestionAnswer {
-  final bool answered;
-
-  const WithoutRANewsQuestionAnswer({
-    required super.id,
-    required super.withAnswer,
-    required super.answerAwaited,
-    required super.answeredOn,
-    required super.respondentFullName,
-    required super.isRespondent,
-  }) : answered = false;
+final class const WithoutRANewsQuestionAnswer({
+  required super.id,
+  required super.withAnswer,
+  required super.answerAwaited,
+  required super.answeredOn,
+  required super.respondentFullName,
+  required super.isRespondent,
+}) extends NewsQuestionAnswer {
+  factory decode(Map<String, dynamic> nav, NewsQuestionAnswerMessage message) => .new(
+    id: message.id,
+    withAnswer: message.withAnswer,
+    answerAwaited: message.answerAwaited,
+    answeredOn: message.answeredOn,
+    respondentFullName: message.respondentFullName,
+    isRespondent: message.isRespondent,
+  );
 
   @override
   String? get freeResponseValue => null;
@@ -100,28 +114,23 @@ final class WithoutRANewsQuestionAnswer extends NewsQuestionAnswer {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield* super.collectVisualIdData();
-    yield answered.visualIdData();
+    yield false.visualIdData();
   }
 }
 
-sealed class ChoiceNewsQuestionAnswer extends NewsQuestionAnswer {
-  final Set<int> answers;
-  final String? freeResponse;
+sealed class const ChoiceNewsQuestionAnswer({
+  required final Set<int> answers,
+  required final String? freeResponse,
 
-  final int responseMaxSize;
+  required final int responseMaxSize,
 
-  const ChoiceNewsQuestionAnswer({
-    required super.id,
-    required super.withAnswer,
-    required super.answerAwaited,
-    required super.answeredOn,
-    required super.respondentFullName,
-    required super.isRespondent,
-    required this.answers,
-    required this.freeResponse,
-    required this.responseMaxSize,
-  });
-
+  required super.id,
+  required super.withAnswer,
+  required super.answerAwaited,
+  required super.answeredOn,
+  required super.respondentFullName,
+  required super.isRespondent,
+}) extends NewsQuestionAnswer {
   @override
   String? get freeResponseValue => freeResponse;
 
@@ -138,20 +147,30 @@ sealed class ChoiceNewsQuestionAnswer extends NewsQuestionAnswer {
   }
 }
 
-final class SingleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
-  int? get answer => answers.singleOrNull;
+final class const SingleChoiceNewsQuestionAnswer({
+  required super.id,
+  required super.withAnswer,
+  required super.answerAwaited,
+  required super.answeredOn,
+  required super.respondentFullName,
+  required super.isRespondent,
+  required super.answers,
+  required super.freeResponse,
+  required super.responseMaxSize,
+}) extends ChoiceNewsQuestionAnswer {
+  factory decode(Map<String, dynamic> nav, NewsQuestionAnswerMessage message) => .new(
+    id: message.id,
+    withAnswer: message.withAnswer,
+    answerAwaited: message.answerAwaited,
+    answeredOn: message.answeredOn,
+    respondentFullName: message.respondentFullName,
+    isRespondent: message.isRespondent,
+    answers: nav.get('valeurReponse') ?? {},
+    freeResponse: nav.get('valeurReponseLibre'),
+    responseMaxSize: nav.get('tailleReponse') ?? 200,
+  );
 
-  const SingleChoiceNewsQuestionAnswer({
-    required super.id,
-    required super.withAnswer,
-    required super.answerAwaited,
-    required super.answeredOn,
-    required super.respondentFullName,
-    required super.isRespondent,
-    required super.answers,
-    required super.freeResponse,
-    required super.responseMaxSize,
-  });
+  int? get answer => answers.singleOrNull;
 
   @override
   SingleChoiceNewsQuestionAnswer buildAnswered(
@@ -172,18 +191,28 @@ final class SingleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
   }
 }
 
-final class MultipleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
-  const MultipleChoiceNewsQuestionAnswer({
-    required super.id,
-    required super.withAnswer,
-    required super.answerAwaited,
-    required super.answeredOn,
-    required super.respondentFullName,
-    required super.isRespondent,
-    required super.answers,
-    required super.freeResponse,
-    required super.responseMaxSize,
-  });
+final class const MultipleChoiceNewsQuestionAnswer({
+  required super.id,
+  required super.withAnswer,
+  required super.answerAwaited,
+  required super.answeredOn,
+  required super.respondentFullName,
+  required super.isRespondent,
+  required super.answers,
+  required super.freeResponse,
+  required super.responseMaxSize,
+}) extends ChoiceNewsQuestionAnswer {
+  factory decode(Map<String, dynamic> nav, NewsQuestionAnswerMessage message) => .new(
+    id: message.id,
+    withAnswer: message.withAnswer,
+    answerAwaited: message.answerAwaited,
+    answeredOn: message.answeredOn,
+    respondentFullName: message.respondentFullName,
+    isRespondent: message.isRespondent,
+    answers: nav.get('valeurReponse') ?? {},
+    freeResponse: nav.get('valeurReponseLibre'),
+    responseMaxSize: nav.get('tailleReponse') ?? 200,
+  );
 
   @override
   MultipleChoiceNewsQuestionAnswer buildAnswered(
@@ -204,15 +233,22 @@ final class MultipleChoiceNewsQuestionAnswer extends ChoiceNewsQuestionAnswer {
   }
 }
 
-final class NoResponseNewsQuestionAnswer extends NewsQuestionAnswer {
-  const NoResponseNewsQuestionAnswer({
-    required super.id,
-    required super.withAnswer,
-    required super.answerAwaited,
-    required super.answeredOn,
-    required super.respondentFullName,
-    required super.isRespondent,
-  });
+final class const NoResponseNewsQuestionAnswer({
+  required super.id,
+  required super.withAnswer,
+  required super.answerAwaited,
+  required super.answeredOn,
+  required super.respondentFullName,
+  required super.isRespondent,
+}) extends NewsQuestionAnswer {
+  factory decode(Map<String, dynamic> nav, NewsQuestionAnswerMessage message) => .new(
+    id: message.id,
+    withAnswer: message.withAnswer,
+    answerAwaited: message.answerAwaited,
+    answeredOn: message.answeredOn,
+    respondentFullName: message.respondentFullName,
+    isRespondent: message.isRespondent,
+  );
 
   @override
   String? get freeResponseValue => null;
@@ -221,20 +257,26 @@ final class NoResponseNewsQuestionAnswer extends NewsQuestionAnswer {
   get responseValue => null;
 }
 
-final class TextualResponseNewsQuestionAnswer extends NewsQuestionAnswer {
-  final String answer;
-  final int responseMaxSize;
-
-  const TextualResponseNewsQuestionAnswer({
-    required super.id,
-    required super.withAnswer,
-    required super.answerAwaited,
-    required super.answeredOn,
-    required super.respondentFullName,
-    required super.isRespondent,
-    required this.answer,
-    required this.responseMaxSize,
-  });
+final class const TextualResponseNewsQuestionAnswer({
+  required final String answer,
+  required final int responseMaxSize,
+  required super.id,
+  required super.withAnswer,
+  required super.answerAwaited,
+  required super.answeredOn,
+  required super.respondentFullName,
+  required super.isRespondent,
+}) extends NewsQuestionAnswer {
+  factory decode(Map<String, dynamic> nav, NewsQuestionAnswerMessage message) => .new(
+    id: message.id,
+    withAnswer: message.withAnswer,
+    answerAwaited: message.answerAwaited,
+    answeredOn: message.answeredOn,
+    respondentFullName: message.respondentFullName,
+    isRespondent: message.isRespondent,
+    answer: nav.get('valeurReponse') ?? '',
+    responseMaxSize: nav.get('tailleReponse') ?? 200,
+  );
 
   @override
   String? get freeResponseValue => null;
@@ -256,131 +298,21 @@ final class TextualResponseNewsQuestionAnswer extends NewsQuestionAnswer {
   }
 }
 
-final class NewsQuestionAnswerMessage {
-  final String id;
-  final bool withAnswer;
-  final bool answerAwaited;
-  final DateTime? answeredOn;
-  final String? respondentFullName;
-  final bool? isRespondent;
-
-  const NewsQuestionAnswerMessage({
-    required this.id,
-    required this.withAnswer,
-    required this.answerAwaited,
-    required this.answeredOn,
-    required this.respondentFullName,
-    required this.isRespondent,
-  });
+final class const NewsQuestionAnswerMessage({
+  required final String id,
+  required final bool withAnswer,
+  required final bool answerAwaited,
+  required final DateTime? answeredOn,
+  required final String? respondentFullName,
+  required final bool? isRespondent,
+}) {
+  factory decode(Map<String, dynamic> nav) => .new(
+    id: nav.get('N'),
+    withAnswer: nav.get('avecReponse'),
+    answerAwaited: nav.get('estReponseAttendue'),
+    answeredOn: nav.get('reponduLe'),
+    respondentFullName: nav.get('strRepondant'),
+    isRespondent: nav.get('estRepondant'),
+  );
 }
 
-extension AsNewsQuestionAnswer on MapJsonNavigator {
-  NewsQuestionAnswerMessage asNewsQuestionAnswerMessage() {
-    return NewsQuestionAnswerMessage(
-      id: get('N'),
-      withAnswer: get('avecReponse'),
-      answerAwaited: get('estReponseAttendue'),
-      answeredOn: get('reponduLe'),
-      respondentFullName: get('strRepondant'),
-      isRespondent: get('estRepondant'),
-    );
-  }
-
-  NewsQuestionAnswer asNewsQuestionAnswer(NewsQuestionAnswerType type) {
-    final message = asNewsQuestionAnswerMessage();
-    return switch (type) {
-      .receiptAcknowledgment => asRANewsQuestionAnswer(message),
-      .withoutReceiptAcknowledgment => asWithoutRANewsQuestionAnswer(message),
-      .singleChoice => asSingleChoiceNewsQuestionAnswer(message),
-      .multipleChoices => asMultipleChoiceNewsQuestionAnswer(message),
-      .withoutResponse => asNoResponseNewsQuestionAnswer(message),
-      .textual => asTextualResponseNewsQuestionAnswer(message),
-    };
-  }
-
-  RANewsQuestionAnswer asRANewsQuestionAnswer(
-    NewsQuestionAnswerMessage message,
-  ) {
-    return RANewsQuestionAnswer(
-      id: message.id,
-      withAnswer: message.withAnswer,
-      answerAwaited: message.answerAwaited,
-      answeredOn: message.answeredOn,
-      respondentFullName: message.respondentFullName,
-      isRespondent: message.isRespondent,
-    );
-  }
-
-  WithoutRANewsQuestionAnswer asWithoutRANewsQuestionAnswer(
-    NewsQuestionAnswerMessage message,
-  ) {
-    return WithoutRANewsQuestionAnswer(
-      id: message.id,
-      withAnswer: message.withAnswer,
-      answerAwaited: message.answerAwaited,
-      answeredOn: message.answeredOn,
-      respondentFullName: message.respondentFullName,
-      isRespondent: message.isRespondent,
-    );
-  }
-
-  NoResponseNewsQuestionAnswer asNoResponseNewsQuestionAnswer(
-    NewsQuestionAnswerMessage message,
-  ) {
-    return NoResponseNewsQuestionAnswer(
-      id: message.id,
-      withAnswer: message.withAnswer,
-      answerAwaited: message.answerAwaited,
-      answeredOn: message.answeredOn,
-      respondentFullName: message.respondentFullName,
-      isRespondent: message.isRespondent,
-    );
-  }
-
-  SingleChoiceNewsQuestionAnswer asSingleChoiceNewsQuestionAnswer(
-    NewsQuestionAnswerMessage message,
-  ) {
-    return SingleChoiceNewsQuestionAnswer(
-      id: message.id,
-      withAnswer: message.withAnswer,
-      answerAwaited: message.answerAwaited,
-      answeredOn: message.answeredOn,
-      respondentFullName: message.respondentFullName,
-      isRespondent: message.isRespondent,
-      answers: get('valeurReponse') ?? {},
-      freeResponse: get('valeurReponseLibre'),
-      responseMaxSize: get('tailleReponse') ?? 200,
-    );
-  }
-
-  MultipleChoiceNewsQuestionAnswer asMultipleChoiceNewsQuestionAnswer(
-    NewsQuestionAnswerMessage message,
-  ) {
-    return MultipleChoiceNewsQuestionAnswer(
-      id: message.id,
-      withAnswer: message.withAnswer,
-      answerAwaited: message.answerAwaited,
-      answeredOn: message.answeredOn,
-      respondentFullName: message.respondentFullName,
-      isRespondent: message.isRespondent,
-      answers: get('valeurReponse') ?? {},
-      freeResponse: get('valeurReponseLibre'),
-      responseMaxSize: get('tailleReponse') ?? 200,
-    );
-  }
-
-  TextualResponseNewsQuestionAnswer asTextualResponseNewsQuestionAnswer(
-    NewsQuestionAnswerMessage message,
-  ) {
-    return TextualResponseNewsQuestionAnswer(
-      id: message.id,
-      withAnswer: message.withAnswer,
-      answerAwaited: message.answerAwaited,
-      answeredOn: message.answeredOn,
-      respondentFullName: message.respondentFullName,
-      isRespondent: message.isRespondent,
-      answer: get('valeurReponse') ?? '',
-      responseMaxSize: get('tailleReponse') ?? 200,
-    );
-  }
-}

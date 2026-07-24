@@ -1,20 +1,60 @@
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/models/discussion/label.dart';
-import 'package:antinote/src/models/discussion/node.dart';
+import 'dart:math';
 
-final class DiscussionPage {
-  final List<DiscussionLabel> labels;
-  final List<DiscussionRootNode> discussions;
+import 'package:antinote/antinote.dart';
 
-  const DiscussionPage({required this.labels, required this.discussions});
-}
+final class const DiscussionPage({
+  required final List<DiscussionLabel> labels,
+  required final List<DiscussionRootNode> discussions,
+}) {
+  static List<DiscussionRootNode> _buildDiscussionTree(
+    List<Map<String, dynamic>> nav,
+  ) {
+    if (nav.empty) return [];
 
-extension AsDiscussionPage on MapJsonNavigator {
-  DiscussionPage asDiscussionPage() {
-    return DiscussionPage(
-      labels:
-          mGetLM('listeEtiquettes')?.mapL((e) => e.asDiscussionLabel()) ?? [],
-      discussions: mGetLM('listeMessagerie')?.asDiscussionRootsList() ?? [],
+    final biggestDepth = nav.fold(
+      0,
+      (previousValue, element) => max(previousValue, element.get('profondeur')),
     );
+
+    Map<int, List<DiscussionNode>> depthMaps = {};
+    List<DiscussionRootNode> finalList = <DiscussionRootNode>[];
+
+    for (int depth = biggestDepth; depth >= 0; depth--) {
+      for (int nodeIndex = 0; nodeIndex < nav.length; nodeIndex++) {
+        final rawNode = nav.get(nodeIndex);
+        if (rawNode.get('profondeur') != depth) continue;
+
+        final node = DiscussionNode.decode(
+          rawNode,
+          depthMaps.remove(nodeIndex) ?? [],
+        );
+
+        if (rawNode.has('indicePere')) {
+          final parent = rawNode.get<int>('indicePere');
+          if (depthMaps.containsKey(parent)) {
+            depthMaps[parent]!.add(node);
+          } else {
+            depthMaps[parent] = [node];
+          }
+        } else {
+          assert(
+            node is DiscussionRootNode,
+            'Only root nodes do not have parent indices.',
+          );
+          finalList.add(node as DiscussionRootNode);
+        }
+      }
+    }
+
+    return finalList;
   }
+
+  factory decode(Map<String, dynamic> nav) => .new(
+    labels: nav.mGetLM('listeEtiquettes')?.mapL((e) => .decode(e)) ?? [],
+    discussions:
+        nav
+            .mGetLM('listeMessagerie')
+            .inn((value) => _buildDiscussionTree(value)) ??
+        [],
+  );
 }

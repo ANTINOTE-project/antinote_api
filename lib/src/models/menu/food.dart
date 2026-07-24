@@ -1,25 +1,18 @@
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/helpers/cache.dart';
 
 import 'food_allergen.dart';
 import 'food_label.dart';
 
-class Food with VisualIdMixin {
-  final String name;
-  final String id;
-  final List<FoodLabel> foodLabels;
-  final List<FoodAllergen> foodAllergens;
-
-  const Food({
-    required this.name,
-    required this.id,
-    required this.foodLabels,
-    required this.foodAllergens,
-  });
-
+final class const Food({
+  required final String name,
+  required final String id,
+  required final List<FoodLabel> foodLabels,
+  required final List<FoodAllergen> foodAllergens,
+}) with VisualIdMixin {
   factory Food.decode(MapJsonNavigator nav) {
     return Food(
       name: nav.get('L'),

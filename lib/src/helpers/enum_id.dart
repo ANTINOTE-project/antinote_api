@@ -9,7 +9,9 @@ extension EnumById<T extends EnumId> on Iterable<T> {
   /// Shamelessly stolen from Dart's EnumByName.
   /// Functions like [EnumByName.byName] but by ID (for enums that implement
   /// [EnumId]).
-  T byId(int id, {T? defaultValue}) {
+  T byId(int? id, {T? defaultValue}) {
+    if (id == null) return defaultValue!;
+
     for (var value in this) {
       if (value.id == id) return value;
     }

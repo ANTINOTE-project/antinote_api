@@ -1,14 +1,9 @@
 import 'package:antinote/src/helpers/json.dart';
 
-final class Language {
-  final int id;
-  final String description;
-
-  const Language({required this.id, required this.description});
-}
-
-extension AsLanguage on MapJsonNavigator {
-  Language asLanguage() {
-    return Language(id: get('langID'), description: get('description'));
-  }
+final class const Language({
+  required final int id,
+  required final String description,
+}) {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(id: nav.get('langID'), description: nav.get('description'));
 }

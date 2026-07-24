@@ -30,9 +30,8 @@ class NotificationCenterAccessor extends StatelessAccessor<NotificationCenter> {
   }
 
   @override
-  FutureOr<NotificationCenter> interpretStateless(MapJsonNavigator nav) {
-    return nav.asNotificationCenter();
-  }
+  FutureOr<NotificationCenter> interpretStateless(MapJsonNavigator nav) =>
+      .decode(nav);
 
   @override
   List<VisualIdMixin> store(NotificationCenter result) => [];

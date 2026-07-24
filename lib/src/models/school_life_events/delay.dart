@@ -1,30 +1,20 @@
 part of 'school_life_events.dart';
 
-class Retard extends SchoolLifeEvent {
-  final DateTime date;
-  final bool settled;
-  final bool justified;
-  final bool isReasonUnknown;
-  final bool justifyByParents;
-  final int durationMinutes;
-  final String justification;
-
-  const Retard({
-    required super.id,
-    required super.start,
-    required super.end,
-    required this.date,
-    required this.settled,
-    required this.justified,
-    required this.isReasonUnknown,
-    required this.justifyByParents,
-    required this.durationMinutes,
-    required this.justification,
-    required super.reasons,
-  });
-
-  factory Retard.decode(SchoolLifeEventMessage message, MapJsonNavigator nav) {
-    return Retard(
+final class const Delay({
+  required super.id,
+  required super.start,
+  required super.end,
+  required final DateTime date,
+  required final bool settled,
+  required final bool justified,
+  required final bool isReasonUnknown,
+  required final bool justifyByParents,
+  required final int durationMinutes,
+  required final String justification,
+  required super.reasons,
+}) extends SchoolLifeEvent {
+  factory Delay.decode(SchoolLifeEventMessage message, MapJsonNavigator nav) {
+    return Delay(
       id: message.id,
       start: null,
       end: null,

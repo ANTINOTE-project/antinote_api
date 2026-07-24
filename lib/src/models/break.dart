@@ -1,12 +1,9 @@
 import 'package:antinote/src/helpers/json.dart';
 
-final class Break {
-  final String name;
-  final int daySlot;
-
-  const Break({required this.name, required this.daySlot});
-}
-
-extension AsBreak on MapJsonNavigator {
-  Break asBreak() => Break(name: get('L'), daySlot: get('place'));
+final class const Break({
+  required final String name,
+  required final int daySlot,
+}) {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(name: nav.get('L'), daySlot: nav.get('place'));
 }

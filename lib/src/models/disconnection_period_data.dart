@@ -5,7 +5,7 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/protos/antinote/session.pbenum.dart';
 
-final class DisconnectionPeriodData({
+final class const DisconnectionPeriodData({
   required final bool gradesPublicationPauseActive,
   required final int gradesPublicationHour,
   required final int gradesPublicationDelay,

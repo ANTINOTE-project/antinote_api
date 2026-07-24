@@ -17,16 +17,13 @@ enum HomeworkRenderType implements EnumId {
   const HomeworkRenderType(this.id, {required this.renderOnRemote});
 }
 
-final class HandedAssignment with VisualIdMixin {
-  final String label;
-  final String id;
-  final int type;
-
-  const HandedAssignment({
-    required this.label,
-    required this.id,
-    required this.type,
-  });
+final class const HandedAssignment({
+  required final String label,
+  required final String id,
+  required final int type,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(label: nav.get('L'), id: nav.get('N'), type: nav.get('G'));
 
   @override
   CacheType? get cacheType => .HANDED_ASSIGNMENT;
@@ -38,64 +35,65 @@ final class HandedAssignment with VisualIdMixin {
   }
 }
 
-extension AsHandedAssignment on MapJsonNavigator {
-  HandedAssignment asHandedAssignment() {
-    return HandedAssignment(label: get('L'), id: get('N'), type: get('G'));
-  }
-}
-
-final class Homework with VisualIdMixin {
-  final String id;
-  final int? type;
-  final Subject subject;
-  final String description;
-  final int? order;
-  final DateTime deadlineDate;
-  final DateTime givenDate;
-  final int backgroundColor;
-  final int textColor;
-  final int difficultyLevel;
-  final double duration;
-  final List<Attachment> attachments;
-  final bool isDone;
-  final bool withRender;
-  final HomeworkRenderType assignmentToRenderType;
-  final bool canHandAssignment;
-  final HandedAssignment? handedAssignment;
-  final DateTime? assignmentHandedTime;
-  final String? assignmentCorrectionComment;
-  final bool withFormatting;
-  final String? publicName;
-  final String? notebookEntryId;
-  final String? lessonId;
-  final List<Theme> themes;
-
-  const Homework({
-    required this.id,
-    required this.type,
-    required this.subject,
-    required this.description,
-    required this.order,
-    required this.deadlineDate,
-    required this.givenDate,
-    required this.backgroundColor,
-    required this.textColor,
-    required this.difficultyLevel,
-    required this.duration,
-    required this.attachments,
-    required this.isDone,
-    required this.withRender,
-    required this.assignmentToRenderType,
-    required this.canHandAssignment,
-    required this.handedAssignment,
-    required this.assignmentHandedTime,
-    required this.assignmentCorrectionComment,
-    required this.withFormatting,
-    required this.publicName,
-    required this.notebookEntryId,
-    required this.lessonId,
-    required this.themes,
-  });
+final class const Homework({
+  required final String id,
+  required final int? type,
+  required final Subject subject,
+  required final String description,
+  required final int? order,
+  required final DateTime deadlineDate,
+  required final DateTime givenDate,
+  required final int backgroundColor,
+  required final int textColor,
+  required final int difficultyLevel,
+  required final double duration,
+  required final List<Attachment> attachments,
+  required final bool isDone,
+  required final bool withRender,
+  required final HomeworkRenderType assignmentToRenderType,
+  required final bool canHandAssignment,
+  required final HandedAssignment? handedAssignment,
+  required final DateTime? assignmentHandedTime,
+  required final String? assignmentCorrectionComment,
+  required final bool withFormatting,
+  required final String? publicName,
+  required final String? notebookEntryId,
+  required final String? lessonId,
+  required final List<Theme> themes,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    id: nav.get('N'),
+    type: nav.get('G'),
+    subject: .decode(nav.eGetM(['matiere', 'Matiere'])!),
+    description: nav.get('descriptif'),
+    order: nav.get('ordre'),
+    deadlineDate: nav.eGet(['pourLe', 'PourLe'])!,
+    givenDate: nav.eGet(['donneLe', 'DonneLe'])!,
+    backgroundColor: nav.get<String>('CouleurFond').asRGB(),
+    textColor: nav.get<String?>('couleurTexte')?.asRGB() ?? 0xFFFFFFFF,
+    difficultyLevel: nav.get('niveauDifficulte'),
+    duration: nav.get('duree'),
+    attachments: nav
+        .eGetLM(['listeDocumentJoint', 'ListePieceJointe'])!
+        .mapL((e) => .decode(e)),
+    isDone: nav.getB('TAFFait'),
+    withRender: nav.getB('avecRendu'),
+    assignmentToRenderType: HomeworkRenderType.values.byId(
+      nav.get('genreRendu') ?? 0,
+      defaultValue: .noRender,
+    ),
+    canHandAssignment: nav.getB('peuRendre'),
+    handedAssignment: nav
+        .mGetM('documentRendu')
+        ?.inn((value) => .decode(value)),
+    assignmentHandedTime: nav.get('dateRendu'),
+    assignmentCorrectionComment: nav.get<String?>('commentaireCorrige'),
+    withFormatting: nav.getB('avecMiseEnForme'),
+    publicName: nav.get('nomPublic'),
+    notebookEntryId: nav.mGetM('cahierDeTextes')?.get('N'),
+    lessonId: nav.mGetM('cours')?.get('N'),
+    themes: nav.mGetLM('ListeThemes')?.mapL((e) => .decode(e)) ?? [],
+  );
 
   @override
   CacheType? get cacheType => .HOMEWORK;
@@ -126,41 +124,4 @@ final class Homework with VisualIdMixin {
     ...attachments,
     ?handedAssignment,
   ];
-}
-
-extension AsHomework on MapJsonNavigator {
-  Homework asHomework() {
-    return Homework(
-      id: get('N'),
-      type: get('G'),
-      subject: eGetM(['matiere', 'Matiere'])!.asSubject(),
-      description: get('descriptif'),
-      order: get('ordre'),
-      deadlineDate: eGet(['pourLe', 'PourLe'])!,
-      givenDate: eGet(['donneLe', 'DonneLe'])!,
-      backgroundColor: get<String>('CouleurFond').asRGB(),
-      textColor: (get<String?>('couleurTexte') ?? 'ffffff').asRGB(),
-      difficultyLevel: get('niveauDifficulte'),
-      duration: get('duree'),
-      attachments: eGetLM([
-        'listeDocumentJoint',
-        'ListePieceJointe',
-      ])!.mapL((e) => e.asAttachment()),
-      isDone: getB('TAFFait'),
-      withRender: getB('avecRendu'),
-      assignmentToRenderType: HomeworkRenderType.values.byId(
-        get('genreRendu') ?? 0,
-        defaultValue: .noRender,
-      ),
-      canHandAssignment: getB('peuRendre'),
-      handedAssignment: mGetM('documentRendu')?.asHandedAssignment(),
-      assignmentHandedTime: get('dateRendu'),
-      assignmentCorrectionComment: get<String?>('commentaireCorrige'),
-      withFormatting: getB('avecMiseEnForme'),
-      publicName: get('nomPublic'),
-      notebookEntryId: mGetM('cahierDeTextes')?.get('N'),
-      lessonId: mGetM('cours')?.get('N'),
-      themes: mGetLM('ListeThemes')?.mapL((e) => e.asTheme()) ?? [],
-    );
-  }
 }

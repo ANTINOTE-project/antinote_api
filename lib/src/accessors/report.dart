@@ -42,7 +42,7 @@ class ReportAccessor extends StatelessAccessor<BaseReport> {
 
   @override
   FutureOr<BaseReport> interpretStateless(MapJsonNavigator<dynamic> nav) =>
-      nav.asReport();
+      .decode(nav);
 
   @override
   List<VisualIdMixin> store(BaseReport result) => []; // TODO: Populate this.

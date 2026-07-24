@@ -263,3 +263,10 @@ Map<String, dynamic> deepMergeMaps(
 
   return result;
 }
+
+extension IfNotNull<T> on T? {
+  O? inn<O>(O Function(T value) run) {
+    if (this == null) return null;
+    return run(this as T);
+  }
+}

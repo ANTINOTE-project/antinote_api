@@ -1,34 +1,70 @@
 import 'package:antinote/src/helpers/json.dart';
 
-/// Thanks again Mikkel ALMONTE-RINGAUD from the Pawnote.js project for the
-/// descriptions. Licensing information available in the app.
-final class UserAuthorizations {
-  final bool canReadDiscussions;
-  final bool canDiscuss;
-  final bool canDiscussWithStaff;
-  final bool canDiscussWithParents;
-  final bool canDiscussWithStudents;
-  final bool canDiscussWithTeachers;
-  final bool hasAdvancedDiscussionEditor;
-  final double? maxAssignmentFileUploadSize;
+final class const UserAuthorizations({
+  required final bool canReadDiscussions,
+  required final bool canDiscuss,
+  required final bool canDiscussWithStaff,
+  required final bool canDiscussWithParents,
+  required final bool canDiscussWithStudents,
+  required final bool canDiscussWithTeachers,
+  required final bool hasAdvancedDiscussionEditor,
+  required final double? maxAssignmentFileUploadSize,
 
-  final List<int> tabLocations;
+  required final List<int> tabLocations,
+}) {
+  factory decode(Map<String, dynamic> nav) {
+    final authorizations = nav.go('autorisations');
 
-  const UserAuthorizations({
-    required this.canReadDiscussions,
-    required this.canDiscuss,
-    required this.canDiscussWithStaff,
-    required this.canDiscussWithParents,
-    required this.canDiscussWithStudents,
-    required this.canDiscussWithTeachers,
-    required this.hasAdvancedDiscussionEditor,
-    required this.maxAssignmentFileUploadSize,
-    required this.tabLocations,
-  });
+    final canReadDiscussions = authorizations.get('AvecDiscussion') ?? false;
+    final canDiscuss =
+        canReadDiscussions &&
+        !(authorizations.get('discussionInterdit') ?? false);
+    final canDiscussWithStaff =
+        canDiscuss && (authorizations.get('AvecDiscussionPersonnels') ?? false);
+    final canDiscussWithParents =
+        canDiscuss && (authorizations.get('AvecDiscussionParents') ?? false);
+    final canDiscussWithStudents =
+        canDiscuss && (authorizations.get('AvecDiscussionEleves') ?? false);
+    final canDiscussWithTeachers =
+        canDiscuss &&
+        (authorizations.get('AvecDiscussionProfesseurs') ?? false);
+
+    final tabs = nav.getLM('listeOnglets');
+
+    final List<int> locations = [];
+    if (tabs.notEmpty) {
+      void traverse(MapJsonNavigator obj) {
+        if (obj.has('G')) {
+          locations.add(obj.get('G'));
+        }
+
+        if (obj.has('Onglet')) {
+          obj.getLM('Onglet').forEach(traverse);
+        }
+      }
+
+      tabs.forEach(traverse);
+    }
+
+    return .new(
+      canReadDiscussions: canReadDiscussions,
+      canDiscuss: canDiscuss,
+      canDiscussWithStaff: canDiscussWithStaff,
+      canDiscussWithParents: canDiscussWithParents,
+      canDiscussWithStudents: canDiscussWithStudents,
+      canDiscussWithTeachers: canDiscussWithTeachers,
+      hasAdvancedDiscussionEditor:
+          authorizations.get('AvecDiscussionAvancee') ?? false,
+      maxAssignmentFileUploadSize: authorizations.get('tailleMaxRenduTafEleve'),
+      tabLocations: locations,
+    );
+  }
 }
 
+// TODO: Implement those authorisations next.
+
 /*
-* _estEnConsultation(0), debugger eval code:11:29
+_estEnConsultation(0), debugger eval code:11:29
 _cours_domaineConsultationEDT(1), debugger eval code:11:29
 _cours_avecReservationCreneauxLibres(2), debugger eval code:11:29
 _cours_modifierElevesDetachesSurCoursDeplaceCreneauLibre(3), debugger eval code:11:29
@@ -212,52 +248,3 @@ _avecDroitDeconnexionMessagerie(180), debugger eval code:11:29
 _estDirecteur(181), debugger eval code:11:29
 _estEnseignant(182), debugger eval code:11:29
 _tailleMaxUpload(183), debugger eval code:11:29*/
-extension AsUserAuthorizations on MapJsonNavigator {
-  UserAuthorizations asUserAuthorizations() {
-    final authorizations = go('autorisations');
-
-    final canReadDiscussions = authorizations.get('AvecDiscussion') ?? false;
-    final canDiscuss =
-        canReadDiscussions &&
-        !(authorizations.get('discussionInterdit') ?? false);
-    final canDiscussWithStaff =
-        canDiscuss && (authorizations.get('AvecDiscussionPersonnels') ?? false);
-    final canDiscussWithParents =
-        canDiscuss && (authorizations.get('AvecDiscussionParents') ?? false);
-    final canDiscussWithStudents =
-        canDiscuss && (authorizations.get('AvecDiscussionEleves') ?? false);
-    final canDiscussWithTeachers =
-        canDiscuss &&
-        (authorizations.get('AvecDiscussionProfesseurs') ?? false);
-
-    final tabs = getLM('listeOnglets');
-
-    final List<int> locations = [];
-    if (tabs.notEmpty) {
-      void traverse(MapJsonNavigator obj) {
-        if (obj.has('G')) {
-          locations.add(obj.get('G'));
-        }
-
-        if (obj.has('Onglet')) {
-          obj.getLM('Onglet').forEach(traverse);
-        }
-      }
-
-      tabs.forEach(traverse);
-    }
-
-    return UserAuthorizations(
-      canReadDiscussions: canReadDiscussions,
-      canDiscuss: canDiscuss,
-      canDiscussWithStaff: canDiscussWithStaff,
-      canDiscussWithParents: canDiscussWithParents,
-      canDiscussWithStudents: canDiscussWithStudents,
-      canDiscussWithTeachers: canDiscussWithTeachers,
-      hasAdvancedDiscussionEditor:
-          authorizations.get('AvecDiscussionAvancee') ?? false,
-      maxAssignmentFileUploadSize: authorizations.get('tailleMaxRenduTafEleve'),
-      tabLocations: locations,
-    );
-  }
-}

@@ -5,8 +5,6 @@ import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/break.dart';
-import 'package:antinote/src/models/classes/classes.dart';
 import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/timetable.dart';
 import 'package:antinote/src/models/user/resource.dart';
@@ -102,20 +100,21 @@ class TimetableAccessor extends StatefulAccessor<Timetable, RemoteSession> {
   FutureOr<RemoteSession> collectState(RemoteSession session) => session;
 
   @override
-  FutureOr<Timetable> interpret(MapJsonNavigator nav, RemoteSession state) {
+  FutureOr<Timetable> interpret(MapJsonNavigator nav, RemoteSession session) {
     return Timetable(
       absences: nav.get('absences'),
       withCanceledClasses: nav.get('avecCoursAnnule') ?? true,
-      classes: (nav.mGetLM('ListeCours')?.mapL((e) => e.asClass(state)) ?? [])
-        ..sort(
-          (a, b) => a.startDate.millisecondsSinceEpoch.compareTo(
-            b.startDate.millisecondsSinceEpoch,
-          ),
-        ),
+      classes:
+          (nav.mGetLM('ListeCours')?.mapL((e) => .decode(session, nav)) ?? [])
+            ..sort(
+              (a, b) => a.startDate.millisecondsSinceEpoch.compareTo(
+                b.startDate.millisecondsSinceEpoch,
+              ),
+            ),
       firstSlotForDay: nav.get('premierePlaceHebdoDuJour'),
       middayMealStartSlot: nav.get('debutDemiPensionHebdo'),
       middayMealEndSlot: nav.get('finDemiPensionHebdo'),
-      breaks: nav.mGetLM('recreations')?.mapL((e) => e.asBreak()) ?? [],
+      breaks: nav.mGetLM('recreations')?.mapL((e) => .decode(e)) ?? [],
     );
   }
 

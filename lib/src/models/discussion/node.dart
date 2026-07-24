@@ -1,15 +1,12 @@
-import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/helpers/cache.dart';
 
-final class MessageRecipient with VisualIdMixin {
-  final String id;
-
-  const MessageRecipient({required this.id});
-
+final class const MessageRecipient({required final String id})
+    with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(id: nav.get('N'));
   @override
   CacheType? get cacheType => null;
 
@@ -19,17 +16,22 @@ final class MessageRecipient with VisualIdMixin {
   }
 }
 
-extension AsMessageRecipient on MapJsonNavigator {
-  MessageRecipient asMessageRecipient() {
-    return MessageRecipient(id: get('N'));
-  }
-}
+sealed class const DiscussionNode({
+  required final String id,
+  required final List<MessageRecipient> recipients,
+  required final bool isNotARecipient,
+  required final int depth,
 
-sealed class DiscussionNode with VisualIdMixin {
-  final String id;
-  final List<MessageRecipient> recipients;
-  final bool isNotARecipient;
-  final int depth;
+  required final List<DiscussionNode> children,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav, List<DiscussionNode> children) =>
+      switch (nav) {
+        _ when nav.getB('estUneDiscussion') => DiscussionRootNode.decode(
+          nav,
+          children,
+        ),
+        _ => DiscussionMessageNode.decode(nav, children),
+      };
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
@@ -39,91 +41,54 @@ sealed class DiscussionNode with VisualIdMixin {
     // We do not put children because we still want the visual id to stay the
     // same if a message is posted beneath it.
   }
-
-  final List<DiscussionNode> children;
-
-  const DiscussionNode({
-    required this.id,
-    required this.recipients,
-    required this.isNotARecipient,
-    required this.depth,
-    required this.children,
-  });
 }
 
-final class DiscussionMessageNode extends DiscussionNode {
-  const DiscussionMessageNode({
-    required super.id,
-    required super.recipients,
-    required super.isNotARecipient,
-    required super.depth,
-    required super.children,
-  });
+final class const DiscussionMessageNode({
+  required super.id,
+  required super.recipients,
+  required super.isNotARecipient,
+  required super.depth,
+  required super.children,
+}) extends DiscussionNode {
+  factory decode(Map<String, dynamic> nav, List<DiscussionNode> children) =>
+      .new(
+        id: nav.get('N'),
+        recipients: nav
+            .getLM('listePossessionsMessages')
+            .mapL((e) => .decode(e)),
+        isNotARecipient: nav.get('estNonPossede'),
+        depth: nav.get('profondeur'),
+        children: children,
+      );
 
   @override
   CacheType? get cacheType => .DISCUSSION_NODE;
 }
 
-final class DiscussionRootNode extends DiscussionNode {
-  final int messageCount;
-  final String subject;
-  final bool withResponse;
-  final String messageIdForParticipants;
-  final String? public;
-  final int? publicCount;
+final class const DiscussionRootNode({
+  required final int messageCount,
+  required final String subject,
+  required final bool withResponse,
+  required final String messageIdForParticipants,
+  required final String? public,
+  required final int? publicCount,
 
   /// Null means the initiator is the current user.
-  final String? initiator;
-  final bool read;
-  final String dateLabel;
-  final DateTime parsedDateLabel;
-  final bool closeable;
-  final bool closed;
-  final bool canEdit;
+  required final String? initiator,
+  required final bool read,
+  required final String dateLabel,
+  required final DateTime parsedDateLabel,
+  required final bool closeable,
+  required final bool closed,
+  required final bool canEdit,
 
-  @override
-  CacheType? get cacheType => .DISCUSSION_NODE;
+  required super.id,
+  required super.recipients,
+  required super.isNotARecipient,
+  required super.depth,
 
-  @override
-  Iterable<Uint8List?> collectVisualIdData() sync* {
-    yield* super.collectVisualIdData();
-    yield messageCount.byteVisualIdData();
-    yield subject.visualIdData();
-    yield withResponse.visualIdData();
-    yield messageIdForParticipants.visualIdData();
-    yield public?.visualIdData();
-    yield publicCount?.bytesVisualIdData();
-    yield initiator?.visualIdData();
-    yield read.visualIdData();
-    yield dateLabel.visualIdData();
-    yield closeable.visualIdData();
-    yield closed.visualIdData();
-    yield canEdit.visualIdData();
-  }
-
-  const DiscussionRootNode({
-    required super.id,
-    required super.recipients,
-    required super.isNotARecipient,
-    required super.depth,
-    required this.messageCount,
-    required this.subject,
-    required this.withResponse,
-    required this.messageIdForParticipants,
-    required this.public,
-    required this.publicCount,
-    required this.initiator,
-    required this.read,
-    required this.dateLabel,
-    required this.parsedDateLabel,
-    required this.closeable,
-    required this.closed,
-    required this.canEdit,
-    required super.children,
-  }); // TODO: Turn this into a DateTime
-}
-
-extension AsDiscussionNode on MapJsonNavigator {
+  required super.children,
+}) extends DiscussionNode {
   // Ex: 13/06/26
   static final _dateLabelParser = RegExp(
     r'(?<day>\d{2})/(?<month>\d{2})/(?<year>\d{2})',
@@ -144,23 +109,23 @@ extension AsDiscussionNode on MapJsonNavigator {
     r'^(?<hour>\d{1,2})h(?<minute>\d{2})',
   );
 
-  DiscussionRootNode asDiscussionRootNode(List<DiscussionNode> children) {
+  factory decode(Map<String, dynamic> nav, List<DiscussionNode> children) {
     final matchedDate =
-        _dateLabelParser.firstMatch(get<String>('libelleDate')) ??
-        _secondDateLabelParser.firstMatch(get<String>('libelleDate'));
+        _dateLabelParser.firstMatch(nav.get<String>('libelleDate')) ??
+        _secondDateLabelParser.firstMatch(nav.get<String>('libelleDate'));
     final DateTime parsedDate;
 
     if (matchedDate != null) {
       parsedDate = DateTime.utc(
         !matchedDate.groupNames.contains('year')
             ? DateTime.now().year
-            : 2000 + int.parse(matchedDate.namedGroup('year')!),
-        int.parse(matchedDate.namedGroup('month')!),
-        int.parse(matchedDate.namedGroup('day')!),
+            : 2000 + .parse(matchedDate.namedGroup('year')!),
+        .parse(matchedDate.namedGroup('month')!),
+        .parse(matchedDate.namedGroup('day')!),
       );
     } else {
       final matchedTime = _thirdDateLabelParser.firstMatch(
-        get<String>('libelleDate'),
+        nav.get<String>('libelleDate'),
       );
 
       if (matchedTime != null) {
@@ -170,11 +135,11 @@ extension AsDiscussionNode on MapJsonNavigator {
           minute: int.tryParse(matchedTime.namedGroup('minute')!),
         );
       } else {
-        final matchedCombinaison = _fourthDateLabelParser.firstMatch(
-          get<String>('libelleDate'),
+        final matchedCombination = _fourthDateLabelParser.firstMatch(
+          nav.get<String>('libelleDate'),
         );
 
-        if (matchedCombinaison == null) {
+        if (matchedCombination == null) {
           // We fallback to now because this might make important messages sink to
           // the bottom of the discussion list if we set the date to epoch.
           parsedDate = DateTime.now().copyWith(isUtc: true);
@@ -183,11 +148,11 @@ extension AsDiscussionNode on MapJsonNavigator {
           // TODO: Add localization probably with intl
           final curAttempt = DateTime.now().copyWith(
             isUtc: true,
-            hour: int.tryParse(matchedCombinaison.namedGroup('hour')!),
-            minute: int.tryParse(matchedCombinaison.namedGroup('minute')!),
+            hour: int.tryParse(matchedCombination.namedGroup('hour')!),
+            minute: int.tryParse(matchedCombination.namedGroup('minute')!),
           );
 
-          final weekDay = switch (matchedCombinaison.namedGroup('weekday')) {
+          final weekDay = switch (matchedCombination.namedGroup('weekday')) {
             'lundi' => DateTime.monday,
             'mardi' => DateTime.tuesday,
             'mercredi' => DateTime.wednesday,
@@ -209,89 +174,45 @@ extension AsDiscussionNode on MapJsonNavigator {
       }
     }
 
-    return DiscussionRootNode(
-      id: get('N'),
-      recipients: getLM(
-        'listePossessionsMessages',
-      ).mapL((e) => e.asMessageRecipient()),
-      isNotARecipient: get('estNonPossede') ?? false,
-      depth: get('profondeur'),
-      messageCount: get('nombreMessages'),
-      subject: get('objet'),
-      withResponse: get('avecReponse') ?? false,
-      messageIdForParticipants: go('messagePourParticipants').get('N'),
-      public: get('public'),
-      publicCount: get('nbPublic'),
-      initiator: get('initiateur'),
-      read: get('lu') ?? false,
-      dateLabel: get('libelleDate'),
+    return .new(
+      id: nav.get('N'),
+      recipients: nav.getLM('listePossessionsMessages').mapL((e) => .decode(e)),
+      isNotARecipient: nav.get('estNonPossede') ?? false,
+      depth: nav.get('profondeur'),
+      messageCount: nav.get('nombreMessages'),
+      subject: nav.get('objet'),
+      withResponse: nav.get('avecReponse') ?? false,
+      messageIdForParticipants: nav.go('messagePourParticipants').get('N'),
+      public: nav.get('public'),
+      publicCount: nav.get('nbPublic'),
+      initiator: nav.get('initiateur'),
+      read: nav.get('lu') ?? false,
+      dateLabel: nav.get('libelleDate'),
       parsedDateLabel: parsedDate,
-      closeable: get('fermable') ?? false,
-      closed: get('ferme') ?? false,
-      canEdit: get('avecModifObjet') ?? false,
+      closeable: nav.get('fermable') ?? false,
+      closed: nav.get('ferme') ?? false,
+      canEdit: nav.get('avecModifObjet') ?? false,
       children: children,
     );
   }
 
-  DiscussionMessageNode asDiscussionMessageNode(List<DiscussionNode> children) {
-    return DiscussionMessageNode(
-      id: get('N'),
-      recipients: getLM(
-        'listePossessionsMessages',
-      ).mapL((e) => e.asMessageRecipient()),
-      isNotARecipient: get('estNonPossede'),
-      depth: get('profondeur'),
-      children: children,
-    );
-  }
+  @override
+  CacheType? get cacheType => .DISCUSSION_NODE;
 
-  DiscussionNode asDiscussionNode(List<DiscussionNode> children) {
-    if (get('estUneDiscussion') == true) {
-      return asDiscussionRootNode(children);
-    }
-
-    return asDiscussionMessageNode(children);
-  }
-}
-
-extension ListDiscussionRoots on ListJsonNavigator<MapJsonNavigator> {
-  List<DiscussionRootNode> asDiscussionRootsList() {
-    if (empty) return [];
-
-    final biggestDepth = fold(
-      0,
-      (previousValue, element) => max(previousValue, element.get('profondeur')),
-    );
-
-    Map<int, List<DiscussionNode>> depthMaps = {};
-    List<DiscussionRootNode> finalList = <DiscussionRootNode>[];
-
-    for (int depth = biggestDepth; depth >= 0; depth--) {
-      for (int nodeIndex = 0; nodeIndex < length; nodeIndex++) {
-        final rawNode = get(nodeIndex);
-        if (rawNode.get('profondeur') != depth) continue;
-
-        final node = rawNode.asDiscussionNode(
-          depthMaps.remove(nodeIndex) ?? [],
-        );
-
-        if (rawNode.has('indicePere')) {
-          final parent = rawNode.get<int>('indicePere');
-          if (depthMaps.containsKey(parent)) {
-            depthMaps[parent]!.add(node);
-          } else {
-            depthMaps[parent] = [node];
-          }
-        } else {
-          assert(
-            node is DiscussionRootNode,
-            'Only root nodes do not have parent indices.',
-          );
-          finalList.add(node as DiscussionRootNode);
-        }
-      }
-    }
-
-    return finalList;
+  @override
+  Iterable<Uint8List?> collectVisualIdData() sync* {
+    yield* super.collectVisualIdData();
+    yield messageCount.byteVisualIdData();
+    yield subject.visualIdData();
+    yield withResponse.visualIdData();
+    yield messageIdForParticipants.visualIdData();
+    yield public?.visualIdData();
+    yield publicCount?.bytesVisualIdData();
+    yield initiator?.visualIdData();
+    yield read.visualIdData();
+    yield dateLabel.visualIdData();
+    yield closeable.visualIdData();
+    yield closed.visualIdData();
+    yield canEdit.visualIdData();
   }
 }

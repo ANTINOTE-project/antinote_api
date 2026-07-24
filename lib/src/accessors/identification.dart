@@ -93,7 +93,7 @@ class IdentificationAccessor extends StatelessAccessor<Challenge> {
   }
 
   @override
-  Challenge interpretStateless(MapJsonNavigator nav) => nav.asChallenge();
+  Challenge interpretStateless(MapJsonNavigator nav) => .decode(nav);
 
   @override
   List<VisualIdMixin> store(Challenge result) => [result];

@@ -70,13 +70,13 @@ class RemoteSession {
           updateCache(accessor.store(parsedValue), null);
         } else if (visualId == _userParametersKey) {
           final accessor = const UserParametersAccessor();
-          parsedValue = await accessor.interpret(content, this);
+          parsedValue = await accessor.interpretStateless(content);
           updateCache(accessor.store(parsedValue), null);
         } else if (visualId == _authenticationResponseKey) {
-          parsedValue = content.asAuthenticationResponse();
+          parsedValue = AuthenticationResponse.decode(content);
           updateCache([parsedValue], null);
         } else if (visualId == _challengeKey) {
-          parsedValue = content.asChallenge();
+          parsedValue = Challenge.decode(content);
           updateCache([parsedValue], null);
         } else {
           throw UnimplementedError(

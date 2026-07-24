@@ -1,23 +1,21 @@
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/helpers/cache.dart';
+import 'package:antinote/antinote.dart';
 
-final class Person with VisualIdMixin {
-  final String name;
-  final String? id;
-  final int? type;
-  final int? place;
-  final bool withDiscussion;
-
-  const Person({
-    required this.name,
-    required this.id,
-    required this.type,
-    required this.place,
-    required this.withDiscussion,
-  });
+final class const Person({
+  required final String name,
+  required final String? id,
+  required final int? type,
+  required final int? place,
+  required final bool withDiscussion,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    name: nav.get('L'),
+    id: nav.get('N'),
+    type: nav.get('G'),
+    place: nav.get('P'),
+    withDiscussion: nav.get('avecDiscussion') ?? false,
+  );
 
   Map<String, dynamic> toJson() {
     return {
@@ -38,16 +36,4 @@ final class Person with VisualIdMixin {
 
   @override
   CacheType? get cacheType => .PERSON;
-}
-
-extension AsPerson on MapJsonNavigator {
-  Person asPerson() {
-    return Person(
-      name: get('L'),
-      id: get('N'),
-      type: get('G'),
-      place: get('P'),
-      withDiscussion: get('avecDiscussion') ?? false,
-    );
-  }
 }

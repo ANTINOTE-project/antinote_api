@@ -47,8 +47,7 @@ class DiscussionAccessor extends StatelessAccessor<Discussion> {
   }
 
   @override
-  FutureOr<Discussion> interpretStateless(MapJsonNavigator nav) =>
-      nav.asDiscussion();
+  FutureOr<Discussion> interpretStateless(MapJsonNavigator nav) => .decode(nav);
 
   @override
   List<VisualIdMixin> store(Discussion result) => [...result.messages];

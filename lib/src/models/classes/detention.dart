@@ -1,8 +1,42 @@
 part of 'classes.dart';
 
-final class Detention extends Class {
-  @override
-  final List<ClassContent> contents;
+final class const Detention({
+  @override required final List<ClassContent> contents,
+  required super.id,
+  required super.backgroundColor,
+  required super.startDate,
+  required super.endDate,
+  required super.blockLength,
+  required super.blockSlot,
+  required super.notes,
+  required super.weekNumber,
+  required super.studentCountString,
+}) extends Class {
+  factory Detention.decode(
+    ClassMessage classMessage,
+    MapJsonNavigator detention,
+  ) {
+    final List<ClassContent> contents = [];
+
+    if (detention.has('ListeContenus')) {
+      for (final MapJsonNavigator data in detention.getLM('ListeContenus')) {
+        contents.add(ClassContent.decode(data));
+      }
+    }
+
+    return .new(
+      contents: contents,
+      id: classMessage.id,
+      backgroundColor: classMessage.backgroundColor,
+      startDate: classMessage.startDate,
+      endDate: classMessage.endDate,
+      blockLength: classMessage.blockLength,
+      blockSlot: classMessage.blockSlot,
+      notes: classMessage.notes,
+      weekNumber: classMessage.weekNumber,
+      studentCountString: classMessage.studentCountString,
+    );
+  }
 
   String? get title => contents.whereType<TitleContent>().firstOrNull?.value;
 
@@ -27,47 +61,8 @@ final class Detention extends Class {
   @override
   bool get canceled => false;
 
-  const Detention({
-    required super.id,
-    required super.backgroundColor,
-    required super.startDate,
-    required super.endDate,
-    required super.blockLength,
-    required super.blockSlot,
-    required super.notes,
-    required super.weekNumber,
-    required super.studentCountString,
-    required this.contents,
-  });
-
   @override
-  ClassType get type => ClassType.detention;
-
-  factory Detention.decode(
-    ClassMessage classMessage,
-    MapJsonNavigator detention,
-  ) {
-    final List<ClassContent> contents = [];
-
-    if (detention.has('ListeContenus')) {
-      for (final MapJsonNavigator data in detention.getLM('ListeContenus')) {
-        contents.add(data.asLessonContent());
-      }
-    }
-
-    return Detention(
-      contents: contents,
-      id: classMessage.id,
-      backgroundColor: classMessage.backgroundColor,
-      startDate: classMessage.startDate,
-      endDate: classMessage.endDate,
-      blockLength: classMessage.blockLength,
-      blockSlot: classMessage.blockSlot,
-      notes: classMessage.notes,
-      weekNumber: classMessage.weekNumber,
-      studentCountString: classMessage.studentCountString,
-    );
-  }
+  ClassType get type => .detention;
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {

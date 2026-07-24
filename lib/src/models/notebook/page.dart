@@ -3,31 +3,22 @@ import 'package:antinote/src/models/notebook/entry/entry.dart';
 import 'package:antinote/src/models/notebook/homework/set.dart';
 import 'package:antinote/src/models/notebook/resource/set.dart';
 
-final class NotebookPage {
-  final List<NotebookEntry> entries;
-  final PedagogicalResourceSet? resourceSet;
-  final MapJsonNavigator? numericResourceSet;
-  final NotebookHomeworkSet? homeworkSet;
-
-  const NotebookPage({
-    required this.entries,
-    required this.resourceSet,
-    required this.numericResourceSet,
-    required this.homeworkSet,
-  });
-}
-
-extension AsNotebookPage on MapJsonNavigator {
-  NotebookPage asNotebookPage() {
-    return NotebookPage(
-      entries:
-          mGetLM('ListeCahierDeTextes')?.mapL((e) => e.asNotebookEntry()) ??
-          List.empty(growable: false),
-      resourceSet: mGetM(
-        'ListeRessourcesPedagogiques',
-      )?.asPedagogicalResourceSet(),
-      numericResourceSet: mGetM('ListeRessourcesNumeriques'),
-      homeworkSet: mGetLM('ListeTravauxAFaire')?.asNotebookHomeworkSet(),
-    );
-  }
+final class const NotebookPage({
+  required final List<NotebookEntry> entries,
+  required final PedagogicalResourceSet? resourceSet,
+  required final MapJsonNavigator? numericResourceSet,
+  required final NotebookHomeworkSet? homeworkSet,
+}) {
+  factory decode(Map<String, dynamic> nav) => .new(
+    entries:
+        nav.mGetLM('ListeCahierDeTextes')?.mapL((e) => .decode(e)) ??
+        List.empty(growable: false),
+    resourceSet: nav
+        .mGetM('ListeRessourcesPedagogiques')
+        .inn((value) => .decode(value)),
+    numericResourceSet: nav.mGetM('ListeRessourcesNumeriques'),
+    homeworkSet: nav
+        .mGetLM('ListeTravauxAFaire')
+        .inn((value) => .decode(value)),
+  );
 }

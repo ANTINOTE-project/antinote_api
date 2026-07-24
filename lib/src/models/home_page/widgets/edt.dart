@@ -1,6 +1,53 @@
 part of '../widget.dart';
 
-class EDT extends HomePageWidget {
+final class const EDT({
+  required final Timetable timetable,
+  required final int selectedCycleDay,
+  required final int? currentSlot,
+}) extends HomePageWidget {
+  factory decode(MapJsonNavigator nav, RemoteSession session) => .new(
+    timetable: Timetable(
+      withCanceledClasses: nav.get('avecCoursAnnule'),
+      classes: nav.getLM('ListeCours').mapL((e) => .decode(session, e))
+        ..sort(
+          (a, b) => a.startDate.millisecondsSinceEpoch.compareTo(
+            b.startDate.millisecondsSinceEpoch,
+          ),
+        ),
+      absences: nav.get('absences'),
+      firstSlotForDay: nav.get('premierePlaceHebdoDuJour'),
+      middayMealStartSlot: nav.get('debutDemiPensionHebdo'),
+      middayMealEndSlot: nav.get('finDemiPensionHebdo'),
+      breaks: nav.getLM('recreations').mapL((e) => .decode(e)),
+    ),
+    selectedCycleDay: nav.get('jourCycleSelectionne'),
+    currentSlot: nav.get('placeCourante'),
+  );
+
+  // TODO: Probably delete this as it could give misleading information.
+  factory EDT.decodeUpdate(
+    EDT old,
+    MapJsonNavigator nav,
+    RemoteSession session,
+  ) => .new(
+    timetable: Timetable(
+      withCanceledClasses: nav.get('avecCoursAnnule'),
+      classes: nav.getLM('ListeCours').mapL((e) => .decode(session, e))
+        ..sort(
+          (a, b) => a.startDate.millisecondsSinceEpoch.compareTo(
+            b.startDate.millisecondsSinceEpoch,
+          ),
+        ),
+      absences: nav.get('absences'),
+      firstSlotForDay: nav.get('premierePlaceHebdoDuJour'),
+      middayMealStartSlot: nav.get('debutDemiPensionHebdo'),
+      middayMealEndSlot: nav.get('finDemiPensionHebdo'),
+      breaks: nav.getLM('recreations').mapL((e) => .decode(e)),
+    ),
+    selectedCycleDay: nav.get('jourCycleSelectionne'),
+    currentSlot: nav.get('placeCourante') ?? old.currentSlot,
+  );
+
   static HomePageModule module(Date date) => HomePageModule(
     widget: .edt,
     data: (session) => {
@@ -9,54 +56,8 @@ class EDT extends HomePageWidget {
     },
   );
 
-  final Timetable timetable;
-  final int selectedCycleDay;
-  final int? currentSlot;
-
-  const EDT({
-    required this.timetable,
-    required this.selectedCycleDay,
-    required this.currentSlot,
-  });
-
   @override
   HomePageWidgetType get widgetId => .edt;
-
-  EDT.decodeUpdate(EDT old, MapJsonNavigator nav, RemoteSession session)
-    : timetable = Timetable(
-        withCanceledClasses: nav.get('avecCoursAnnule'),
-        classes: nav.getLM('ListeCours').mapL((e) => e.asClass(session))
-          ..sort(
-            (a, b) => a.startDate.millisecondsSinceEpoch.compareTo(
-              b.startDate.millisecondsSinceEpoch,
-            ),
-          ),
-        absences: nav.get('absences'),
-        firstSlotForDay: nav.get('premierePlaceHebdoDuJour'),
-        middayMealStartSlot: nav.get('debutDemiPensionHebdo'),
-        middayMealEndSlot: nav.get('finDemiPensionHebdo'),
-        breaks: nav.getLM('recreations').mapL((e) => e.asBreak()),
-      ),
-      selectedCycleDay = nav.get('jourCycleSelectionne'),
-      currentSlot = nav.get('placeCourante') ?? old.currentSlot;
-
-  EDT.decode(MapJsonNavigator nav, RemoteSession session)
-    : timetable = Timetable(
-        withCanceledClasses: nav.get('avecCoursAnnule'),
-        classes: nav.getLM('ListeCours').mapL((e) => e.asClass(session))
-          ..sort(
-            (a, b) => a.startDate.millisecondsSinceEpoch.compareTo(
-              b.startDate.millisecondsSinceEpoch,
-            ),
-          ),
-        absences: nav.get('absences'),
-        firstSlotForDay: nav.get('premierePlaceHebdoDuJour'),
-        middayMealStartSlot: nav.get('debutDemiPensionHebdo'),
-        middayMealEndSlot: nav.get('finDemiPensionHebdo'),
-        breaks: nav.getLM('recreations').mapL((e) => e.asBreak()),
-      ),
-      selectedCycleDay = nav.get('jourCycleSelectionne'),
-      currentSlot = nav.get('placeCourante');
 
   static final definition = WidgetDefinition(
     type: .edt,

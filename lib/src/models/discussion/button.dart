@@ -1,14 +1,9 @@
 import 'package:antinote/src/helpers/json.dart';
 
-final class DiscussionButton {
-  final int type;
-  final String label;
-
-  const DiscussionButton({required this.type, required this.label});
-}
-
-extension AsDiscussionButton on MapJsonNavigator {
-  DiscussionButton asDiscussionButton() {
-    return DiscussionButton(type: get('G'), label: get('L'));
-  }
+final class const DiscussionButton({
+  required final int type,
+  required final String label,
+}) {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(type: nav.get('G'), label: nav.get('L'));
 }

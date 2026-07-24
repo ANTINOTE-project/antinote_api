@@ -27,22 +27,34 @@ enum NotebookResourceEntryType implements EnumId {
   const NotebookResourceEntryType(this.id);
 }
 
-final class NotebookResourceEntry with VisualIdMixin {
-  final NotebookResourceEntryType type;
-  final NotebookResource entry;
-  final List<String> notationPeriods;
-  final List<Theme> themes;
-  final DateTime dateTime;
-  final Subject subject;
+final class const NotebookResourceEntry({
+  required final NotebookResourceEntryType type,
+  required final NotebookResource entry,
+  required final List<String> notationPeriods,
+  required final List<Theme> themes,
+  required final DateTime dateTime,
+  required final Subject subject,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav, List<Subject> subjects) {
+    final type = NotebookResourceEntryType.values.byId(nav.get('G') ?? -1);
+    final partialSubject = Subject.decode(nav.getM('matiere'));
 
-  const NotebookResourceEntry({
-    required this.type,
-    required this.entry,
-    required this.notationPeriods,
-    required this.themes,
-    required this.dateTime,
-    required this.subject,
-  });
+    return .new(
+      type: type,
+      entry: .decode(nav.getM('ressource'), type),
+      notationPeriods:
+          nav
+              .mGetLM('listePeriodesNotation')
+              ?.mapL((e) => e.get<String>('N')) ??
+          List.empty(growable: false),
+      themes: nav.getLM('ListeThemes').mapL((e) => .decode(e)),
+      dateTime: nav.get('date'),
+      subject: subjects.firstWhere(
+        (element) => element.id == partialSubject.id,
+        orElse: () => partialSubject,
+      ),
+    );
+  }
 
   @override
   CacheType? get cacheType => .NOTEBOOK_RESOURCE_ENTRY;
@@ -59,24 +71,4 @@ final class NotebookResourceEntry with VisualIdMixin {
 
   @override
   List<VisualIdMixin> get toStore => [entry, ...themes, subject];
-}
-
-extension AsNotebookResourceEntry on MapJsonNavigator {
-  NotebookResourceEntry asNotebookResourceEntry(List<Subject> subjects) {
-    final type = NotebookResourceEntryType.values.byId(get('G') ?? -1);
-    final partialSubject = getM('matiere').asSubject();
-    return NotebookResourceEntry(
-      type: type,
-      entry: getM('ressource').asNotebookResource(type),
-      notationPeriods:
-          mGetLM('listePeriodesNotation')?.mapL((e) => e.get<String>('N')) ??
-          List.empty(growable: false),
-      themes: getLM('ListeThemes').mapL((e) => e.asTheme()),
-      dateTime: get('date'),
-      subject: subjects.firstWhere(
-        (element) => element.id == partialSubject.id,
-        orElse: () => partialSubject,
-      ),
-    );
-  }
 }

@@ -44,7 +44,7 @@ class DiscussionPageAccessor extends StatelessAccessor<DiscussionPage> {
 
   @override
   FutureOr<DiscussionPage> interpretStateless(MapJsonNavigator nav) =>
-      nav.asDiscussionPage();
+      .decode(nav);
 
   @override
   List<VisualIdMixin> store(DiscussionPage result) => [...result.discussions];

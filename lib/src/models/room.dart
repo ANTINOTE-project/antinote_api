@@ -1,14 +1,13 @@
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/helpers/cache.dart';
 
-final class Room with VisualIdMixin {
-  final String label;
-  final String id;
-
-  const Room({required this.label, required this.id});
+final class const Room({required final String label, required final String id})
+    with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(label: nav.get('L'), id: nav.get('N'));
 
   @override
   CacheType? get cacheType => .ROOM;
@@ -16,11 +15,5 @@ final class Room with VisualIdMixin {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield label.visualIdData();
-  }
-}
-
-extension AsRoom on MapJsonNavigator {
-  Room asRoom() {
-    return Room(label: get('L'), id: get('N'));
   }
 }

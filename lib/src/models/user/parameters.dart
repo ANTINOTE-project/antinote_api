@@ -6,7 +6,18 @@ import 'package:antinote/src/models/tab.dart';
 import 'package:antinote/src/models/user/authorizations.dart';
 import 'package:antinote/src/models/user/resource.dart';
 
-final class UserParameters with VisualIdMixin {
+final class const UserParameters({
+  required final String id,
+  required final int type,
+  required final String name,
+
+  required final UserAuthorizations authorizations,
+  required final List<UserResource> resources,
+
+  required final List<Tab> tabs,
+  required final List<int> hiddenTabIds,
+  required final List<int> notificationTabIds,
+}) with VisualIdMixin {
   @override
   CacheType? get cacheType => .UNIQUE;
 
@@ -14,28 +25,6 @@ final class UserParameters with VisualIdMixin {
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield "UserParameters".visualIdData();
   }
-
-  final String id;
-  final int type;
-  final String name;
-
-  final UserAuthorizations authorizations;
-  final List<UserResource> resources;
-
-  final List<Tab> tabs;
-  final List<int> hiddenTabIds;
-  final List<int> notificationTabIds;
-
-  const UserParameters({
-    required this.id,
-    required this.type,
-    required this.name,
-    required this.authorizations,
-    required this.resources,
-    required this.tabs,
-    required this.hiddenTabIds,
-    required this.notificationTabIds,
-  });
 
   bool hasAccessToTab(int tab) {
     return tabs.any((element) => element.hasTab(tab));

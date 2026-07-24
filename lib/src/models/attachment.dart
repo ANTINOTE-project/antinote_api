@@ -22,11 +22,9 @@ enum FileAttachmentType {
   other,
 }
 
-sealed class Attachment with VisualIdMixin {
-  final String title;
-  final String id;
-
-  factory Attachment.decode(MapJsonNavigator nav) {
+sealed class Attachment({required final String title, required final String id})
+    with VisualIdMixin {
+  factory decode(MapJsonNavigator nav) {
     return switch (nav.get<int>('G')) {
       0 => LinkAttachment.decode(nav),
       1 => FileAttachment.decode(nav),
@@ -35,7 +33,7 @@ sealed class Attachment with VisualIdMixin {
     };
   }
 
-  factory Attachment.decodeResource(
+  factory decodeResource(
     NotebookResourceEntryType resourceType,
     MapJsonNavigator nav,
   ) {
@@ -50,7 +48,7 @@ sealed class Attachment with VisualIdMixin {
 
   List<String> get possibleExtensionLocation => [title];
 
-  Attachment({required this.title, required this.id}) {
+  late final FileAttachmentType type = () {
     for (final possibleLocation in possibleExtensionLocation) {
       final fileExtension = extension(possibleLocation);
 
@@ -58,7 +56,7 @@ sealed class Attachment with VisualIdMixin {
 
       // The same file extensions as remote, with some added (mainly the ones
       // for OpenDocument)
-      type = switch (fileExtension.substring(1)) {
+      final candidate = switch (fileExtension.substring(1)) {
         'doc' || 'docx' || 'txt' || 'odt' => FileAttachmentType.text,
         'pdf' => FileAttachmentType.pdf,
         'gzip' || 'zip' || 'rar' => FileAttachmentType.archive,
@@ -75,15 +73,17 @@ sealed class Attachment with VisualIdMixin {
         _ => FileAttachmentType.other,
       };
 
-      if (type != .other) break;
+      if (candidate != .other) return candidate;
     }
-  }
 
-  late FileAttachmentType type;
+    return FileAttachmentType.other;
+  }();
 }
 
-class FileAttachment extends Attachment {
-  FileAttachment({required super.title, required super.id});
+final class FileAttachment({required super.title, required super.id})
+    extends Attachment {
+  factory FileAttachment.decode(MapJsonNavigator nav) =>
+      .new(title: nav.get('L'), id: nav.get('N'));
 
   @override
   CacheType? get cacheType => .FILE_ATTACHMENT;
@@ -91,10 +91,6 @@ class FileAttachment extends Attachment {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield title.visualIdData();
-  }
-
-  factory FileAttachment.decode(MapJsonNavigator nav) {
-    return FileAttachment(title: nav.get('L'), id: nav.get('N'));
   }
 
   Future<Uri> getLinkToAttachment(
@@ -122,8 +118,18 @@ class FileAttachment extends Attachment {
   }
 }
 
-final class LinkAttachment extends Attachment {
-  LinkAttachment({required super.title, required super.id, required this.url});
+final class LinkAttachment({
+  required super.title,
+  required super.id,
+  required final String url,
+}) extends Attachment {
+  factory decode(MapJsonNavigator nav) {
+    return .new(
+      title: nav.get('L') ?? nav.get('url'),
+      id: nav.get('N'),
+      url: nav.get('url'),
+    );
+  }
 
   @override
   CacheType? get cacheType => .LINK_ATTACHMENT;
@@ -134,26 +140,17 @@ final class LinkAttachment extends Attachment {
     yield url.visualIdData();
   }
 
-  final String url;
-
   @override
   List<String> get possibleExtensionLocation => [url, title];
-
-  factory LinkAttachment.decode(MapJsonNavigator nav) {
-    return LinkAttachment(
-      title: nav.get('L') ?? nav.get('url'),
-      id: nav.get('N'),
-      url: nav.get('url'),
-    );
-  }
 }
 
-final class SubmittedFileAttachment extends FileAttachment {
-  SubmittedFileAttachment({
-    required super.title,
-    required super.id,
-    required this.deadline,
-  });
+final class SubmittedFileAttachment({
+  required super.title,
+  required super.id,
+  required final DateTime deadline,
+}) extends FileAttachment {
+  factory SubmittedFileAttachment.decode(MapJsonNavigator nav) =>
+      .new(title: nav.get('L'), id: nav.get('N'), deadline: nav.get('pourLe'));
 
   @override
   CacheType? get cacheType => .SUBMITTED_FILE_ATTACHMENT;
@@ -163,26 +160,10 @@ final class SubmittedFileAttachment extends FileAttachment {
     yield title.visualIdData();
     yield deadline.millisecondsSinceEpoch.bytesVisualIdData();
   }
-
-  final DateTime deadline;
-
-  factory SubmittedFileAttachment.decode(MapJsonNavigator nav) {
-    return SubmittedFileAttachment(
-      title: nav.get('L'),
-      id: nav.get('N'),
-      deadline: nav.get('pourLe'),
-    );
-  }
 }
 
-final class CustomFileAttachment extends FileAttachment {
-  CustomFileAttachment({required super.title, required super.id});
-
-  factory CustomFileAttachment.decode(MapJsonNavigator nav) {
-    return CustomFileAttachment(title: nav.get('L'), id: nav.get('N'));
-  }
-}
-
-extension AsAttachment on MapJsonNavigator {
-  Attachment asAttachment() => Attachment.decode(this);
+final class CustomFileAttachment({required super.title, required super.id})
+    extends FileAttachment {
+  factory CustomFileAttachment.decode(MapJsonNavigator nav) =>
+      .new(title: nav.get('L'), id: nav.get('N'));
 }

@@ -1,27 +1,17 @@
 part of 'shared.dart';
 
-final class BroadInstanceParameters extends InstanceParameters {
-  final String navIdentifier;
-  final bool withPublicEstablishmentPage;
-  final List<Workspace> workspaces;
+final class BroadInstanceParameters({
+  required super.shared,
 
-  BroadInstanceParameters({
-    required super.shared,
-    required this.navIdentifier,
-    required this.withPublicEstablishmentPage,
-    required this.workspaces,
-  }) : super.shared();
-}
-
-extension AsBroadInstanceParameters on MapJsonNavigator {
-  BroadInstanceParameters asBroadInstanceParameters(
-    SharedInstanceParameters shared,
-  ) {
-    return BroadInstanceParameters(
-      shared: shared,
-      navIdentifier: get('identifiantNav'),
-      withPublicEstablishmentPage: getB('avecPagePubliqueEtab'),
-      workspaces: getLM('espaces').mapL((e) => e.asWorkspace()),
-    );
-  }
+  required final String navIdentifier,
+  required final bool withPublicEstablishmentPage,
+  required final List<Workspace> workspaces,
+}) extends InstanceParameters {
+  factory decode(Map<String, dynamic> nav, SharedInstanceParameters shared) =>
+      .new(
+        shared: shared,
+        navIdentifier: nav.get('identifiantNav'),
+        withPublicEstablishmentPage: nav.getB('avecPagePubliqueEtab'),
+        workspaces: nav.getLM('espaces').mapL((e) => .decode(e)),
+      );
 }

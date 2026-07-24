@@ -49,7 +49,7 @@ class RecipientListAccessor extends StatelessAccessor<List<Person>> {
 
   @override
   FutureOr<List<Person>> interpretStateless(MapJsonNavigator nav) {
-    return nav.getLM('listeDest').mapL((e) => e.asPerson());
+    return nav.getLM('listeDest').mapL((e) => .decode(e));
   }
 
   @override

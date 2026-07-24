@@ -42,7 +42,7 @@ class AuthenticationAccessor extends StatelessAccessor<AuthenticationResponse> {
 
   @override
   AuthenticationResponse interpretStateless(MapJsonNavigator nav) =>
-      nav.asAuthenticationResponse();
+      .decode(nav);
 
   @override
   List<VisualIdMixin> store(AuthenticationResponse result) => [result];

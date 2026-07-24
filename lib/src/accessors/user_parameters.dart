@@ -5,10 +5,7 @@ import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/tab.dart';
-import 'package:antinote/src/models/user/authorizations.dart';
 import 'package:antinote/src/models/user/parameters.dart';
-import 'package:antinote/src/models/user/resource.dart';
 
 class UserParametersAccessor extends StatelessAccessor<UserParameters> {
   const UserParametersAccessor();
@@ -48,9 +45,9 @@ class UserParametersAccessor extends StatelessAccessor<UserParameters> {
       id: nav.go('ressource').get('N'),
       type: nav.go('ressource').get('G'),
       name: nav.go('ressource').get('L'),
-      resources: resources.mapL((e) => e.asUserResource()),
-      authorizations: nav.asUserAuthorizations(),
-      tabs: nav.getLM('listeOnglets').mapL((e) => e.asTab()),
+      resources: resources.mapL((e) => .decode(e)),
+      authorizations: .decode(nav),
+      tabs: nav.getLM('listeOnglets').mapL((e) => .decode(e)),
       hiddenTabIds: nav.getL<int>('listeOngletsInvisibles'),
       notificationTabIds: nav.getL<int>('listeOngletsNotification'),
     );

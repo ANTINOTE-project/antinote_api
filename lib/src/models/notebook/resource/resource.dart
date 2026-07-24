@@ -17,26 +17,21 @@ part 'type/attachment.dart';
 part 'type/mcq.dart';
 part 'type/pedagogical_forum.dart';
 
-sealed class NotebookResource with VisualIdMixin {
-  final String id;
-  final int? type;
-
-  const NotebookResource({required this.id, required this.type});
+sealed class const NotebookResource({
+  required final String id,
+  required final int? type,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav, NotebookResourceEntryType type) =>
+      switch (type) {
+        .cloudDocument ||
+        .website ||
+        .attachedDocument ||
+        .submittedWork => NotebookResourceAttachment.decode(nav, type),
+        .mcq => NotebookResourceMCQ.decode(nav),
+        .pedagogicalForum => NotebookResourcePedagogicalForum.decode(nav),
+        _ => throw UnimplementedError(),
+      };
 
   @override
   CacheType? get cacheType => .NOTEBOOK_RESOURCE;
-}
-
-extension AsNotebookResource on MapJsonNavigator {
-  NotebookResource asNotebookResource(NotebookResourceEntryType type) {
-    return switch (type) {
-      .cloudDocument ||
-      .website ||
-      .attachedDocument ||
-      .submittedWork => asNotebookResourceAttachment(type),
-      .mcq => asNotebookResourceMCQ(type),
-      .pedagogicalForum => asNotebookResourcePedagogicalForum(),
-      _ => throw UnimplementedError(),
-    };
-  }
 }

@@ -1,23 +1,16 @@
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/colors.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/helpers/cache.dart';
 
-class FoodLabel with VisualIdMixin {
-  final String id;
-  final int index;
-  final String name;
-  final int color;
-
-  const FoodLabel({
-    required this.id,
-    required this.index,
-    required this.name,
-    required this.color,
-  });
-
+final class const FoodLabel({
+  required final String id,
+  required final int index,
+  required final String name,
+  required final int color,
+}) with VisualIdMixin {
   factory FoodLabel.decode(MapJsonNavigator nav) {
     return FoodLabel(
       id: nav.get('N'),

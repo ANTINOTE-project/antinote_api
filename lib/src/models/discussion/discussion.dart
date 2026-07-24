@@ -1,29 +1,15 @@
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/models/discussion/button.dart';
-import 'package:antinote/src/models/discussion/draft.dart';
-import 'package:antinote/src/models/discussion/message.dart';
+import 'package:antinote/antinote.dart';
 
-final class Discussion {
-  final List<DiscussionMessage> messages;
-  final DiscussionDraft draft;
-  final List<DiscussionButton> buttons;
-  final int messageRecipientCount;
-
-  const Discussion({
-    required this.messages,
-    required this.draft,
-    required this.buttons,
-    required this.messageRecipientCount,
-  });
-}
-
-extension AsDiscussion on MapJsonNavigator {
-  Discussion asDiscussion() {
-    return Discussion(
-      messages: getLM('listeMessages').mapL((e) => e.asDiscussionMessage()),
-      draft: getM('messagePourReponse').asDiscussionDraft(),
-      buttons: getLM('listeBoutons').mapL((e) => e.asDiscussionButton()),
-      messageRecipientCount: get('nbPossessionsMessage'),
-    );
-  }
+final class const Discussion({
+  required final List<DiscussionMessage> messages,
+  required final DiscussionDraft draft,
+  required final List<DiscussionButton> buttons,
+  required final int messageRecipientCount,
+}) {
+  factory decode(Map<String, dynamic> nav) => .new(
+    messages: nav.getLM('listeMessages').mapL((e) => .decode(e)),
+    draft: DiscussionDraft.decode(nav.getM('messagePourReponse')),
+    buttons: nav.getLM('listeBoutons').mapL((e) => .decode(e)),
+    messageRecipientCount: nav.get('nbPossessionsMessage'),
+  );
 }

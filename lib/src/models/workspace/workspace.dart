@@ -5,14 +5,24 @@ import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/models/workspace/type.dart';
 import 'package:antinote/src/protos/antinote/workspace.pb.dart';
 
-final class Workspace {
-  final WorkspaceType type;
-  final String label;
-  final String pathSegment;
-  final bool hasCasLogin;
+final class const Workspace({
+  required final WorkspaceType type,
+  required final String label,
+  required final String pathSegment,
+  final bool hasCasLogin = false,
 
   // TODO: Add avecDelegation and protocole (check the meaning of those in the
   // TODO: demo instance)
+}) {
+  factory decode(Map<String, dynamic> nav) => .new(
+    type: WorkspaceType.values.byId(
+      nav.eGet(['G', 'genreEspace']),
+      defaultValue: WorkspaceType.eleve,
+    ),
+    label: nav.eGet(['L', 'nom']),
+    pathSegment: nav.eGet(['url', 'URL']),
+    hasCasLogin: nav.get('avecDelegation') ?? false,
+  );
 
   static const Workspace common = Workspace(
     type: WorkspaceType.commun,
@@ -24,13 +34,6 @@ final class Workspace {
     label: '',
     pathSegment: 'mobile.html',
   );
-
-  const Workspace({
-    required this.type,
-    required this.label,
-    required this.pathSegment,
-    this.hasCasLogin = false,
-  });
 
   Uri toSpecificAccountKind(Uri baseUri) {
     return baseUri.replace(
@@ -67,18 +70,4 @@ final class Workspace {
   String exportString() => serialize().writeToJson();
 
   Uint8List exportBinary() => serialize().writeToBuffer();
-}
-
-extension AsWorkspace on MapJsonNavigator {
-  Workspace asWorkspace() {
-    return Workspace(
-      type: WorkspaceType.values.byId(
-        eGet(['G', 'genreEspace']),
-        defaultValue: WorkspaceType.eleve,
-      ),
-      label: eGet(['L', 'nom']),
-      pathSegment: eGet(['url', 'URL']),
-      hasCasLogin: get('avecDelegation') ?? false,
-    );
-  }
 }

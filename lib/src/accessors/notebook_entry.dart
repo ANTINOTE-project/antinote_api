@@ -42,10 +42,10 @@ class NotebookEntryAccessor extends StatelessAccessor<NotebookEntry> {
   FutureOr<NotebookEntry> interpretStateless(MapJsonNavigator nav) {
     assert(
       nav.getLM('ListeCahierDeTextes').length == 1,
-      'Got multiple entries from function call donnesContenusCDT',
+      'Got multiple (or no) entries from function call donnesContenusCDT',
     );
 
-    return nav.asNotebookPage().entries.single;
+    return NotebookPage.decode(nav).entries.single;
   }
 
   @override

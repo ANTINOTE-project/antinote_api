@@ -33,7 +33,7 @@ final class AccountPageAccessor extends StatelessAccessor<AccountPage> {
 
   @override
   FutureOr<AccountPage> interpretStateless(MapJsonNavigator<dynamic> nav) =>
-      nav.asAccountPage();
+      .decode(nav);
 
   @override
   List<VisualIdMixin> store(AccountPage result) => [];

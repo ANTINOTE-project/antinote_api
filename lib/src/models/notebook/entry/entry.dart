@@ -9,34 +9,34 @@ import 'package:antinote/src/models/notebook/entry/group.dart';
 import 'package:antinote/src/models/person.dart';
 import 'package:antinote/src/models/subject/subject.dart';
 
-final class NotebookEntry with VisualIdMixin {
-  final String id;
-  final String lessonId;
-  final bool locked;
-  final List<NotebookEntryGroup> groupList;
-  final Subject subject;
-  final int backgroundColor;
-  final List<Person> teacherList;
-  final DateTime dateTime;
-  final DateTime endDateTime;
-  final DateTime? homeworkDate;
-  final List<NotebookContent> contentList;
-  final ListJsonNavigator<MapJsonNavigator> cdtProgramElementList;
-
-  const NotebookEntry({
-    required this.id,
-    required this.lessonId,
-    required this.locked,
-    required this.groupList,
-    required this.subject,
-    required this.backgroundColor,
-    required this.teacherList,
-    required this.dateTime,
-    required this.endDateTime,
-    required this.homeworkDate,
-    required this.contentList,
-    required this.cdtProgramElementList,
-  });
+final class const NotebookEntry({
+  required final String id,
+  required final String lessonId,
+  required final bool locked,
+  required final List<NotebookEntryGroup> groupList,
+  required final Subject subject,
+  required final int backgroundColor,
+  required final List<Person> teacherList,
+  required final DateTime dateTime,
+  required final DateTime endDateTime,
+  required final DateTime? homeworkDate,
+  required final List<NotebookContent> contentList,
+  required final ListJsonNavigator<MapJsonNavigator> cdtProgramElementList,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    id: nav.get('N'),
+    lessonId: nav.go('cours').get('N'),
+    locked: nav.get('verrouille'),
+    groupList: nav.getLM('listeGroupes').mapL((e) => .decode(e)),
+    subject: .decode(nav.getM('Matiere')),
+    backgroundColor: nav.get<String>('CouleurFond').asRGB(),
+    teacherList: nav.getLM('listeProfesseurs').mapL((e) => .decode(e)),
+    dateTime: nav.get('Date'),
+    endDateTime: nav.get('DateFin'),
+    homeworkDate: nav.get('DateTAF'),
+    contentList: nav.getLM('listeContenus').mapL((e) => .decode(e)),
+    cdtProgramElementList: nav.getLM('listeElementsProgrammeCDT'),
+  );
 
   @override
   CacheType? get cacheType => .NOTEBOOK_ENTRY;
@@ -53,23 +53,4 @@ final class NotebookEntry with VisualIdMixin {
     ...teacherList,
     ...contentList,
   ];
-}
-
-extension AsNotebookEntry on MapJsonNavigator {
-  NotebookEntry asNotebookEntry() {
-    return NotebookEntry(
-      id: get('N'),
-      lessonId: go('cours').get('N'),
-      locked: get('verrouille'),
-      groupList: getLM('listeGroupes').mapL((e) => e.asNotebookEntryGroup()),
-      subject: getM('Matiere').asSubject(),
-      backgroundColor: get<String>('CouleurFond').asRGB(),
-      teacherList: getLM('listeProfesseurs').mapL((e) => e.asPerson()),
-      dateTime: get('Date'),
-      endDateTime: get('DateFin'),
-      homeworkDate: get('DateTAF'),
-      contentList: getLM('listeContenus').mapL((e) => e.asNotebookContent()),
-      cdtProgramElementList: getLM('listeElementsProgrammeCDT'),
-    );
-  }
 }

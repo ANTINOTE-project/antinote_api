@@ -1,14 +1,9 @@
-import 'package:antinote/src/helpers/json.dart';
+import 'package:antinote/antinote.dart';
 
-final class Pause {
-  final String label;
-  final int slot;
-
-  const Pause({required this.label, required this.slot});
-}
-
-extension AsPause on MapJsonNavigator {
-  Pause asPause() {
-    return Pause(label: get('L'), slot: get('place'));
-  }
+final class const Pause({
+  required final String label,
+  required final int slot,
+}) {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(label: nav.get('L'), slot: nav.get('place'));
 }

@@ -1,12 +1,12 @@
 part of '../widget.dart';
 
-class Notes extends HomePageWidget {
+final class const Notes({required final LatestGradesPage page})
+    extends HomePageWidget {
+  factory decode(Map<String, dynamic> nav, RemoteSession _) =>
+      .new(page: .decode(nav.getM('notes')));
+
   static HomePageModule module() =>
       HomePageModule(widget: .notes, data: (session) => {});
-
-  final LatestGradesPage page;
-
-  const Notes(this.page);
 
   @override
   HomePageWidgetType get widgetId => .notes;
@@ -15,7 +15,7 @@ class Notes extends HomePageWidget {
     type: .notes,
     shouldCreate: (nav, _) =>
         nav.mGo('notes')?.mGetL('listeDevoirs')?.notEmpty ?? false,
-    create: (nav, _) => Notes(nav.getM('notes').asLatestGradesPage()),
+    create: Notes.decode,
   );
 
   @override

@@ -1,13 +1,12 @@
 part of '../resource.dart';
 
-final class NotebookResourcePedagogicalForum extends NotebookResource {
-  final PedagogicalForum forum;
-
-  const NotebookResourcePedagogicalForum({
-    required super.id,
-    required super.type,
-    required this.forum,
-  });
+final class const NotebookResourcePedagogicalForum({
+  required super.id,
+  required super.type,
+  required final PedagogicalForum forum,
+}) extends NotebookResource {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(id: nav.get('N'), type: nav.get('G'), forum: .decode(nav));
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
@@ -15,15 +14,3 @@ final class NotebookResourcePedagogicalForum extends NotebookResource {
     yield* forum.collectVisualIdData();
   }
 }
-
-extension AsNotebookResourcePedagogicalForum on MapJsonNavigator {
-  NotebookResourcePedagogicalForum asNotebookResourcePedagogicalForum() {
-    return NotebookResourcePedagogicalForum(
-      id: get('N'),
-      type: get('G'),
-      forum: asPedagogicalForum(),
-    );
-  }
-}
-
-// multipart/form-data; boundary=----geckoformboundary2d532e8abfe4da9f1534f75570736f32

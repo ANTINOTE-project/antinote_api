@@ -8,46 +8,46 @@ import 'package:antinote/src/models/period.dart';
 import 'package:antinote/src/models/subject/service.dart';
 import 'package:antinote/src/models/theme.dart';
 
-final class Exam with VisualIdMixin {
-  final String id;
-  final int type;
-  final Grade selfGrade;
-  final Grade theoreticalMaxGrade;
-  final Grade defaultMaxGrade;
-  final DateTime date;
-  final Service service;
-  final Period period;
-  final List<Theme> themes;
-  final Grade? classAverage;
-  final bool? isInGroups;
-  final Grade? maxGrade;
-  final Grade? minGrade;
-  final String? comment;
-  final double? coefficient;
-  final bool? isOptional;
-  final bool? isBonus;
-  final bool? isCountedAs20TheoreticalMaxGrade;
-
-  const Exam({
-    required this.id,
-    required this.type,
-    required this.selfGrade,
-    required this.theoreticalMaxGrade,
-    required this.defaultMaxGrade,
-    required this.date,
-    required this.service,
-    required this.period,
-    required this.themes,
-    required this.classAverage,
-    required this.isInGroups,
-    required this.maxGrade,
-    required this.minGrade,
-    required this.comment,
-    required this.coefficient,
-    required this.isOptional,
-    required this.isBonus,
-    required this.isCountedAs20TheoreticalMaxGrade,
-  });
+final class const Exam({
+  required final String id,
+  required final int type,
+  required final Grade selfGrade,
+  required final Grade theoreticalMaxGrade,
+  required final Grade defaultMaxGrade,
+  required final DateTime date,
+  required final Service service,
+  required final Period period,
+  required final List<Theme> themes,
+  required final Grade? classAverage,
+  required final bool? isInGroups,
+  required final Grade? maxGrade,
+  required final Grade? minGrade,
+  required final String? comment,
+  required final double? coefficient,
+  required final bool? isOptional,
+  required final bool? isBonus,
+  required final bool? isCountedAs20TheoreticalMaxGrade,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    id: nav.get('N'),
+    type: nav.get('G'),
+    selfGrade: nav.get('note'),
+    theoreticalMaxGrade: nav.get('bareme'),
+    defaultMaxGrade: nav.get('baremeParDefaut'),
+    date: nav.get('date'),
+    service: .decode(nav.getM('service')),
+    period: .decode(nav.getM('periode')),
+    themes: nav.getLM('ListeThemes').mapL((e) => .decode(e)),
+    classAverage: nav.get('moyenne'),
+    isInGroups: nav.getB('estEnGroupe'),
+    maxGrade: nav.get('noteMax'),
+    minGrade: nav.get('noteMin'),
+    comment: nav.get('commentaire'),
+    coefficient: nav.get('coefficient'),
+    isOptional: nav.getB('estFacultatif'),
+    isBonus: nav.getB('estBonus'),
+    isCountedAs20TheoreticalMaxGrade: nav.getB('estRamenerSur20'),
+  );
 
   @override
   CacheType? get cacheType => .EXAM;
@@ -73,30 +73,5 @@ final class Exam with VisualIdMixin {
     yield isOptional?.visualIdData();
     yield isBonus?.visualIdData();
     yield isCountedAs20TheoreticalMaxGrade?.visualIdData();
-  }
-}
-
-extension AsExam on MapJsonNavigator {
-  Exam asExam() {
-    return Exam(
-      id: get('N'),
-      type: get('G'),
-      selfGrade: get('note'),
-      theoreticalMaxGrade: get('bareme'),
-      defaultMaxGrade: get('baremeParDefaut'),
-      date: get('date'),
-      service: getM('service').asService(),
-      period: getM('periode').asPeriod(),
-      themes: getLM('ListeThemes').mapL((e) => e.asTheme()),
-      classAverage: get('moyenne'),
-      isInGroups: getB('estEnGroupe'),
-      maxGrade: get('noteMax'),
-      minGrade: get('noteMin'),
-      comment: get('commentaire'),
-      coefficient: get('coefficient'),
-      isOptional: getB('estFacultatif'),
-      isBonus: getB('estBonus'),
-      isCountedAs20TheoreticalMaxGrade: getB('estRamenerSur20'),
-    );
   }
 }

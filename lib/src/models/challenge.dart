@@ -9,7 +9,21 @@ import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_plus/cryptography_plus.dart';
 
-class Challenge with VisualIdMixin {
+final class const Challenge({
+  required final Uint8List rawEncryptedChallenge,
+  required final bool compatibilityLogin,
+  required final bool compatibilityPassword,
+  required final String? username,
+  required final Uint8List alea,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    rawEncryptedChallenge: nav.get<String>('challenge').fromHex(),
+    compatibilityLogin: nav.get<int?>('modeCompLog') == 1,
+    compatibilityPassword: nav.get<int?>('modeCompMdp') == 1,
+    username: nav.get('login'),
+    alea: utf8.encode(nav.get('alea') ?? ''),
+  );
+
   @override
   CacheType? get cacheType => .UNIQUE;
 
@@ -17,20 +31,6 @@ class Challenge with VisualIdMixin {
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield "Challenge".visualIdData();
   }
-
-  final Uint8List rawEncryptedChallenge;
-  final bool compatibilityLogin;
-  final bool compatibilityPassword;
-  final String? username;
-  final Uint8List alea;
-
-  const Challenge({
-    required this.rawEncryptedChallenge,
-    required this.compatibilityLogin,
-    required this.compatibilityPassword,
-    required this.username,
-    required this.alea,
-  });
 
   Future<CipherWand> createWand({
     required String cLog,
@@ -82,18 +82,6 @@ class Challenge with VisualIdMixin {
     return await crypto.aesEncrypt(
       utf8.encode(unscrambled.map((e) => String.fromCharCode(e)).join()),
       auxiliaryWand: challengeWand,
-    );
-  }
-}
-
-extension AsChallenge on MapJsonNavigator {
-  Challenge asChallenge() {
-    return Challenge(
-      rawEncryptedChallenge: get<String>('challenge').fromHex(),
-      compatibilityLogin: get<int?>('modeCompLog') == 1,
-      compatibilityPassword: get<int?>('modeCompMdp') == 1,
-      username: get('login'),
-      alea: utf8.encode(get('alea') ?? ''),
     );
   }
 }

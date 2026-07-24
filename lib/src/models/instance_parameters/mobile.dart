@@ -59,7 +59,7 @@ extension AsMobileInstanceParameters on MapJsonNavigator {
       baseUrl: baseUrl,
       establishmentName: get('nomEtab'),
       collectivity: getM('collectivite'),
-      workspaces: getLM('espaces').mapL((e) => e.asWorkspace()),
+      workspaces: getLM('espaces').mapL((e) => .decode(e)),
       editsAllowed: get('modeModif'),
       version: Version.parse(getL<int>('version').join('.')),
       dateTime: DateTime.parse(get('date')),

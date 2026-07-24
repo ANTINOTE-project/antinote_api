@@ -1,23 +1,21 @@
 part of '../widget.dart';
 
-class Actualites extends HomePageWidget {
+final class const Actualites({required final List<News> news})
+    extends HomePageWidget {
+  factory Actualites.decode(MapJsonNavigator nav, RemoteSession _) => .new(
+    news: nav
+        .go('actualites')
+        .getL('listeModesAff')
+        .getM(NewsDisplayMode.reception.id)
+        .getLM('listeActualites')
+        .mapL((e) => .decode(e)),
+  );
+
   static HomePageModule module() =>
       HomePageModule(widget: .actualites, data: (session) => {});
 
-  final List<News> news;
-
-  const Actualites({required this.news});
-
   @override
   HomePageWidgetType get widgetId => .actualites;
-
-  Actualites.decode(MapJsonNavigator nav, RemoteSession _)
-    : news = nav
-          .go('actualites')
-          .getL('listeModesAff')
-          .getM(NewsDisplayMode.reception.id)
-          .getLM('listeActualites')
-          .mapL((e) => e.asNews());
 
   static final definition = WidgetDefinition(
     type: .actualites,

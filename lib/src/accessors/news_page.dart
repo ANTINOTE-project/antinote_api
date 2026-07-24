@@ -46,8 +46,7 @@ class NewsPageAccessor extends StatelessAccessor<NewsPage> {
   }
 
   @override
-  FutureOr<NewsPage> interpretStateless(MapJsonNavigator nav) =>
-      nav.asNewsPage();
+  FutureOr<NewsPage> interpretStateless(MapJsonNavigator nav) => .decode(nav);
 
   @override
   List<VisualIdMixin> store(NewsPage result) => [

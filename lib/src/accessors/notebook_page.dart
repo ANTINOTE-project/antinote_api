@@ -61,7 +61,7 @@ class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
 
   @override
   FutureOr<NotebookPage> interpretStateless(MapJsonNavigator nav) =>
-      nav.asNotebookPage();
+      .decode(nav);
 
   @override
   List<VisualIdMixin> store(NotebookPage result) => [

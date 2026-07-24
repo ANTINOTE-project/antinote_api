@@ -51,7 +51,7 @@ class InstanceParametersAccessor
   FutureOr<InstanceParameters> interpret(
     MapJsonNavigator<dynamic> nav,
     Workspace tempWorkspace,
-  ) => nav.asInstanceParameters(tempWorkspace, casToken: casToken);
+  ) => .decode(nav, tempWorkspace, casToken: casToken);
 
   @override
   List<VisualIdMixin> store(InstanceParameters result) => [result];

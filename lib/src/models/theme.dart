@@ -5,12 +5,16 @@ import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/subject/subject.dart';
 
-final class Theme with VisualIdMixin {
-  const Theme({required this.label, required this.id, required this.subject});
-
-  final String label;
-  final String id;
-  final Subject? subject;
+final class const Theme({
+  required final String label,
+  required final String id,
+  required final Subject? subject,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    label: nav.get('L'),
+    id: nav.get('N'),
+    subject: nav.mGetM('Matiere').inn((value) => .decode(value)),
+  );
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
@@ -20,12 +24,4 @@ final class Theme with VisualIdMixin {
 
   @override
   CacheType? get cacheType => .THEME;
-}
-
-extension AsTheme on MapJsonNavigator {
-  Theme asTheme() => Theme(
-    label: get('L'),
-    id: get('N'),
-    subject: mGetM('Matiere')?.asSubject(),
-  );
 }

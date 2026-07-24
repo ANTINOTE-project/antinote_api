@@ -6,41 +6,41 @@ import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/grades/grade.dart';
 
-final class Service with VisualIdMixin implements Comparable<Service> {
-  final String id;
-  final String name;
-  final int? type;
-  final int? order;
-  final Grade? selfAverage;
-  final Grade? theoreticalMaxGrade;
-  final Grade? defaultTheoreticalMaxGrade;
-  final Grade? classAverage;
-  final Grade? minGrade;
-  final Grade? maxGrade;
-  final int? color;
+final class const Service({
+  required final String id,
+  required final String name,
+  required final int? type,
+  required final int? order,
+  required final Grade? selfAverage,
+  required final Grade? theoreticalMaxGrade,
+  required final Grade? defaultTheoreticalMaxGrade,
+  required final Grade? classAverage,
+  required final Grade? minGrade,
+  required final Grade? maxGrade,
+  required final int? color,
 
-  final bool? inGroups;
-
-  const Service({
-    required this.id,
-    required this.name,
-    required this.type,
-    required this.order,
-    required this.selfAverage,
-    required this.theoreticalMaxGrade,
-    required this.defaultTheoreticalMaxGrade,
-    required this.classAverage,
-    required this.minGrade,
-    required this.maxGrade,
-    required this.color,
-    required this.inGroups,
-  });
+  required final bool? inGroups,
+}) with VisualIdMixin implements Comparable<Service> {
+  factory decode(Map<String, dynamic> nav) => .new(
+    id: nav.get('N'),
+    name: nav.get('L'),
+    type: nav.get('G'),
+    order: nav.get('ordre'),
+    selfAverage: nav.get('moyEleve'),
+    theoreticalMaxGrade: nav.get('baremeMoyEleve'),
+    defaultTheoreticalMaxGrade: nav.get('baremeMoyEleveParDefaut'),
+    classAverage: nav.get('moyClasse'),
+    minGrade: nav.get('moyMin'),
+    maxGrade: nav.get('moyMax'),
+    color: nav.get<String?>('couleur')?.asRGB(),
+    inGroups: nav.get('estServiceEnGroupe'),
+  );
 
   @override
   int compareTo(Service other) => name.compareTo(other.name);
 
   @override
-  CacheType? get cacheType => CacheType.SERVICE;
+  CacheType? get cacheType => .SERVICE;
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
@@ -50,31 +50,5 @@ final class Service with VisualIdMixin implements Comparable<Service> {
     yield defaultTheoreticalMaxGrade?.visualIdData();
     yield color?.colorVisualIdData();
     yield inGroups?.visualIdData();
-  }
-}
-
-extension AsService on MapJsonNavigator {
-  Service asService() {
-    return Service(
-      id: get('N'),
-      name: get('L'),
-      type: get('G'),
-      order: get('ordre'),
-      selfAverage: get('moyEleve'),
-      theoreticalMaxGrade: get('baremeMoyEleve'),
-      defaultTheoreticalMaxGrade: get('baremeMoyEleveParDefaut'),
-      classAverage: get('moyClasse'),
-      minGrade: get('moyMin'),
-      maxGrade: get('moyMax'),
-      color: get<String?>('couleur')?.asRGB(),
-      inGroups: get('estServiceEnGroupe'),
-    );
-    // return Service(
-    //   id: get('N'),
-    //   name: get('L'),
-    //   inGroups: get('estServiceEnGroupe') ?? false,
-    //   // backgroundColor: get<String?>('CouleurFond')?.asRGB(),
-    //   // textColor: get<String?>('CouleurTexte')?.asRGB(),
-    // );
   }
 }

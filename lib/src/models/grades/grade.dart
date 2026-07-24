@@ -21,20 +21,44 @@ enum GradeType implements EnumId {
   const GradeType(this.id);
 }
 
-final class Grade {
-  final GradeType type;
-  final double value;
-  final String grade;
-  final double maxValue;
-  final String? rawContent;
+final class const Grade({
+  required final GradeType type,
+  required final double value,
+  required final String grade,
+  required final double maxValue,
+  required final String? rawContent,
+}) {
+  factory Grade.decodeString(String rawGrade, {int decimalPlaces = 2}) {
+    final type = _gradeType(rawGrade);
 
-  const Grade({
-    required this.type,
-    required this.grade,
-    required this.value,
-    required this.maxValue,
-    required this.rawContent,
-  });
+    double value = _gradeValue(rawGrade);
+    if ([GradeType.absentZero, GradeType.notHandedZero].contains(type)) {
+      value = 0;
+    }
+    // TODO: Add handling stuff at line 6850 of eleve.js when data about grades is parsed.
+
+    final grade = getGrade(value, decimalPlaces: decimalPlaces);
+
+    return Grade(
+      type: type,
+      grade: grade,
+      value: value,
+      maxValue: 0,
+      rawContent: rawGrade,
+    );
+  }
+
+  factory Grade.decodeDouble(double rawGrade, {int decimalPlaces = 2}) {
+    final grade = getGrade(rawGrade, decimalPlaces: decimalPlaces);
+
+    return Grade(
+      type: GradeType.note,
+      grade: grade,
+      value: rawGrade,
+      maxValue: 0,
+      rawContent: null,
+    );
+  }
 
   static const defaultUnknownGrade = Grade(
     type: .note,
@@ -70,38 +94,6 @@ final class Grade {
   static String getGrade(double value, {int decimalPlaces = 2}) {
     if (value.isNaN) return '';
     return value.toStringAsFixed(2).replaceAll('.', ',');
-  }
-
-  factory Grade.decodeString(String rawGrade, {int decimalPlaces = 2}) {
-    final type = _gradeType(rawGrade);
-
-    double value = _gradeValue(rawGrade);
-    if ([GradeType.absentZero, GradeType.notHandedZero].contains(type)) {
-      value = 0;
-    }
-    // TODO: Add handling stuff at line 6850 of eleve.js when data about grades is parsed.
-
-    final grade = getGrade(value, decimalPlaces: decimalPlaces);
-
-    return Grade(
-      type: type,
-      grade: grade,
-      value: value,
-      maxValue: 0,
-      rawContent: rawGrade,
-    );
-  }
-
-  factory Grade.decodeDouble(double rawGrade, {int decimalPlaces = 2}) {
-    final grade = getGrade(rawGrade, decimalPlaces: decimalPlaces);
-
-    return Grade(
-      type: GradeType.note,
-      grade: grade,
-      value: rawGrade,
-      maxValue: 0,
-      rawContent: null,
-    );
   }
 
   Uint8List visualIdData() {

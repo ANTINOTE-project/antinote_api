@@ -4,39 +4,22 @@ import 'package:antinote/src/models/workspace/type.dart';
 import 'package:antinote/src/models/workspace/workspace.dart';
 
 // TODO: Make notification parsing exhaustive...
-final class Notification {
-  final int type;
-  final int action;
-  final String id;
-  final String title;
-  final String message;
-  final int counter;
-  final Set<int> modalities;
+final class const Notification({
+  required final int type,
+  required final int action,
+  required final String id,
+  required final String title,
+  required final String message,
+  required final int counter,
+  required final Set<int> modalities,
 
-  final DateTime? date;
-  final DateTime? expirationDate;
-  final bool? buttonClick;
-  final bool? notificationClick;
-  final List<int>? tabList;
-  final String? documentModelId;
-
-  const Notification({
-    required this.type,
-    required this.action,
-    required this.id,
-    required this.title,
-    required this.message,
-    required this.counter,
-    required this.modalities,
-
-    required this.date,
-    required this.expirationDate,
-    required this.buttonClick,
-    required this.notificationClick,
-    required this.tabList,
-    required this.documentModelId,
-  });
-
+  required final DateTime? date,
+  required final DateTime? expirationDate,
+  required final bool? buttonClick,
+  required final bool? notificationClick,
+  required final List<int>? tabList,
+  required final String? documentModelId,
+}) {
   factory Notification.decode(MapJsonNavigator nav) {
     return Notification(
       type: nav.get('type'),

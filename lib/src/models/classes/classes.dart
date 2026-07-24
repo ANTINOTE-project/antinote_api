@@ -21,39 +21,25 @@ part 'lesson.dart';
 
 enum ClassType { lesson, detention, activity }
 
-final class ClassMessage {
-  final String id;
-  final int? backgroundColor;
-  final String? notes;
-  final DateTime startDate;
-  final DateTime endDate;
-  final int blockLength;
-  final int blockSlot;
-  final int weekNumber;
-  final String? studentCountString;
-
-  const ClassMessage({
-    required this.id,
-    required this.backgroundColor,
-    required this.notes,
-    required this.startDate,
-    required this.endDate,
-    required this.blockLength,
-    required this.blockSlot,
-    required this.weekNumber,
-    required this.studentCountString,
-  });
-}
-
-extension AsClassMessage on MapJsonNavigator {
-  ClassMessage asClassMessage(RemoteSession session) {
-    final startDate = get<DateTime>('DateDuCours');
-    final int blockSlot = get('place');
-    final int blockLength = get('duree');
+final class const ClassMessage({
+  required final String id,
+  required final int? backgroundColor,
+  required final String? notes,
+  required final DateTime startDate,
+  required final DateTime endDate,
+  required final int blockLength,
+  required final int blockSlot,
+  required final int weekNumber,
+  required final String? studentCountString,
+}) {
+  factory decode(RemoteSession session, Map<String, dynamic> nav) {
+    final startDate = nav.get<DateTime>('DateDuCours');
+    final int blockSlot = nav.get('place');
+    final int blockLength = nav.get('duree');
     DateTime endDate;
 
-    if (get('DateDuCoursFin') != null) {
-      endDate = get('DateDuCoursFin');
+    if (nav.get('DateDuCoursFin') != null) {
+      endDate = nav.get('DateDuCoursFin');
     } else {
       final position =
           blockSlot % session.instance.slotsPerDay + blockLength - 1;
@@ -62,32 +48,46 @@ extension AsClassMessage on MapJsonNavigator {
       endDate = startDate.copyWith(hour: timings.hour, minute: timings.minute);
     }
 
-    return ClassMessage(
-      id: get('N'),
-      backgroundColor: get<String?>('CouleurFond')?.asRGB(),
-      notes: get('memo'),
+    return .new(
+      id: nav.get('N'),
+      backgroundColor: nav.get<String?>('CouleurFond')?.asRGB(),
+      notes: nav.get('memo'),
       startDate: startDate,
       endDate: endDate,
       blockLength: blockLength,
       blockSlot: blockSlot,
-      weekNumber: get('numeroSemaine') ?? startDate.toRemoteWeekNumber(session),
-      studentCountString: get('strNbEleves'),
+      weekNumber:
+          nav.get('numeroSemaine') ?? startDate.toRemoteWeekNumber(session),
+      studentCountString: nav.get('strNbEleves'),
     );
   }
 }
 
-sealed class Class with VisualIdMixin {
-  ClassType get type;
+sealed class const Class({
+  required final String id,
+  required final int? backgroundColor,
+  required final DateTime startDate,
+  required final DateTime endDate,
+  required final int blockLength,
+  required final int blockSlot,
+  required final String? notes,
+  required final int weekNumber,
+  required final String? studentCountString,
+}) with VisualIdMixin {
+  factory decode(RemoteSession session, Map<String, dynamic> nav) {
+    final classMessage = ClassMessage.decode(session, nav);
 
-  final String id;
-  final int? backgroundColor;
-  final DateTime startDate;
-  final DateTime endDate;
-  final int blockLength;
-  final int blockSlot;
-  final String? notes;
-  final int weekNumber;
-  final String? studentCountString;
+    return switch (nav) {
+      _ when nav.getB('estSortiePedagogique') => Activity.decode(
+        classMessage,
+        nav,
+      ),
+      _ when nav.getB('estRetenue') => Detention.decode(classMessage, nav),
+      _ => Lesson.decode(classMessage, nav),
+    };
+  }
+
+  ClassType get type;
 
   bool get canceled;
 
@@ -95,36 +95,10 @@ sealed class Class with VisualIdMixin {
 
   List<ClassContent> get contents;
 
-  const Class({
-    required this.id,
-    required this.backgroundColor,
-    required this.startDate,
-    required this.endDate,
-    required this.blockLength,
-    required this.blockSlot,
-    required this.notes,
-    required this.weekNumber,
-    required this.studentCountString,
-  });
-
   @override
   String toString() =>
       '$id from ${startDate.toString()} -> ${endDate.toString()} (w$weekNumber)';
 
   @override
   CacheType? get cacheType => .CLAZZ;
-}
-
-extension AsClass on MapJsonNavigator {
-  Class asClass(RemoteSession session) {
-    final classMessage = asClassMessage(session);
-
-    return switch (this) {
-      {'estSortiePedagogique': final isActivity} when isActivity != null =>
-        Activity.decode(classMessage, this),
-      {'estRetenue': final isDetention} when isDetention != null =>
-        Detention.decode(classMessage, this),
-      _ => Lesson.decode(classMessage, this),
-    };
-  }
 }

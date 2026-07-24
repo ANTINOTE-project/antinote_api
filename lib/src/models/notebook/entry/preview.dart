@@ -5,16 +5,16 @@ import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/notebook/content/category.dart';
 
-final class NotebookEntryPreview with VisualIdMixin {
-  final String id;
-  final bool isTest;
-  final List<NotebookContentCategory> categoryList;
-
-  const NotebookEntryPreview({
-    required this.id,
-    required this.isTest,
-    required this.categoryList,
-  });
+final class const NotebookEntryPreview({
+  required final String id,
+  required final bool isTest,
+  required final List<NotebookContentCategory> categoryList,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    id: nav.get('N'),
+    isTest: nav.get('estDevoir') ?? false,
+    categoryList: nav.getLM('originesCategorie').mapL((e) => .decode(e)),
+  );
 
   @override
   CacheType? get cacheType => .NOTEBOOK_ENTRY_PREVIEW;
@@ -27,16 +27,4 @@ final class NotebookEntryPreview with VisualIdMixin {
 
   @override
   List<VisualIdMixin> get toStore => categoryList;
-}
-
-extension AsNotebookEntryPreview on MapJsonNavigator {
-  NotebookEntryPreview asNotebookEntryPreview() {
-    return NotebookEntryPreview(
-      id: get('N'),
-      isTest: get('estDevoir') ?? false,
-      categoryList: getLM(
-        'originesCategorie',
-      ).mapL((e) => e.mAsNotebookContentCategory()!),
-    );
-  }
 }

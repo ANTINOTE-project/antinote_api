@@ -7,27 +7,27 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/room.dart';
 import 'package:antinote/src/models/subject/subject.dart';
 
-final class ExamPreview with VisualIdMixin {
-  final String label;
-  final String id;
-  final int type;
-  final Subject subject;
-  final int color;
-  final DateTime startTime;
-  final DateTime endTime;
+final class const ExamPreview({
+  required final String label,
+  required final String id,
+  required final int type,
+  required final Subject subject,
+  required final int color,
+  required final DateTime startTime,
+  required final DateTime endTime,
 
-  final List<Room> rooms;
-
-  const ExamPreview({
-    required this.label,
-    required this.id,
-    required this.type,
-    required this.subject,
-    required this.color,
-    required this.startTime,
-    required this.endTime,
-    required this.rooms,
-  });
+  required final List<Room> rooms,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    label: nav.get('L'),
+    id: nav.get('N'),
+    type: nav.get('G'),
+    subject: .decode(nav.getM('matiere')),
+    color: nav.get<String>('couleur').asRGB(),
+    startTime: nav.get('dateDebut'),
+    endTime: nav.get('dateFin'),
+    rooms: nav.getLM('listeSalles').mapL((e) => .decode(e)),
+  );
 
   @override
   CacheType? get cacheType => .EXAM_PREVIEW;
@@ -41,20 +41,5 @@ final class ExamPreview with VisualIdMixin {
     yield startTime.millisecondsSinceEpoch.bytesVisualIdData();
     yield endTime.millisecondsSinceEpoch.bytesVisualIdData();
     yield* rooms.visualIdForEach();
-  }
-}
-
-extension AsExamPreview on MapJsonNavigator {
-  ExamPreview asExamPreview() {
-    return ExamPreview(
-      label: get('L'),
-      id: get('N'),
-      type: get('G'),
-      subject: getM('matiere').asSubject(),
-      color: get<String>('couleur').asRGB(),
-      startTime: get('dateDebut'),
-      endTime: get('dateFin'),
-      rooms: getLM('listeSalles').mapL((e) => e.asRoom()),
-    );
   }
 }

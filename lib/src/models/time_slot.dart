@@ -1,30 +1,23 @@
 import 'package:antinote/src/helpers/json.dart';
 
-final class TimeSlot {
-  final int index;
-  final String label;
-  final bool active;
+final class const TimeSlot({
+  required final int index,
+  required final String label,
+  required final bool active,
 
-  final DateTime timing;
+  required final DateTime timing,
+}) {
+  factory decode(Map<String, dynamic> nav) {
+    final [hour, minute] = nav
+        .get<String>('L')
+        .split('h')
+        .sublist(0, 2)
+        .mapL(int.parse);
 
-  const TimeSlot({
-    required this.index,
-    required this.label,
-    required this.active,
-
-    required this.timing,
-  });
-}
-
-extension AsTimeSlot on MapJsonNavigator {
-  TimeSlot asTimeSlot() {
-    final [hour, minute] = get<String>(
-      'L',
-    ).split('h').sublist(0, 2).mapL(int.parse);
-    return TimeSlot(
-      index: get('G'),
-      label: get('L'),
-      active: get('A') ?? true,
+    return .new(
+      index: nav.get('G'),
+      label: nav.get('L'),
+      active: nav.getB('A'),
       timing: DateTime.utc(1970, 1, 1, hour, minute),
     );
   }

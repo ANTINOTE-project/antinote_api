@@ -2,19 +2,13 @@ library;
 
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/domain.dart';
-import 'package:antinote/src/models/subject/subject.dart';
-
 import '../../../antinote.dart';
 
 part 'absence.dart';
+part 'delay.dart';
 part 'dispense.dart';
 part 'exclusion.dart';
 part 'other.dart';
-part 'retard.dart';
 
 enum SchoolLifeEventType {
   absence /*13*/,
@@ -83,7 +77,7 @@ extension AsSchoolLifeEvent on MapJsonNavigator {
         schoolLifeMessage,
         this,
       ),
-      {'G': final type} when type == 14 => Retard.decode(
+      {'G': final type} when type == 14 => Delay.decode(
         schoolLifeMessage,
         this,
       ),

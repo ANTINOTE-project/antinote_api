@@ -1,9 +1,7 @@
-final class WeekFrequency {
-  final String label;
-  final int fortnight;
-
-  const WeekFrequency({required this.label, required this.fortnight});
-
+final class const WeekFrequency({
+  required final String label,
+  required final int fortnight,
+}) {
   @override
   int get hashCode => Object.hash(label, fortnight);
 

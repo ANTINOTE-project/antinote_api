@@ -1,21 +1,19 @@
 part of '../widget.dart';
 
-class TravailAFaire extends HomePageWidget {
+final class const TravailAFaire({required final List<Homework> homeworks})
+    extends HomePageWidget {
+  factory decode(MapJsonNavigator nav, RemoteSession _) => .new(
+    homeworks: nav
+        .go('travailAFaire')
+        .getLM('listeTAF')
+        .mapL((e) => .decode(e)),
+  );
+
   static HomePageModule module() =>
       HomePageModule(widget: .travailAFaire, data: (session) => {});
 
-  final List<Homework> homeworks;
-
-  const TravailAFaire({required this.homeworks});
-
   @override
   HomePageWidgetType get widgetId => .travailAFaire;
-
-  TravailAFaire.decode(MapJsonNavigator nav, RemoteSession _)
-    : homeworks = nav
-          .go('travailAFaire')
-          .getLM('listeTAF')
-          .mapL((e) => e.asHomework());
 
   static final definition = WidgetDefinition(
     type: .travailAFaire,

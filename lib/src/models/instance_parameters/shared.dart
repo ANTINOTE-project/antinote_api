@@ -22,80 +22,53 @@ import '../time_slot.dart';
 part 'broad.dart';
 part 'specific.dart';
 
-final class SharedInstanceParameters {
-  final String? casToken;
-  final bool isShownInDW;
-  final List<String> fontNames;
-  final bool withMember;
-  final bool forNewCaledonia;
-  final int loginImageType;
-  final Uri? loginImageUrl;
-  final String cssProductLogo;
-  final String productLinkLabel;
-  final Uri privacyTermsUrl;
-  final Uri publicPageMentionsUrl;
+final class const SharedInstanceParameters({
+  required final String? casToken,
+  required final bool isShownInDW,
+  required final List<String> fontNames,
+  required final bool withMember,
+  required final bool forNewCaledonia,
+  required final int loginImageType,
+  required final Uri? loginImageUrl,
+  required final String cssProductLogo,
+  required final String productLinkLabel,
+  required final Uri privacyTermsUrl,
+  required final Uri publicPageMentionsUrl,
 
   /// WARNING! The place where it is changes between root.versionPN ([String])
   /// and root.General.tableauVersion ([List<int>])
-  final Version version;
-  final String currentLanguageCode;
-  final int currentLanguageId;
-  final List<Language> languages;
-  final bool publishMentions;
-  final bool nonComplyingAccessibility;
-  final Uri? accessibilityDeclarationUrl;
-  final String establishmentName;
-  final String loginEstablishmentName;
-  final String? urlPath;
-  final String? schoolYear;
-
-  const SharedInstanceParameters({
-    required this.casToken,
-    required this.isShownInDW,
-    required this.fontNames,
-    required this.withMember,
-    required this.forNewCaledonia,
-    required this.loginImageType,
-    required this.loginImageUrl,
-    required this.cssProductLogo,
-    required this.productLinkLabel,
-    required this.privacyTermsUrl,
-    required this.publicPageMentionsUrl,
-    required this.version,
-    required this.currentLanguageCode,
-    required this.currentLanguageId,
-    required this.languages,
-    required this.publishMentions,
-    required this.nonComplyingAccessibility,
-    required this.accessibilityDeclarationUrl,
-    required this.establishmentName,
-    required this.loginEstablishmentName,
-    required this.urlPath,
-    required this.schoolYear,
-  });
-}
-
-extension AsSharedInstanceParameters on MapJsonNavigator {
-  SharedInstanceParameters asSharedInstanceParameters({String? casToken}) {
-    final mGen = mGetM('General') ?? this;
-    return SharedInstanceParameters(
+  required final Version version,
+  required final String currentLanguageCode,
+  required final int currentLanguageId,
+  required final List<Language> languages,
+  required final bool publishMentions,
+  required final bool nonComplyingAccessibility,
+  required final Uri? accessibilityDeclarationUrl,
+  required final String establishmentName,
+  required final String loginEstablishmentName,
+  required final String? urlPath,
+  required final String? schoolYear,
+}) {
+  factory decode(Map<String, dynamic> nav, {String? casToken}) {
+    final mGen = nav.mGetM('General') ?? nav;
+    return .new(
       casToken: casToken,
-      isShownInDW: getB('estAfficheDansENT'),
-      fontNames: getLM('listePolices').mapL((e) => e.get<String>('L')),
-      withMember: getB('avecMembre'),
-      forNewCaledonia: getB('pourNouvelleCaledonie'),
-      loginImageType: get('genreImageConnexion'),
-      loginImageUrl: Uri.tryParse(get<String>('urlImageConnexion')),
-      cssProductLogo: get('logoProduitCss'),
-      productLinkLabel: get('labelLienProduit'),
-      privacyTermsUrl: Uri.parse(get('urlConfidentialite')),
+      isShownInDW: nav.getB('estAfficheDansENT'),
+      fontNames: nav.getLM('listePolices').mapL((e) => e.get<String>('L')),
+      withMember: nav.getB('avecMembre'),
+      forNewCaledonia: nav.getB('pourNouvelleCaledonie'),
+      loginImageType: nav.get('genreImageConnexion'),
+      loginImageUrl: Uri.tryParse(nav.get<String>('urlImageConnexion')),
+      cssProductLogo: nav.get('logoProduitCss'),
+      productLinkLabel: nav.get('labelLienProduit'),
+      privacyTermsUrl: Uri.parse(nav.get('urlConfidentialite')),
       publicPageMentionsUrl: Uri.parse(
-        go('mentionsPagesPubliques').get('lien'),
+        nav.go('mentionsPagesPubliques').get('lien'),
       ),
       version: Version.parse(mGen.get('versionPN')),
       currentLanguageCode: mGen.get('langue'),
       currentLanguageId: mGen.get('langID'),
-      languages: mGen.getLM('listeLangues').mapL((e) => e.asLanguage()),
+      languages: mGen.getLM('listeLangues').mapL((e) => .decode(e)),
       publishMentions: mGen.getB('publierMentions'),
       nonComplyingAccessibility: mGen.getB('accessibiliteNonConforme'),
       accessibilityDeclarationUrl: mGen.has('urlDeclarationAccessibilite')
@@ -112,6 +85,18 @@ extension AsSharedInstanceParameters on MapJsonNavigator {
 }
 
 sealed class InstanceParameters with VisualIdMixin {
+  factory decode(
+    Map<String, dynamic> nav,
+    Workspace tempWorkspace, {
+    String? casToken,
+  }) {
+    final shared = SharedInstanceParameters.decode(nav, casToken: casToken);
+    return switch (nav.has('General')) {
+      true => SpecificInstanceParameters.decode(nav, shared, tempWorkspace),
+      false => BroadInstanceParameters.decode(nav, shared),
+    };
+  }
+
   @override
   CacheType? get cacheType => .UNIQUE;
 
@@ -142,7 +127,7 @@ sealed class InstanceParameters with VisualIdMixin {
   final String loginEstablishmentName;
   final String? schoolYear;
 
-  const InstanceParameters({
+  const InstanceParameters.full({
     required this.casToken,
     required this.isShownInDW,
     required this.fontNames,
@@ -166,8 +151,8 @@ sealed class InstanceParameters with VisualIdMixin {
     required this.schoolYear,
   });
 
-  InstanceParameters.shared({required SharedInstanceParameters shared})
-    : this(
+  InstanceParameters({required SharedInstanceParameters shared})
+    : this.full(
         casToken: shared.casToken,
         isShownInDW: shared.isShownInDW,
         fontNames: shared.fontNames,
@@ -190,18 +175,4 @@ sealed class InstanceParameters with VisualIdMixin {
         loginEstablishmentName: shared.loginEstablishmentName,
         schoolYear: shared.schoolYear,
       );
-}
-
-extension AsInstanceParameters on MapJsonNavigator {
-  InstanceParameters asInstanceParameters(
-    Workspace tempWorkspace, {
-    String? casToken,
-  }) {
-    final shared = asSharedInstanceParameters(casToken: casToken);
-
-    return switch (has('General')) {
-      true => asSpecificInstanceParameters(shared, tempWorkspace),
-      false => asBroadInstanceParameters(shared),
-    };
-  }
 }

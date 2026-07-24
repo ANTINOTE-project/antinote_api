@@ -7,28 +7,28 @@ import 'package:antinote/src/models/attachment.dart';
 import 'package:antinote/src/models/notebook/content/category.dart';
 import 'package:antinote/src/models/theme.dart';
 
-final class NotebookContent with VisualIdMixin {
-  final String? label;
-  final String id;
-  final String htmlDescription;
-  final NotebookContentCategory? category;
-  final List<Theme> themes;
-  final String notebookThemeLabel;
-  final int educationalPath;
-  final List<Attachment> attachments;
-  final MapJsonNavigator training;
-
-  const NotebookContent({
-    required this.label,
-    required this.id,
-    required this.htmlDescription,
-    required this.category,
-    required this.themes,
-    required this.notebookThemeLabel,
-    required this.educationalPath,
-    required this.attachments,
-    required this.training,
-  });
+final class const NotebookContent({
+  required final String? label,
+  required final String id,
+  required final String htmlDescription,
+  required final NotebookContentCategory? category,
+  required final List<Theme> themes,
+  required final String notebookThemeLabel,
+  required final int educationalPath,
+  required final List<Attachment> attachments,
+  required final MapJsonNavigator training,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    label: nav.get('L'),
+    id: nav.get('N'),
+    htmlDescription: nav.get('descriptif'),
+    category: .tryDecode(nav.getM('categorie')),
+    themes: nav.getLM('ListeThemes').mapL((e) => .decode(e)),
+    notebookThemeLabel: nav.get('libelleCBTheme'),
+    educationalPath: nav.get('parcoursEducatif'),
+    attachments: nav.getLM('ListePieceJointe').mapL((e) => .decode(e)),
+    training: nav.getM('training'),
+  );
 
   @override
   CacheType? get cacheType => .NOTEBOOK_CONTENT;
@@ -45,20 +45,4 @@ final class NotebookContent with VisualIdMixin {
 
   @override
   List<VisualIdMixin> get toStore => [?category, ...themes, ...attachments];
-}
-
-extension AsNotebookContent on MapJsonNavigator {
-  NotebookContent asNotebookContent() {
-    return NotebookContent(
-      label: get('L'),
-      id: get('N'),
-      htmlDescription: get('descriptif'),
-      category: getM('categorie').mAsNotebookContentCategory(),
-      themes: getLM('ListeThemes').mapL((e) => e.asTheme()),
-      notebookThemeLabel: get('libelleCBTheme'),
-      educationalPath: get('parcoursEducatif'),
-      attachments: getLM('ListePieceJointe').mapL((e) => e.asAttachment()),
-      training: getM('training'),
-    );
-  }
 }

@@ -5,42 +5,43 @@ import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/attachment.dart';
 
-final class DiscussionMessage with VisualIdMixin {
-  final String id;
-  final String? sourceMessageId;
-  final String messageRecipient;
-  final bool isNotARecipient;
-  final String content;
-  final bool isHTML;
-  final String dateLabel;
-  final DateTime date;
-  final bool isAnAparte;
-  final bool isSelfCreator;
-  final String leftPublic;
-  final String? leftHint;
-  final String? rightPublic;
-  final String? rightHint;
-  final int publicCount;
-  final List<Attachment> attachments;
-
-  const DiscussionMessage({
-    required this.id,
-    required this.sourceMessageId,
-    required this.messageRecipient,
-    required this.isNotARecipient,
-    required this.content,
-    required this.isHTML,
-    required this.dateLabel,
-    required this.date,
-    required this.isAnAparte,
-    required this.isSelfCreator,
-    required this.leftPublic,
-    required this.leftHint,
-    required this.rightPublic,
-    required this.rightHint,
-    required this.publicCount,
-    required this.attachments,
-  });
+final class const DiscussionMessage({
+  required final String id,
+  required final String? sourceMessageId,
+  required final String messageRecipient,
+  required final bool isNotARecipient,
+  required final String content,
+  required final bool isHTML,
+  required final String dateLabel,
+  required final DateTime date,
+  required final bool isAnAparte,
+  required final bool isSelfCreator,
+  required final String leftPublic,
+  required final String? leftHint,
+  required final String? rightPublic,
+  required final String? rightHint,
+  required final int publicCount,
+  required final List<Attachment> attachments,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    id: nav.get('N'),
+    sourceMessageId: nav.go('messageSource').get('N'),
+    messageRecipient: nav.go('possessionMessage').get('N'),
+    isNotARecipient: nav.get('estNonPossede'),
+    content: nav.get('contenu'),
+    isHTML: nav.get('estHTML'),
+    dateLabel: nav.get('libelleDate'),
+    date: nav.get('date'),
+    isAnAparte: nav.get('estUnAparte'),
+    isSelfCreator: nav.get('emetteur'),
+    leftPublic: nav.get('public_gauche'),
+    leftHint: nav.get('hint_gauche'),
+    rightPublic: nav.get('public_droite'),
+    rightHint: nav.get('hint_droite'),
+    publicCount: nav.get('nbPublic') ?? 1,
+    attachments:
+        nav.mGetLM('listeDocumentsJoints')?.mapL((e) => .decode(e)) ?? [],
+  );
 
   @override
   CacheType? get cacheType => .DISCUSSION_MESSAGE;
@@ -65,28 +66,4 @@ final class DiscussionMessage with VisualIdMixin {
 
   @override
   List<VisualIdMixin> get toStore => [...attachments];
-}
-
-extension AsDiscussionMessage on MapJsonNavigator {
-  DiscussionMessage asDiscussionMessage() {
-    return DiscussionMessage(
-      id: get('N'),
-      sourceMessageId: go('messageSource').get('N'),
-      messageRecipient: go('possessionMessage').get('N'),
-      isNotARecipient: get('estNonPossede'),
-      content: get('contenu'),
-      isHTML: get('estHTML'),
-      dateLabel: get('libelleDate'),
-      date: get('date'),
-      isAnAparte: get('estUnAparte'),
-      isSelfCreator: get('emetteur'),
-      leftPublic: get('public_gauche'),
-      leftHint: get('hint_gauche'),
-      rightPublic: get('public_droite'),
-      rightHint: get('hint_droite'),
-      publicCount: get('nbPublic') ?? 1,
-      attachments:
-          mGetLM('listeDocumentsJoints')?.mapL((e) => e.asAttachment()) ?? [],
-    );
-  }
 }

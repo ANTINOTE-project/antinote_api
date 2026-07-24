@@ -1,50 +1,38 @@
 part of 'school_life_events.dart';
 
-class Other extends SchoolLifeEvent {
-  final String displayName;
-  final DateTime date;
-  final bool read;
-  final bool withArObservation;
-  final Subject subject;
-  final Map<String, dynamic> demandeur; // TODO: Implement this
-  final String comment;
-  final int observationType;
+final class const Other({
+  required final String displayName,
+  required super.id,
 
-  final SchoolLifeEventSection section;
+  required super.start,
+  required super.end,
+  required final DateTime date,
+  required final bool read,
+  required final bool withArObservation,
+  required final Subject subject,
+  required final Map<String, dynamic> demandeur, // TODO: Implement this
+  required final String comment,
+  required final int observationType,
 
-  const Other({
-    required this.displayName,
-    required super.id,
-    required super.start,
-    required super.end,
-    required this.date,
-    required this.read,
-    required this.withArObservation,
-    required this.subject,
-    required this.demandeur,
-    required this.comment,
-    required this.observationType,
-    required this.section,
-    required super.reasons,
-  });
-
-  factory Other.decode(SchoolLifeEventMessage message, MapJsonNavigator nav) {
-    return Other(
-      displayName: nav.get('L'),
-      id: message.id,
-      start: null,
-      end: null,
-      date: nav.get('date'),
-      read: nav.get('estLue'),
-      withArObservation: nav.get('avecARObservation'),
-      subject: nav.getM('matiere').asSubject(),
-      demandeur: nav.getM('demandeur'),
-      comment: nav.get('commentaire'),
-      observationType: nav.get('genreObservation'),
-      section: nav.getM('rubrique').asSchoolLifeEventSection(),
-      reasons: message.reasons,
-    );
-  }
+  required final SchoolLifeEventSection section,
+  required super.reasons,
+}) extends SchoolLifeEvent {
+  factory Other.decode(SchoolLifeEventMessage message, MapJsonNavigator nav) =>
+      .new(
+        displayName: nav.get('L'),
+        id: message.id,
+        start: null,
+        end: null,
+        date: nav.get('date'),
+        read: nav.get('estLue'),
+        withArObservation: nav.get('avecARObservation'),
+        subject: .decode(nav.getM('matiere')),
+        demandeur: nav.getM('demandeur'),
+        comment: nav.get('commentaire'),
+        observationType: nav.get('genreObservation'),
+        section: .decode(nav.getM('rubrique')),
+        reasons: message.reasons,
+      );
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
@@ -60,16 +48,13 @@ class Other extends SchoolLifeEvent {
   }
 }
 
-final class SchoolLifeEventSection with VisualIdMixin {
-  final String name;
-  final String id;
-  final int type;
-
-  const SchoolLifeEventSection({
-    required this.name,
-    required this.id,
-    required this.type,
-  });
+final class const SchoolLifeEventSection({
+  required final String name,
+  required final String id,
+  required final int type,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) =>
+      .new(name: nav.get('L'), id: nav.get('N'), type: nav.get('G'));
 
   @override
   CacheType? get cacheType => .SCHOOL_LIFE_EVENT_SECTION;
@@ -78,11 +63,5 @@ final class SchoolLifeEventSection with VisualIdMixin {
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield name.visualIdData();
     yield type.byteVisualIdData();
-  }
-}
-
-extension AsSchoolLifeEventSection on MapJsonNavigator {
-  SchoolLifeEventSection asSchoolLifeEventSection() {
-    return SchoolLifeEventSection(name: get('L'), id: get('N'), type: get('G'));
   }
 }

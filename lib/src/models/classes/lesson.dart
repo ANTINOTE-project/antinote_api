@@ -1,26 +1,24 @@
 part of 'classes.dart';
 
-final class Lesson extends Class {
-  const Lesson({
-    required this.classType,
-    required this.status,
-    required this.canceled,
-    required this.exemptedLabel,
-    required this.notebookEntryPreview,
-    required this.lessonResourceId,
-    required this.contents,
+final class const Lesson({
+  required final int classType,
+  @override required final String? status,
+  @override required final bool canceled,
+  required final String? exemptedLabel,
+  required final NotebookEntryPreview? notebookEntryPreview,
+  @override required final List<ClassContent> contents,
+  required final String? lessonResourceId,
 
-    required super.id,
-    required super.backgroundColor,
-    required super.startDate,
-    required super.endDate,
-    required super.blockLength,
-    required super.blockSlot,
-    required super.notes,
-    required super.weekNumber,
-    required super.studentCountString,
-  });
-
+  required super.id,
+  required super.backgroundColor,
+  required super.startDate,
+  required super.endDate,
+  required super.blockLength,
+  required super.blockSlot,
+  required super.notes,
+  required super.weekNumber,
+  required super.studentCountString,
+}) extends Class {
   factory Lesson.decode(ClassMessage classMessage, MapJsonNavigator lesson) {
     final List<ClassContent> contents = [];
     String? lessonResourceId;
@@ -37,26 +35,26 @@ final class Lesson extends Class {
 
     if (lesson.has('ListeContenus')) {
       for (final MapJsonNavigator data in lesson.getLM('ListeContenus')) {
-        contents.add(data.asLessonContent());
+        contents.add(ClassContent.decode(data));
       }
     }
 
     if (lesson.has('matiere')) {
-      contents.add(SubjectContent(value: lesson.getM('matiere').asSubject()));
+      contents.add(SubjectContent(value: .decode(lesson.getM('matiere'))));
     }
 
     if (lesson.get('AvecCdT') == true && lesson.get('cahierDeTextes') != null) {
       lessonResourceId = lesson.go('cahierDeTextes').get('N');
     }
 
-    return Lesson(
+    return .new(
       classType: lesson.get('G'),
       status: lesson.get('Statut'),
       canceled: lesson.get('estAnnule') ?? false,
       exemptedLabel: lesson.mGo('dispenseEleve')?.get('L'),
       notebookEntryPreview: lesson
           .mGetM('cahierDeTextes')
-          ?.asNotebookEntryPreview(),
+          .inn((value) => .decode(value)),
       contents: contents,
       lessonResourceId: lessonResourceId,
       id: classMessage.id,
@@ -72,17 +70,7 @@ final class Lesson extends Class {
   }
 
   @override
-  ClassType get type => ClassType.lesson;
-
-  final int classType;
-  @override
-  final String? status;
-  @override
-  final bool canceled;
-  final String? exemptedLabel;
-  final NotebookEntryPreview? notebookEntryPreview;
-  @override
-  final List<ClassContent> contents;
+  ClassType get type => .lesson;
 
   List<Uri> get virtualClassrooms => contents
       .whereType<VirtualClassroomContent>()
@@ -111,8 +99,6 @@ final class Lesson extends Class {
 
   Subject? get subject =>
       contents.whereType<SubjectContent>().firstOrNull?.value;
-
-  final String? lessonResourceId;
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {

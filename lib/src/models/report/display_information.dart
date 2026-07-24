@@ -1,122 +1,81 @@
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/models/period.dart';
 
-final class ReportDisplayInformation {
-  final bool withAppreciationPerSubService;
-  final bool withAbsencesDuration;
-  final bool withWeekLessonDuration;
-  final bool withCoefficient;
-  final bool withExamCount;
-  final bool withStudentRanking; // classement
-  final bool withStudentPointCount;
-  final bool withStudentPointBetween;
-  final bool withEvolution;
-  final int averagePeriodCount;
-  final bool withGeneralAverage;
-  final bool withGeneralRanking;
-  final bool withStudentAverage;
-  final bool withStudentMasteryLevel;
-  final bool withProposedAverage;
-  final bool withDeliberatedAverage;
-  final bool withClassAverage;
-  final bool withClassMedian;
-  final bool withWorstBestAverages;
-  final bool withPeriodAverage;
-  final bool withYearlyAverage;
-  final int appreciationCount;
-  final bool withECTS;
-  final bool alignAverageToTheRight;
-  final bool withProgramElements;
-  final bool withExamComments;
-  final bool withExamDates;
-  final bool withExamCoefficients;
-  final bool withCompleteExams;
-  final bool withSubServices;
+final class const ReportDisplayInformation({
+  required final bool withAppreciationPerSubService,
+  required final bool withAbsencesDuration,
+  required final bool withWeekLessonDuration,
+  required final bool withCoefficient,
+  required final bool withExamCount,
+  required final bool withStudentRanking, // classement
+  required final bool withStudentPointCount,
+  required final bool withStudentPointBetween,
+  required final bool withEvolution,
+  required final int averagePeriodCount,
+  required final bool withGeneralAverage,
+  required final bool withGeneralRanking,
+  required final bool withStudentAverage,
+  required final bool withStudentMasteryLevel,
+  required final bool withProposedAverage,
+  required final bool withDeliberatedAverage,
+  required final bool withClassAverage,
+  required final bool withClassMedian,
+  required final bool withWorstBestAverages,
+  required final bool withPeriodAverage,
+  required final bool withYearlyAverage,
+  required final int appreciationCount,
+  required final bool withECTS,
+  required final bool alignAverageToTheRight,
+  required final bool withProgramElements,
+  required final bool withExamComments,
+  required final bool withExamDates,
+  required final bool withExamCoefficients,
+  required final bool withCompleteExams,
+  required final bool withSubServices,
 
-  final List<dynamic> periodsData;
+  required final List<dynamic> periodsData,
 
-  final List<Period> periodLabels;
-  final List<Period> abbreviatedPeriods;
+  required final List<Period> periodLabels,
+  required final List<Period> abbreviatedPeriods,
 
-  final List<dynamic> appreciationLabelsData;
-
-  const ReportDisplayInformation({
-    required this.withAppreciationPerSubService,
-    required this.withAbsencesDuration,
-    required this.withWeekLessonDuration,
-    required this.withCoefficient,
-    required this.withExamCount,
-    required this.withStudentRanking,
-    required this.withStudentPointCount,
-    required this.withStudentPointBetween,
-    required this.withEvolution,
-    required this.averagePeriodCount,
-    required this.withGeneralAverage,
-    required this.withGeneralRanking,
-    required this.withStudentAverage,
-    required this.withStudentMasteryLevel,
-    required this.withProposedAverage,
-    required this.withDeliberatedAverage,
-    required this.withClassAverage,
-    required this.withClassMedian,
-    required this.withWorstBestAverages,
-    required this.withPeriodAverage,
-    required this.withYearlyAverage,
-    required this.appreciationCount,
-    required this.withECTS,
-    required this.alignAverageToTheRight,
-    required this.withProgramElements,
-    required this.withExamComments,
-    required this.withExamDates,
-    required this.withExamCoefficients,
-    required this.withCompleteExams,
-    required this.withSubServices,
-    required this.periodsData,
-    required this.periodLabels,
-    required this.abbreviatedPeriods,
-    required this.appreciationLabelsData,
-  });
-}
-
-extension AsReportDisplayInformation on MapJsonNavigator {
-  ReportDisplayInformation asReportDisplayInformation() {
-    return ReportDisplayInformation(
-      withAppreciationPerSubService: get('AvecAppreciationParSousService'),
-      withAbsencesDuration: get('AvecDureeDesAbsenses'),
-      withWeekLessonDuration: get('AvecVolumeHoraire'),
-      withCoefficient: get('AvecCoefficient'),
-      withExamCount: get('AvecNombreDevoirs'),
-      withStudentRanking: get('AvecClassementEleve'),
-      withStudentPointCount: get('AvecNombrePointsEleve'),
-      withStudentPointBetween: get('AvecNombrePointsEntre'),
-      withEvolution: get('AvecEvolution'),
-      averagePeriodCount: get('NombreMoyennesPeriodes'),
-      withGeneralAverage: get('AvecMoyenneGenerale'),
-      withGeneralRanking: get('AvecClassementGeneral'),
-      withStudentAverage: get('AvecMoyenneEleve'),
-      withStudentMasteryLevel: get('AvecNivMaitriseEleve'),
-      withProposedAverage: get('AvecMoyenneProposee'),
-      withDeliberatedAverage: get('AvecMoyenneDeliberee'),
-      withClassAverage: get('AvecMoyenneClasse'),
-      withClassMedian: get('AvecMoyenneMediane'),
-      withWorstBestAverages: get('AvecMoyenneInfSup'),
-      withPeriodAverage: get('AvecMoyennePeriode'),
-      withYearlyAverage: get('AvecMoyenneAnnuelle'),
-      appreciationCount: get('NombreAppreciations'),
-      withECTS: get('avecECTS'),
-      alignAverageToTheRight: get('alignementMoyADroite'),
-      withProgramElements: get('avecElementProgramme'),
-      withExamComments: get('avecDevoirsCommentaire'),
-      withExamDates: get('avecDevoirsDate'),
-      withExamCoefficients: get('avecDevoirsCoefficient'),
-      withCompleteExams: get('avecDevoirComplet'),
-      withSubServices: get('AvecSousService'),
-      periodsData: getL('listePeriodes'),
-      periodLabels: getLM('listeLibellesPeriodes').mapL((e) => e.asPeriod()),
-      abbreviatedPeriods: getLM(
-        'listeAbbreviationsPeriodes',
-      ).mapL((e) => e.asPeriod()),
-      appreciationLabelsData: getL('ListeIntitulesAppreciations'),
-    );
-  }
+  required final List<dynamic> appreciationLabelsData,
+}) {
+  factory decode(Map<String, dynamic> nav) => .new(
+    withAppreciationPerSubService: nav.get('AvecAppreciationParSousService'),
+    withAbsencesDuration: nav.get('AvecDureeDesAbsenses'),
+    withWeekLessonDuration: nav.get('AvecVolumeHoraire'),
+    withCoefficient: nav.get('AvecCoefficient'),
+    withExamCount: nav.get('AvecNombreDevoirs'),
+    withStudentRanking: nav.get('AvecClassementEleve'),
+    withStudentPointCount: nav.get('AvecNombrePointsEleve'),
+    withStudentPointBetween: nav.get('AvecNombrePointsEntre'),
+    withEvolution: nav.get('AvecEvolution'),
+    averagePeriodCount: nav.get('NombreMoyennesPeriodes'),
+    withGeneralAverage: nav.get('AvecMoyenneGenerale'),
+    withGeneralRanking: nav.get('AvecClassementGeneral'),
+    withStudentAverage: nav.get('AvecMoyenneEleve'),
+    withStudentMasteryLevel: nav.get('AvecNivMaitriseEleve'),
+    withProposedAverage: nav.get('AvecMoyenneProposee'),
+    withDeliberatedAverage: nav.get('AvecMoyenneDeliberee'),
+    withClassAverage: nav.get('AvecMoyenneClasse'),
+    withClassMedian: nav.get('AvecMoyenneMediane'),
+    withWorstBestAverages: nav.get('AvecMoyenneInfSup'),
+    withPeriodAverage: nav.get('AvecMoyennePeriode'),
+    withYearlyAverage: nav.get('AvecMoyenneAnnuelle'),
+    appreciationCount: nav.get('NombreAppreciations'),
+    withECTS: nav.get('avecECTS'),
+    alignAverageToTheRight: nav.get('alignementMoyADroite'),
+    withProgramElements: nav.get('avecElementProgramme'),
+    withExamComments: nav.get('avecDevoirsCommentaire'),
+    withExamDates: nav.get('avecDevoirsDate'),
+    withExamCoefficients: nav.get('avecDevoirsCoefficient'),
+    withCompleteExams: nav.get('avecDevoirComplet'),
+    withSubServices: nav.get('AvecSousService'),
+    periodsData: nav.getL('listePeriodes'),
+    periodLabels: nav.getLM('listeLibellesPeriodes').mapL((e) => .decode(e)),
+    abbreviatedPeriods: nav
+        .getLM('listeAbbreviationsPeriodes')
+        .mapL((e) => .decode(e)),
+    appreciationLabelsData: nav.getL('ListeIntitulesAppreciations'),
+  );
 }

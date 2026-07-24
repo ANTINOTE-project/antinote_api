@@ -1,6 +1,10 @@
 part of '../widget.dart';
 
-class MenuDeLaCantine extends HomePageWidget {
+final class const MenuDeLaCantine({required final Menu currentMenu})
+    extends HomePageWidget {
+  factory decode(MapJsonNavigator nav, RemoteSession _) =>
+      .new(currentMenu: Menu.decode(nav.go('menuDeLaCantine')));
+
   static HomePageModule module(Date date) => HomePageModule(
     widget: .menuDeLaCantine,
     data: (session) => {
@@ -10,15 +14,8 @@ class MenuDeLaCantine extends HomePageWidget {
     },
   );
 
-  final Menu currentMenu;
-
-  const MenuDeLaCantine({required this.currentMenu});
-
   @override
   HomePageWidgetType get widgetId => .menuDeLaCantine;
-
-  MenuDeLaCantine.decode(MapJsonNavigator nav, RemoteSession _)
-    : currentMenu = Menu.decode(nav.go('menuDeLaCantine'));
 
   static final definition = WidgetDefinition(
     type: .menuDeLaCantine,

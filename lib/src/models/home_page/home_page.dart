@@ -7,7 +7,7 @@ import 'package:antinote/src/models/disconnection_period_data.dart';
 import 'package:antinote/src/models/home_page/widget.dart';
 import 'package:antinote/src/protos/antinote/session.pbenum.dart';
 
-final class HomePage({
+final class const HomePage({
   required final List<HomePageWidget> widgets,
   required final bool duringDisconnectionPeriod,
   required final DisconnectionPeriodData? disconnectionPeriodData,

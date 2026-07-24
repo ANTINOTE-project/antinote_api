@@ -1,29 +1,29 @@
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/helpers/cache.dart';
 
-final class MCQ with VisualIdMixin {
-  final String label;
-  final String id;
-  final int type;
-  final int totalQuestionCount;
-  final int totalPointsCount;
-  final bool withSubmittedQuestions;
-  final int requiredQuestionCount;
-  final int skillCount;
-
-  const MCQ({
-    required this.label,
-    required this.id,
-    required this.type,
-    required this.totalQuestionCount,
-    required this.totalPointsCount,
-    required this.withSubmittedQuestions,
-    required this.requiredQuestionCount,
-    required this.skillCount,
-  });
+final class const MCQ({
+  required final String label,
+  required final String id,
+  required final int type,
+  required final int totalQuestionCount,
+  required final int totalPointsCount,
+  required final bool withSubmittedQuestions,
+  required final int requiredQuestionCount,
+  required final int skillCount,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) => .new(
+    label: nav.get('L'),
+    id: nav.get('N'),
+    type: nav.get('G'),
+    totalQuestionCount: nav.get('nbQuestionsTotal'),
+    totalPointsCount: nav.get('nombreDePointsTotal'),
+    withSubmittedQuestions: nav.get('avecQuestionsSoumises'),
+    requiredQuestionCount: nav.get('nombreQuestObligatoires'),
+    skillCount: nav.get('nbCompetencesTotal'),
+  );
 
   @override
   CacheType? get cacheType => .MCQ;
@@ -37,20 +37,5 @@ final class MCQ with VisualIdMixin {
     yield withSubmittedQuestions.visualIdData();
     yield requiredQuestionCount.byteVisualIdData();
     yield skillCount.byteVisualIdData();
-  }
-}
-
-extension AsMCQ on MapJsonNavigator {
-  MCQ asMCQ() {
-    return MCQ(
-      label: get('L'),
-      id: get('N'),
-      type: get('G'),
-      totalQuestionCount: get('nbQuestionsTotal'),
-      totalPointsCount: get('nombreDePointsTotal'),
-      withSubmittedQuestions: get('avecQuestionsSoumises'),
-      requiredQuestionCount: get('nombreQuestObligatoires'),
-      skillCount: get('nbCompetencesTotal'),
-    );
   }
 }

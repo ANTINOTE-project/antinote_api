@@ -9,38 +9,44 @@ import 'package:antinote/src/models/news/question/answer/answer.dart';
 import 'package:antinote/src/models/news/question/answer/type.dart';
 import 'package:antinote/src/models/news/question/pick.dart';
 
-final class NewsQuestion with VisualIdMixin {
-  final String label;
-  final String id;
-  final int place;
-  final int rank;
-  final NewsQuestionAnswerType responseType;
-  final String title;
-  final String htmlText;
-  final int responseSize;
-  final bool withMaximum;
-  final int maximumResponseCount;
-  final List<Attachment> attachments;
+final class const NewsQuestion({
+  required final String label,
+  required final String id,
+  required final int place,
+  required final int rank,
+  required final NewsQuestionAnswerType responseType,
+  required final String title,
+  required final String htmlText,
+  required final int responseSize,
+  required final bool withMaximum,
+  required final int maximumResponseCount,
+  required final List<Attachment> attachments,
 
-  final List<NewsQuestionPick> picks;
+  required final List<NewsQuestionPick> picks,
 
-  final NewsQuestionAnswer answer;
+  required final NewsQuestionAnswer answer,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) {
+    final responseType = NewsQuestionAnswerType.values.byId(
+      nav.get<int>('genreReponse'),
+    );
 
-  const NewsQuestion({
-    required this.label,
-    required this.id,
-    required this.place,
-    required this.rank,
-    required this.responseType,
-    required this.title,
-    required this.htmlText,
-    required this.responseSize,
-    required this.withMaximum,
-    required this.maximumResponseCount,
-    required this.attachments,
-    required this.picks,
-    required this.answer,
-  });
+    return .new(
+      label: nav.get('L'),
+      id: nav.get('N'),
+      place: nav.get('P'),
+      rank: nav.get('rang'),
+      responseType: responseType,
+      title: nav.get('titre'),
+      htmlText: nav.get('texte'),
+      responseSize: nav.get('tailleReponse'),
+      withMaximum: nav.get('avecMaximum'),
+      maximumResponseCount: nav.get('nombreReponsesMax'),
+      attachments: nav.getLM('listePiecesJointes').mapL((e) => .decode(e)),
+      picks: nav.getLM('listeChoix').mapL((e) => .decode(e)),
+      answer: .decode(nav.go('reponse'), responseType),
+    );
+  }
 
   @override
   CacheType? get cacheType => .NEWS_QUESTION;
@@ -60,28 +66,4 @@ final class NewsQuestion with VisualIdMixin {
 
   @override
   List<VisualIdMixin> get toStore => [answer, ...attachments, ...picks];
-}
-
-extension AsNewsQuestion on MapJsonNavigator {
-  NewsQuestion asNewsQuestion() {
-    final responseType = NewsQuestionAnswerType.values.byId(
-      get<int>('genreReponse'),
-    );
-
-    return NewsQuestion(
-      label: get('L'),
-      id: get('N'),
-      place: get('P'),
-      rank: get('rang'),
-      responseType: responseType,
-      title: get('titre'),
-      htmlText: get('texte'),
-      responseSize: get('tailleReponse'),
-      withMaximum: get('avecMaximum'),
-      maximumResponseCount: get('nombreReponsesMax'),
-      attachments: getLM('listePiecesJointes').mapL((e) => e.asAttachment()),
-      picks: getLM('listeChoix').mapL((e) => e.asNewsQuestionPick()),
-      answer: go('reponse').asNewsQuestionAnswer(responseType),
-    );
-  }
 }

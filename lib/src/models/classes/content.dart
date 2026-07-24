@@ -1,22 +1,40 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/enum_id.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/classes/group.dart';
 import 'package:antinote/src/models/classes/room.dart';
 import 'package:antinote/src/models/person.dart';
+import 'package:antinote/src/models/resource.dart';
 import 'package:antinote/src/models/subject/subject.dart';
 import 'package:antinote/src/models/user/resource.dart';
 import 'package:antinote/src/protos/antinote/session.pbenum.dart';
 
-sealed class ClassContent<T> with VisualIdMixin {
-  final T value;
+sealed class const ClassContent<T>({required final T value})
+    with VisualIdMixin {
+  static ClassContent decode(Map<String, dynamic> nav) {
+    return switch (ResourceType.values.byId(
+      nav.get('G'),
+      defaultValue: .aucune,
+    )) {
+      .aucune => TitleContent(
+        value: nav.get('L'),
+        isTime: nav.get('estHoraire') ?? false,
+      ),
+      .matiere => SubjectContent(value: .decode(nav)),
+      .enseignant => TeacherContent(value: .decode(nav)),
+      .personnel => PersonalContent(value: .decode(nav)),
+      .salle => ClassroomContent(value: .decode(nav)),
+      .groupe => ClassGroupContent(value: .decode(nav)),
+      .classe => StudentClassContent(value: .decode(nav)),
+      _ => UnknownContent(value: nav),
+    };
+  }
 
   @override
   CacheType? get cacheType => .CLASS_CONTENT;
-
-  const ClassContent({required this.value});
 }
 
 mixin ValueIdClassContentMixin<T extends VisualIdMixin> on ClassContent<T> {
@@ -27,25 +45,10 @@ mixin ValueIdClassContentMixin<T extends VisualIdMixin> on ClassContent<T> {
   Iterable<Uint8List?> collectVisualIdData() => value.collectVisualIdData();
 }
 
-extension AsLessonContent on MapJsonNavigator {
-  ClassContent asLessonContent() => switch (get('G')) {
-    0 ||
-    null => TitleContent(value: get('L'), isTime: get('estHoraire') ?? false),
-    16 => SubjectContent(value: asSubject()),
-    3 => TeacherContent(value: asPerson()),
-    34 => PersonalContent(value: asPerson()),
-    17 => ClassroomContent(value: asClassroom()),
-    2 => ClassGroupContent(value: asClassGroup()),
-    1 => StudentClassContent(value: asStudentClass()),
-    _ => UnknownContent(value: this),
-  };
-}
-
-final class TitleContent extends ClassContent<String> {
-  final bool isTime;
-
-  const TitleContent({required super.value, required this.isTime});
-
+final class const TitleContent({
+  required super.value,
+  required final bool isTime,
+}) extends ClassContent<String> {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield value.visualIdData();
@@ -53,48 +56,40 @@ final class TitleContent extends ClassContent<String> {
   }
 }
 
-final class SubjectContent extends ClassContent<Subject>
-    with ValueIdClassContentMixin {
-  const SubjectContent({required super.value});
-}
+final class const SubjectContent({required super.value})
+    extends ClassContent<Subject>
+    with ValueIdClassContentMixin;
 
-final class TeacherContent extends ClassContent<Person>
-    with ValueIdClassContentMixin {
-  const TeacherContent({required super.value});
-}
+final class const TeacherContent({required super.value})
+    extends ClassContent<Person>
+    with ValueIdClassContentMixin;
 
-final class PersonalContent extends ClassContent<Person>
-    with ValueIdClassContentMixin {
-  const PersonalContent({required super.value});
-}
+final class const PersonalContent({required super.value})
+    extends ClassContent<Person>
+    with ValueIdClassContentMixin;
 
-final class ClassroomContent extends ClassContent<Classroom>
-    with ValueIdClassContentMixin {
-  const ClassroomContent({required super.value});
-}
+final class const ClassroomContent({required super.value})
+    extends ClassContent<Classroom>
+    with ValueIdClassContentMixin;
 
-final class VirtualClassroomContent extends ClassContent<Uri> {
-  const VirtualClassroomContent({required super.value});
-
+final class const VirtualClassroomContent({required super.value})
+    extends ClassContent<Uri> {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield value.toString().visualIdData();
   }
 }
 
-final class ClassGroupContent extends ClassContent<ClassGroup>
-    with ValueIdClassContentMixin {
-  const ClassGroupContent({required super.value});
-}
+final class const ClassGroupContent({required super.value})
+    extends ClassContent<ClassGroup>
+    with ValueIdClassContentMixin;
 
-final class StudentClassContent extends ClassContent<StudentClass>
-    with ValueIdClassContentMixin {
-  const StudentClassContent({required super.value});
-}
+final class const StudentClassContent({required super.value})
+    extends ClassContent<StudentClass>
+    with ValueIdClassContentMixin;
 
-final class UnknownContent extends ClassContent<MapJsonNavigator> {
-  const UnknownContent({required super.value});
-
+final class const UnknownContent({required super.value})
+    extends ClassContent<MapJsonNavigator> {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield jsonEncode(value).visualIdData();
