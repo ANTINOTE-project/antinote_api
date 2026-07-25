@@ -9,12 +9,10 @@ import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/timetable.dart';
 import 'package:antinote/src/models/user/resource.dart';
 
-class TimetableAccessor extends StatefulAccessor<Timetable, RemoteSession> {
-  final UserResource resource;
-  final Map<String, dynamic> extra;
-
-  const TimetableAccessor({required this.resource, required this.extra});
-
+final class const TimetableAccessor({
+  required final UserResource resource,
+  required final Map<String, dynamic> extra,
+}) extends StatefulAccessor<Timetable, RemoteSession> {
   factory TimetableAccessor.forRange({
     required UserResource resource,
     required DateTime from,

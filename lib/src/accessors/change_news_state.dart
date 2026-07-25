@@ -3,25 +3,16 @@ import 'dart:async';
 import 'package:antinote/antinote.dart';
 import 'package:antinote/src/models/state.dart';
 
-final class NewsUpdate {
-  final bool? read;
-  final bool? onlyMarkedRead;
-  final bool? deleted;
-  final Map<NewsQuestion, NewsQuestionAnswer> answersToChange;
+final class const NewsUpdate({
+  required final bool? read,
+  required final bool? onlyMarkedRead,
+  required final bool? deleted,
+  required final Map<NewsQuestion, NewsQuestionAnswer> answersToChange,
+});
 
-  const NewsUpdate({
-    required this.read,
-    required this.onlyMarkedRead,
-    required this.deleted,
-    required this.answersToChange,
-  });
-}
-
-class ChangeNewsStateAccessor extends StatelessAccessor<void> {
-  const ChangeNewsStateAccessor({required this.updatesToPerform});
-
-  final Map<News, NewsUpdate> updatesToPerform;
-
+final class const ChangeNewsStateAccessor({
+  required final Map<News, NewsUpdate> updatesToPerform,
+}) extends StatelessAccessor<void> {
   @override
   bool get exclusiveFriendly => false;
 

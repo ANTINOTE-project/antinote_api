@@ -9,7 +9,7 @@ import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/notebook/page.dart';
 
-class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
+final class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
   final Set<int>? weeks;
   final DateTime? date;
   final bool? onlyAccessResources;

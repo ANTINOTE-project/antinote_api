@@ -10,11 +10,8 @@ import 'package:antinote/src/models/report/report.dart';
 
 /// WARNING! The behavior of this function changes depending on which tab your
 /// signature currently is!
-class ReportAccessor extends StatelessAccessor<BaseReport> {
-  final Period period;
-
-  const ReportAccessor({required this.period});
-
+final class const ReportAccessor({required final Period period})
+    extends StatelessAccessor<BaseReport> {
   @override
   bool get exclusiveFriendly => true;
 

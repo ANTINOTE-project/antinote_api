@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:antinote/antinote.dart';
 
-class HomePageAccessor({required final List<HomePageModule>? modules})
-    extends StatefulAccessor<HomePage, RemoteSession> {
+final class const HomePageAccessor({
+  required final List<HomePageModule>? modules,
+}) extends StatefulAccessor<HomePage, RemoteSession> {
   @override
   bool get exclusiveFriendly => true;
 

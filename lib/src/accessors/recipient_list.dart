@@ -7,18 +7,18 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/person.dart';
 
-class RecipientListAccessor extends StatelessAccessor<List<Person>> {
+final class RecipientListAccessor extends StatelessAccessor<List<Person>> {
   final String messageId;
-  final bool _estPublicParticipant;
-  final bool _estDestinatairesReponse;
+  final bool isParticipant;
+  final bool isResponseRecipient;
 
   RecipientListAccessor.receivers({required this.messageId})
-    : _estDestinatairesReponse = false,
-      _estPublicParticipant = false;
+    : isResponseRecipient = false,
+      isParticipant = false;
 
   RecipientListAccessor.participants({required this.messageId})
-    : _estDestinatairesReponse = false,
-      _estPublicParticipant = true;
+    : isResponseRecipient = false,
+      isParticipant = true;
 
   @override
   bool get exclusiveFriendly => false;
@@ -34,8 +34,8 @@ class RecipientListAccessor extends StatelessAccessor<List<Person>> {
             name: 'SaisiePublicMessage',
             dataSec: {
               session.stack.vocab.data: {
-                'estPublicParticipant': _estPublicParticipant,
-                'estDestinatairesReponse': _estDestinatairesReponse,
+                'estPublicParticipant': isParticipant,
+                'estDestinatairesReponse': isResponseRecipient,
                 'message': {'N': messageId},
               },
             },

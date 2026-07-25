@@ -10,11 +10,9 @@ import 'package:antinote/src/helpers/session_access_type.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/authentication_response.dart';
 
-class AuthenticationAccessor extends StatelessAccessor<AuthenticationResponse> {
-  final Uint8List challengeSolution;
-
-  const AuthenticationAccessor({required this.challengeSolution});
-
+final class const AuthenticationAccessor({
+  required final Uint8List challengeSolution,
+}) extends StatelessAccessor<AuthenticationResponse> {
   @override
   bool get exclusiveFriendly => true;
 

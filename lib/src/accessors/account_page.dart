@@ -7,9 +7,7 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/account/page.dart';
 
-final class AccountPageAccessor extends StatelessAccessor<AccountPage> {
-  const AccountPageAccessor();
-
+final class const AccountPageAccessor() extends StatelessAccessor<AccountPage> {
   @override
   bool get exclusiveFriendly => true;
 

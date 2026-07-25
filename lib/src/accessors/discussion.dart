@@ -8,12 +8,10 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/discussion/discussion.dart';
 import 'package:antinote/src/models/discussion/node.dart';
 
-class DiscussionAccessor extends StatelessAccessor<Discussion> {
-  final DiscussionRootNode node;
-  final bool markAsRead;
-
-  const DiscussionAccessor({required this.node, this.markAsRead = true});
-
+final class DiscussionAccessor({
+  required final DiscussionRootNode node,
+  final bool markAsRead = true,
+}) extends StatelessAccessor<Discussion> {
   @override
   bool get exclusiveFriendly => true;
 

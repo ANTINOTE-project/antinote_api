@@ -10,17 +10,11 @@ import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart';
 import 'package:mime/mime.dart';
 
-class FileUploadAccessor extends StatelessAccessor<String> {
-  final String fileCategory;
-  final XFile file;
-  final String nextCallName;
-
-  const FileUploadAccessor({
-    this.fileCategory = 'selecfile',
-    required this.file,
-    required this.nextCallName,
-  });
-
+final class const FileUploadAccessor({
+  final String fileCategory = 'selecfile',
+  required final XFile file,
+  required final String nextCallName,
+}) extends StatelessAccessor<String> {
   static const int _chunkSize = 100 * 1024; // Same as remote
 
   @override

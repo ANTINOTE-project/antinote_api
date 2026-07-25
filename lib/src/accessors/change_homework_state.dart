@@ -8,11 +8,9 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/homework/homework.dart';
 import 'package:antinote/src/models/state.dart';
 
-class ChangeHomeworkStateAccessor extends StatelessAccessor<void> {
-  const ChangeHomeworkStateAccessor({required this.homeworksToUpdate});
-
-  final Map<Homework, bool?> homeworksToUpdate;
-
+final class const ChangeHomeworkStateAccessor({
+  required final Map<Homework, bool?> homeworksToUpdate,
+}) extends StatelessAccessor<void> {
   @override
   bool get exclusiveFriendly => false;
 

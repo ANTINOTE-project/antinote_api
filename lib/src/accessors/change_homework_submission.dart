@@ -7,17 +7,11 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/state.dart';
 
-class ChangeHomeworkSubmissionAccessor extends StatelessAccessor<void> {
-  final String homeworkId;
-  final String fileId;
-  final String filename;
-
-  const ChangeHomeworkSubmissionAccessor({
-    required this.homeworkId,
-    required this.fileId,
-    required this.filename,
-  });
-
+final class const ChangeHomeworkSubmissionAccessor({
+  required final String homeworkId,
+  required final String fileId,
+  required final String filename,
+}) extends StatelessAccessor<void> {
   static String callName = 'SaisieTAFARendreEleve';
 
   @override

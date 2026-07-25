@@ -7,7 +7,8 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/notification/center.dart';
 
-class NotificationCenterAccessor extends StatelessAccessor<NotificationCenter> {
+final class const NotificationCenterAccessor()
+    extends StatelessAccessor<NotificationCenter> {
   @override
   bool get exclusiveFriendly => true;
 

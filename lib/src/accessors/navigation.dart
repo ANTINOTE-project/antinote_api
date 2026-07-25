@@ -6,15 +6,10 @@ import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 
-class NavigationAccessor extends StatelessAccessor<void> {
-  final int previousTabId;
-  final int currentTabId;
-
-  const NavigationAccessor({
-    required this.previousTabId,
-    required this.currentTabId,
-  });
-
+final class const NavigationAccessor({
+  required final int previousTabId,
+  required final int currentTabId,
+}) extends StatelessAccessor<void> {
   @override
   bool get exclusiveFriendly => true;
 

@@ -7,9 +7,8 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/user/parameters.dart';
 
-class UserParametersAccessor extends StatelessAccessor<UserParameters> {
-  const UserParametersAccessor();
-
+final class const UserParametersAccessor()
+    extends StatelessAccessor<UserParameters> {
   @override
   bool get exclusiveFriendly => true;
 

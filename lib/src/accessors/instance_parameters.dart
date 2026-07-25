@@ -8,18 +8,11 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/instance_parameters/shared.dart';
 import 'package:antinote/src/models/workspace/workspace.dart';
 
-class InstanceParametersAccessor
-    extends StatefulAccessor<InstanceParameters, Workspace> {
-  final String? navIdentifier;
-  final String? ivUuid;
-  final String? casToken;
-
-  const InstanceParametersAccessor({
-    this.navIdentifier,
-    this.ivUuid,
-    this.casToken,
-  });
-
+final class const InstanceParametersAccessor({
+  final String? navIdentifier,
+  final String? ivUuid,
+  final String? casToken,
+}) extends StatefulAccessor<InstanceParameters, Workspace> {
   @override
   bool get exclusiveFriendly => true;
 

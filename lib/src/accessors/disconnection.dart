@@ -6,7 +6,7 @@ import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 
-class DisconnectionAccessor extends StatelessAccessor<void> {
+final class DisconnectionAccessor extends StatelessAccessor<void> {
   final bool logged;
 
   const DisconnectionAccessor.logged() : logged = true;

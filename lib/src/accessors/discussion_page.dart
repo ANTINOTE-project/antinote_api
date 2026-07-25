@@ -7,15 +7,10 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/discussion/page.dart';
 
-class DiscussionPageAccessor extends StatelessAccessor<DiscussionPage> {
-  final bool showRead;
-  final bool withMessages;
-
-  const DiscussionPageAccessor({
-    required this.showRead,
-    required this.withMessages,
-  });
-
+final class const DiscussionPageAccessor({
+  required final bool showRead,
+  required final bool withMessages,
+}) extends StatelessAccessor<DiscussionPage> {
   @override
   bool get exclusiveFriendly => true;
 

@@ -7,7 +7,7 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/challenge.dart';
 
-class IdentificationAccessor extends StatelessAccessor<Challenge> {
+final class IdentificationAccessor extends StatelessAccessor<Challenge> {
   final String username;
   final String deviceUuid;
 

@@ -8,11 +8,8 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/menu/page.dart';
 
-class MenuPageAccessor extends StatelessAccessor<MenuPage> {
-  final DateTime date;
-
-  const MenuPageAccessor({required this.date});
-
+final class const MenuPageAccessor({required final DateTime date})
+    extends StatelessAccessor<MenuPage> {
   @override
   bool get exclusiveFriendly => true;
 

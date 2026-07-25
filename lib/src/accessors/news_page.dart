@@ -9,13 +9,9 @@ import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/news/display_mode.dart';
 import 'package:antinote/src/models/news/page.dart';
 
-class NewsPageAccessor extends StatelessAccessor<NewsPage> {
-  final List<NewsDisplayMode> modes;
-
-  const NewsPageAccessor({required this.modes});
-
-  const NewsPageAccessor.defaultMode()
-    : modes = const [NewsDisplayMode.reception];
+final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
+    extends StatelessAccessor<NewsPage> {
+  const NewsPageAccessor.defaultMode() : this(modes: const [.reception]);
 
   @override
   bool get exclusiveFriendly => true;

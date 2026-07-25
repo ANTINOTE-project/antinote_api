@@ -8,11 +8,8 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/grades/page.dart';
 import 'package:antinote/src/models/period.dart';
 
-class LatestGradesPageAccessor extends StatelessAccessor<LatestGradesPage> {
-  const LatestGradesPageAccessor({required this.period});
-
-  final Period period;
-
+final class const LatestGradesPageAccessor({required final Period period})
+    extends StatelessAccessor<LatestGradesPage> {
   @override
   bool get exclusiveFriendly => true;
 

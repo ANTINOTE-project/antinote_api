@@ -7,7 +7,7 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-abstract class StatefulAccessor<R, S> {
+abstract class const StatefulAccessor<R, S>() {
   FutureOr<S> collectState(RemoteSession session);
 
   bool get exclusiveFriendly;
@@ -32,11 +32,9 @@ abstract class StatefulAccessor<R, S> {
 
     return interpreted;
   }
-
-  const StatefulAccessor();
 }
 
-abstract class StatelessAccessor<R> extends StatefulAccessor<R, void> {
+abstract class const StatelessAccessor<R>() extends StatefulAccessor<R, void> {
   FutureOr<R> interpretStateless(MapJsonNavigator nav);
 
   @override
@@ -58,6 +56,4 @@ abstract class StatelessAccessor<R> extends StatefulAccessor<R, void> {
 
   @override
   Future<void> collectState(RemoteSession session) => Future.value(null);
-
-  const StatelessAccessor();
 }

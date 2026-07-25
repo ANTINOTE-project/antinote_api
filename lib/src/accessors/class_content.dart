@@ -2,21 +2,13 @@ import 'dart:async';
 
 import 'package:antinote/antinote.dart';
 
-class ClassContentAccessor
-    extends StatefulAccessor<List<Class>, RemoteSession> {
-  final bool withStudentList;
-  final bool withStudentCount;
+final class ClassContentAccessor({
+  required final bool withStudentList,
+  required final bool withStudentCount,
 
-  final Class classToAccess;
-  final UserResource resource;
-
-  const ClassContentAccessor({
-    this.withStudentList = false,
-    this.withStudentCount = false,
-    required this.classToAccess,
-    required this.resource,
-  });
-
+  required final Class classToAccess,
+  required final UserResource resource,
+}) extends StatefulAccessor<List<Class>, RemoteSession> {
   @override
   bool get exclusiveFriendly => true;
 

@@ -8,11 +8,8 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/notebook/entry/entry.dart';
 import 'package:antinote/src/models/notebook/page.dart';
 
-class NotebookEntryAccessor extends StatelessAccessor<NotebookEntry> {
-  final String entryId;
-
-  const NotebookEntryAccessor({required this.entryId});
-
+final class const NotebookEntryAccessor({required final String entryId})
+    extends StatelessAccessor<NotebookEntry> {
   @override
   bool get exclusiveFriendly => true;
 

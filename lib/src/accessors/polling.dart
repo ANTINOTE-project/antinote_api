@@ -2,7 +2,7 @@ import 'dart:async';
 
 import '../../antinote.dart';
 
-class PollingAccessor extends StatelessAccessor<MapJsonNavigator> {
+final class PollingAccessor() extends StatelessAccessor<MapJsonNavigator> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -31,6 +31,4 @@ class PollingAccessor extends StatelessAccessor<MapJsonNavigator> {
 
   @override
   List<VisualIdMixin> store(MapJsonNavigator result) => [];
-
-  const PollingAccessor();
 }
