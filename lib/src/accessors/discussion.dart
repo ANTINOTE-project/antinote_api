@@ -8,7 +8,7 @@ import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/discussion/discussion.dart';
 import 'package:antinote/src/models/discussion/node.dart';
 
-final class DiscussionAccessor({
+final class const DiscussionAccessor({
   required final DiscussionRootNode node,
   final bool markAsRead = true,
 }) extends StatelessAccessor<Discussion> {

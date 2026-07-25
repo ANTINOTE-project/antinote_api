@@ -2,7 +2,8 @@ import 'dart:async';
 
 import '../../antinote.dart';
 
-final class PollingAccessor() extends StatelessAccessor<MapJsonNavigator> {
+final class const PollingAccessor()
+    extends StatelessAccessor<MapJsonNavigator> {
   @override
   bool get exclusiveFriendly => true;
 

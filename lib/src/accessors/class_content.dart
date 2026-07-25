@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:antinote/antinote.dart';
 
-final class ClassContentAccessor({
+final class const ClassContentAccessor({
   required final bool withStudentList,
   required final bool withStudentCount,
 

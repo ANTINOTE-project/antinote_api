@@ -14,6 +14,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
 
   bool getB(String key) {
     return switch (this[key]) {
+      null => false,
       false => false,
       0 => false,
       0.0 => false,
