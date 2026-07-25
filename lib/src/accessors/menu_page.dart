@@ -20,7 +20,7 @@ final class const MenuPageAccessor({required final DateTime date})
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'PageMenus',
             dataSec: {
               session.stack.vocab.data: {

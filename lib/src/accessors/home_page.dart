@@ -15,7 +15,7 @@ final class const HomePageAccessor({
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'PageAccueil',
             dataSec: {
               session.stack.vocab.data: {

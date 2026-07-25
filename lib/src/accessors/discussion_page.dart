@@ -21,7 +21,7 @@ final class const DiscussionPageAccessor({
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'ListeMessagerie',
             dataSec: {
               session.stack.vocab.data: {

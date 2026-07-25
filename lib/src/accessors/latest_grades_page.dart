@@ -20,7 +20,7 @@ final class const LatestGradesPageAccessor({required final Period period})
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             cancellationSignal: cancellationSignal,
             dataSec: {
               session.stack.vocab.data: {

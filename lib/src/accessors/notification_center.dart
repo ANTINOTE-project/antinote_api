@@ -19,7 +19,7 @@ final class const NotificationCenterAccessor()
   ) async {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'CentraleNotifications',
             dataSec: {},
             cancellationSignal: cancellationSignal,

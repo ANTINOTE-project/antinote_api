@@ -24,7 +24,7 @@ final class DisconnectionAccessor extends StatelessAccessor<void> {
     return session.stack
         .post(
           logged
-              ? Call.function(
+              ? .function(
                   cancellationSignal: cancellationSignal,
                   dataSec: {},
                   name: 'SaisieDeconnexion',

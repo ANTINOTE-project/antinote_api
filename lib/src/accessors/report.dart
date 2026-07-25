@@ -21,7 +21,7 @@ final class const ReportAccessor({required final Period period})
     Completer<void>? cancellationSignal,
   ) => session.stack
       .post(
-        Call.function(
+        .function(
           cancellationSignal: cancellationSignal,
           dataSec: {
             session.stack.vocab.data: {

@@ -21,7 +21,7 @@ final class const ChangeHomeworkStateAccessor({
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'SaisieTAFFaitEleve',
             dataSec: {
               session.stack.vocab.data: {

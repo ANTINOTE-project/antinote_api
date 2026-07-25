@@ -19,7 +19,7 @@ final class const UserParametersAccessor()
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'ParametresUtilisateur',
             dataSec: {},
             cancellationSignal: cancellationSignal,

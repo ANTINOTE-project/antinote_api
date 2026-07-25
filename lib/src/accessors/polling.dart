@@ -14,7 +14,7 @@ final class const PollingAccessor()
   ) {
     return session.stack
         .post(
-          Call.polling(
+          .polling(
             name: 'polling',
             dataSec: {},
             waitForResponse: false,

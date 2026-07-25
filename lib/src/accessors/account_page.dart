@@ -18,7 +18,7 @@ final class const AccountPageAccessor() extends StatelessAccessor<AccountPage> {
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             cancellationSignal: cancellationSignal,
             dataSec: {},
             name: 'PageInfosPerso',

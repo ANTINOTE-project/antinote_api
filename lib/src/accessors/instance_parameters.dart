@@ -22,7 +22,7 @@ final class const InstanceParametersAccessor({
     Completer<void>? cancellationSignal,
   ) => session.stack
       .post(
-        Call.function(
+        .function(
           name: 'FonctionParametres',
           dataSec: {
             session.stack.vocab.data: {

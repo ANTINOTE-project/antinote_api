@@ -70,7 +70,7 @@ final class IdentificationAccessor extends StatelessAccessor<Challenge> {
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'Identification',
             dataSec: {
               session.stack.vocab.data: {

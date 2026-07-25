@@ -20,7 +20,7 @@ final class const NotebookEntryAccessor({required final String entryId})
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'donneesContenusCDT',
             dataSec: {
               session.stack.vocab.data: {

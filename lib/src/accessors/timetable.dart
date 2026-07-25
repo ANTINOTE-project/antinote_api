@@ -70,7 +70,7 @@ final class const TimetableAccessor({
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: "PageEmploiDuTemps",
             dataSec: {
               session.stack.vocab.data: {

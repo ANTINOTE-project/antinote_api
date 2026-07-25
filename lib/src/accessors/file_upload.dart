@@ -58,7 +58,7 @@ final class const FileUploadAccessor({
 
       final result = await session.stack
           .post(
-            Call.upload(
+            .upload(
               cancellationSignal: cancellationSignal,
               data: UploadCallData(
                 orderId: baseOrder,

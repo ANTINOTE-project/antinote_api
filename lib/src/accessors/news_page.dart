@@ -23,7 +23,7 @@ final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'PageActualites',
             dataSec: {
               session.stack.vocab.data: {

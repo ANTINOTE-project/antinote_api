@@ -23,7 +23,7 @@ final class const AuthenticationAccessor({
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'Authentification',
             dataSec: {
               session.stack.vocab.data: {

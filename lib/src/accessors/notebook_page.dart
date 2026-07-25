@@ -41,7 +41,7 @@ final class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'PageCahierDeTexte',
             dataSec: {
               session.stack.vocab.data: {

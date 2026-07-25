@@ -30,7 +30,7 @@ final class RecipientListAccessor extends StatelessAccessor<List<Person>> {
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'SaisiePublicMessage',
             dataSec: {
               session.stack.vocab.data: {

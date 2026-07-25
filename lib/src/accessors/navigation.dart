@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 
@@ -20,7 +19,7 @@ final class const NavigationAccessor({
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'Navigation',
             dataSec: {
               session.stack.vocab.data: {

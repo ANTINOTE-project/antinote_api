@@ -23,7 +23,7 @@ final class const ChangeNewsStateAccessor({
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'SaisieActualites',
             dataSec: {
               session.stack.vocab.data: {

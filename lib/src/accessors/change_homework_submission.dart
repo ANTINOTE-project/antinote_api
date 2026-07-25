@@ -25,7 +25,7 @@ final class const ChangeHomeworkSubmissionAccessor({
     session.stack.nextOrder(OrderBehavior.idCreation);
     return session.stack
         .post(
-          Call.function(
+          .function(
             cancellationSignal: cancellationSignal,
             dataSec: {
               session.stack.vocab.data: {

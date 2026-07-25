@@ -22,7 +22,7 @@ final class const DiscussionAccessor({
   ) {
     return session.stack
         .post(
-          Call.function(
+          .function(
             name: 'ListeMessages',
             dataSec: {
               session.stack.vocab.data: {
