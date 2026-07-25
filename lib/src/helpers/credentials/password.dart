@@ -8,7 +8,7 @@ class PasswordCredentials extends Credentials {
   final Workspace workspace;
 
   @override
-  /// Stops at /<product_name>
+  /// Stops at `/<product_name>`
   final Uri baseUrl;
 
   const PasswordCredentials({

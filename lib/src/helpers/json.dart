@@ -226,7 +226,7 @@ class JsonReference<T> {
       throw StateError("Tried to serialize reference that wasn't resolved");
     }
 
-    return _serializer(value!);
+    return _serializer(value as T);
   }
 }
 

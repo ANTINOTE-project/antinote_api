@@ -14,7 +14,7 @@ part 'password.dart';
 part 'qr_code.dart';
 part 'token.dart';
 
-final _uuid = Uuid();
+final _uuid = const Uuid();
 
 typedef LoginResult = ({
   RemoteSession session,
@@ -30,7 +30,7 @@ sealed class Credentials {
   final String? navIdentifier;
 
   static String generateDeviceUuid() {
-    return _uuid.v4(config: V4Options(null, CryptoRNG()));
+    return _uuid.v4(config: const V4Options(null, CryptoRNG()));
   }
 
   Future<LoginResult> finalizeLogin({
@@ -55,7 +55,7 @@ sealed class Credentials {
     );
 
     if (challengeSolution == null) {
-      throw AuthException();
+      throw const AuthException();
     }
 
     final authentication = await session.access(
@@ -68,7 +68,7 @@ sealed class Credentials {
     );
     await session.stack.crypto.setAesKey(authKey);
 
-    await session.access(UserParametersAccessor());
+    await session.access(const UserParametersAccessor());
 
     session.stack.changeTab(7);
     session.currentUserResourceId = 0;

@@ -243,7 +243,7 @@ class RemoteSession {
     }
 
     if (seedPageResponse.statusCode != 200) {
-      throw HttpException('Remote page not available.');
+      throw const HttpException('Remote page not available.');
     }
 
     Version? remoteVersion;
@@ -266,7 +266,7 @@ class RemoteSession {
     final seedEnd = _endMatch.allMatches(body).firstOrNull?.start;
 
     if (seedStart == null || seedEnd == null) {
-      throw InvalidInstanceException();
+      throw const InvalidInstanceException();
     }
 
     // Thank you Mikkel ALMONTE-RINGAUD from the Pawnote.js project for the RegEx.
