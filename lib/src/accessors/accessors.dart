@@ -12,6 +12,8 @@ abstract class const StatefulAccessor<R, S>() {
 
   bool get exclusiveFriendly;
 
+  bool get sensitiveResponse => false;
+
   FutureOr<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -49,7 +51,7 @@ abstract class const StatelessAccessor<R>() extends StatefulAccessor<R, void> {
     final accessed = await access(session, cancellationSignal);
     final interpreted = await interpretStateless(accessed);
 
-    session.updateCache(store(interpreted), accessed);
+    session.updateCache(store(interpreted), accessed, sensitiveResponse);
 
     return interpreted;
   }

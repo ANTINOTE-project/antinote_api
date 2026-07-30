@@ -74,7 +74,7 @@ class RemoteSession {
           updateCache(accessor.store(parsedValue), null);
         } else if (visualId == _authenticationResponseKey) {
           parsedValue = AuthenticationResponse.decode(content);
-          updateCache([parsedValue], null);
+          updateCache([parsedValue], null, true);
         } else if (visualId == _challengeKey) {
           parsedValue = Challenge.decode(content);
           updateCache([parsedValue], null);

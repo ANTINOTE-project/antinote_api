@@ -17,6 +17,9 @@ final class const AuthenticationAccessor({
   bool get exclusiveFriendly => true;
 
   @override
+  bool get sensitiveResponse => true;
+
+  @override
   Future<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,

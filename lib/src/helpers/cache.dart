@@ -27,8 +27,9 @@ final class VisualReference<T> {
 extension CacheExtension on RemoteSession {
   void updateCache(
     List<VisualIdMixin> objects,
-    Map<String, dynamic>? rawRequest,
-  ) {
+    Map<String, dynamic>? rawRequest, [
+    bool sensitive = false,
+  ]) {
     final totalToStore = Queue<VisualIdMixin>.from(objects);
     while (totalToStore.isNotEmpty) {
       final toStore = totalToStore.removeFirst();
@@ -36,16 +37,18 @@ extension CacheExtension on RemoteSession {
       if (toStore.cacheType == null) continue;
 
       if (rawRequest != null &&
-          cacheTypesToSerialize.contains(toStore.cacheType!)) {
+          cacheTypesToSerialize.contains(toStore.cacheType!) &&
+          !sensitive) {
         serializableCache.putIfAbsent(
           toStore.cacheType!,
           () => {},
-        )[toStore.visualId] = RemoteJsonEncoder(
-          data: rawRequest,
-        ).encode();
+        )[toStore.visualId] = RemoteJsonEncoder(data: rawRequest)
+            .encode();
       }
 
-      cache[toStore.cacheType!]![toStore.visualId] = toStore;
+      if (!sensitive) {
+        cache[toStore.cacheType!]![toStore.visualId] = toStore;
+      }
     }
   }
 }
