@@ -5,6 +5,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:antinote/antinote.dart';
+import 'package:antinote/src/helpers/serial.dart';
 import 'package:uuid/data.dart';
 import 'package:uuid/rng.dart';
 import 'package:uuid/uuid.dart';
@@ -21,13 +22,13 @@ typedef LoginResult = ({
   TokenCredentials refreshCredentials,
 });
 
-sealed class Credentials {
+sealed class const Credentials({
+  required final String deviceUuid,
+  final String? navIdentifier,
+}) {
   Workspace get workspace;
 
   Uri get baseUrl;
-
-  final String deviceUuid;
-  final String? navIdentifier;
 
   static String generateDeviceUuid() {
     return _uuid.v4(config: const V4Options(null, CryptoRNG()));
@@ -111,6 +112,4 @@ sealed class Credentials {
   }
 
   Future<LoginResult> loginBody(RemoteSession session);
-
-  const Credentials({required this.deviceUuid, this.navIdentifier});
 }

@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/grades/grade.dart';
+import 'package:protobuf/protobuf.dart';
 
 const _intSetType = -1;
 const _resolvedJsonReferenceType = -2;
@@ -60,9 +62,7 @@ class RemoteJsonDecoder {
 
         case 11:
           // It's a cardinal domain.
-          assert(
-            value is String,
-          ); // If it isn't (and it is a number), you need to create a list of length n with the nth value being 1.
+          assert(value is String); // If it isn't (and it is a number), you need to create a list of length n with the nth value being 1.
           parsedValue = (value as String).asDomain();
         case 14:
           assert(value is String);
@@ -136,4 +136,14 @@ class RemoteJsonEncoder {
       );
     }
   }
+}
+
+mixin SerializableObject<T extends GeneratedMessage> {
+  T serialize();
+
+  Map<String, dynamic> exportJson() => serialize().writeToJsonMap();
+
+  String exportString() => serialize().writeToJson();
+
+  Uint8List exportBinary() => serialize().writeToBuffer();
 }

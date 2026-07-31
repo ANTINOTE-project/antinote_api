@@ -6,11 +6,11 @@ import 'dart:typed_data';
 
 import 'package:antinote/antinote.dart';
 import 'package:antinote/src/helpers/api_properties.dart';
-import 'package:antinote/src/helpers/json_codec.dart';
+import 'package:antinote/src/helpers/serial.dart';
 import 'package:antinote/src/models/authentication_response.dart';
 import 'package:version/version.dart';
 
-class RemoteSession {
+class RemoteSession with SerializableObject<SerializedSession> {
   final NetworkStack stack;
   late final SerializableCacheStore serializableCache;
   final CacheStore cache = {for (final val in CacheType.values) val: {}};
@@ -89,6 +89,7 @@ class RemoteSession {
     }
   }
 
+  @override
   SerializedSession serialize() {
     return SerializedSession(
       stack: stack.serialize(),
@@ -97,12 +98,6 @@ class RemoteSession {
       ),
     );
   }
-
-  Map<String, dynamic> exportJson() => serialize().writeToJsonMap();
-
-  String exportString() => serialize().writeToJson();
-
-  Uint8List exportBinary() => serialize().writeToBuffer();
 
   Future<void> ensurePage(int page) async {
     final oldPage = stack.clientSignature?.tab;

@@ -52,7 +52,7 @@ final class const EDT({
     widget: .edt,
     data: (session) => {
       'numeroSemaine': date.toRemoteWeekNumber(session),
-      'date': {'_T': 7, 'V': date.asRemoteDate()},
+      'date': date,
     },
   );
 

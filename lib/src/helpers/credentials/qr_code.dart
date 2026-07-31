@@ -1,25 +1,16 @@
 part of 'credentials.dart';
 
-class QrCodeCredentials extends Credentials {
-  final String encryptedUsername;
-  final String encryptedToken;
-  final String pin;
+final class const QrCodeCredentials({
+  required final String encryptedUsername,
+  required final String encryptedToken,
+  required final String pin,
 
-  @override
-  final Workspace workspace;
-  @override
-  final Uri baseUrl;
+  @override required final Workspace workspace,
+  @override required final Uri baseUrl,
 
-  const QrCodeCredentials({
-    required this.encryptedUsername,
-    required this.encryptedToken,
-    required this.pin,
-    required this.workspace,
-    required this.baseUrl,
-    required super.deviceUuid,
-    super.navIdentifier,
-  });
-
+  required super.deviceUuid,
+  super.navIdentifier,
+}) extends Credentials {
   static Future<LoginResult> loginFromQrCode(
     String qrCode,
     String pin, {

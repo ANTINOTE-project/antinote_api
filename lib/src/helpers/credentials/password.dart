@@ -13,7 +13,7 @@ final class const PasswordCredentials({
 
   required super.deviceUuid,
   super.navIdentifier,
-}) extends Credentials {
+}) extends Credentials with SerializableObject<SerializedPasswordCredentials> {
   factory PasswordCredentials.restore(
     SerializedPasswordCredentials serialized,
   ) {
@@ -36,6 +36,7 @@ final class const PasswordCredentials({
   factory PasswordCredentials.restoreJson(String data) =>
       PasswordCredentials.restore(SerializedPasswordCredentials.fromJson(data));
 
+  @override
   SerializedPasswordCredentials serialize() {
     return SerializedPasswordCredentials(
       username: username,
@@ -47,12 +48,6 @@ final class const PasswordCredentials({
       navIdentifier: navIdentifier,
     );
   }
-
-  Map<String, dynamic> exportJson() => serialize().writeToJsonMap();
-
-  String exportString() => serialize().writeToJson();
-
-  Uint8List exportBinary() => serialize().writeToBuffer();
 
   @override
   Future<RemoteSession> createSession(SessionOptions options) =>

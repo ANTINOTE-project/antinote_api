@@ -8,9 +8,7 @@ final class const MenuDeLaCantine({required final Menu currentMenu})
   static HomePageModule module(Date date) => HomePageModule(
     widget: .menuDeLaCantine,
     data: (session) => {
-      'menuDeLaCantine': {
-        'date': {'_T': 7, 'V': date.asRemoteDate()},
-      },
+      'menuDeLaCantine': {'date': date},
     },
   );
 

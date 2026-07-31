@@ -39,6 +39,7 @@ export 'src/helpers/geolocation.dart';
 export 'src/helpers/json.dart';
 export 'src/helpers/network_stack.dart';
 export 'src/helpers/recurring_timetable.dart';
+export 'src/helpers/serial.dart' show SerializableObject;
 export 'src/helpers/session.dart';
 export 'src/helpers/session_access_type.dart';
 export 'src/helpers/visual_id.dart';

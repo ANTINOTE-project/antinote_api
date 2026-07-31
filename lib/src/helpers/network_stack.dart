@@ -6,7 +6,7 @@ import 'dart:typed_data';
 
 import 'package:antinote/antinote.dart';
 import 'package:antinote/src/helpers/api_properties.dart';
-import 'package:antinote/src/helpers/json_codec.dart';
+import 'package:antinote/src/helpers/serial.dart';
 import 'package:antinote/src/helpers/signatures/client.dart';
 import 'package:antinote/src/helpers/signatures/server.dart';
 import 'package:http/http.dart';
@@ -16,7 +16,7 @@ import 'package:version/version.dart';
 
 export 'call/call.dart';
 
-class NetworkStack {
+class NetworkStack with SerializableObject<SerializedNetworkStack> {
   NetworkStack({
     required this.cookies,
     required this.vocab,
@@ -81,6 +81,7 @@ class NetworkStack {
     return stack;
   }
 
+  @override
   SerializedNetworkStack serialize() {
     return SerializedNetworkStack(
       crypto: crypto.serialize(),

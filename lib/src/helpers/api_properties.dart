@@ -1,37 +1,21 @@
 import 'package:version/version.dart';
 
-class ApiVocabulary {
-  final String data;
-  final String requestId;
-  final String signature;
-  final String orderNumber;
-  final String sessionNumber;
-  final String secureData;
-  final String nonSecureData;
-  final String session;
+final class const ApiVocabulary({
+  required final String data,
+  required final String requestId,
+  required final String signature,
+  required final String orderNumber,
+  required final String sessionNumber,
+  required final String secureData,
+  required final String nonSecureData,
+  required final String session,
 
-  final String fileUploadOrderNumber;
-  final String fileUploadSessionNumber;
-  final String fileUploadRequestId;
-  final String fileUploadFileId;
-  final String fileUploadMd5;
-
-  const ApiVocabulary({
-    required this.data,
-    required this.requestId,
-    required this.signature,
-    required this.orderNumber,
-    required this.sessionNumber,
-    required this.secureData,
-    required this.nonSecureData,
-    required this.session,
-    required this.fileUploadOrderNumber,
-    required this.fileUploadSessionNumber,
-    required this.fileUploadRequestId,
-    required this.fileUploadFileId,
-    required this.fileUploadMd5,
-  });
-
+  required final String fileUploadOrderNumber,
+  required final String fileUploadSessionNumber,
+  required final String fileUploadRequestId,
+  required final String fileUploadFileId,
+  required final String fileUploadMd5,
+}) {
   static ApiVocabulary forVersion(Version version) {
     if (version >= Version(2025, 1, 3)) {
       return _for2025_1_3;

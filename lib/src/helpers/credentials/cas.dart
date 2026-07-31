@@ -1,6 +1,16 @@
 part of 'credentials.dart';
 
-final class CasCredentials extends PasswordCredentials {
+final class const CasCredentials({
+  required super.deviceUuid,
+  super.navIdentifier,
+  required final String tokenId,
+  required final String tokenKey,
+  required super.baseUrl,
+  required super.cookies,
+  required super.workspace,
+}) extends PasswordCredentials {
+  this : super(username: tokenId, password: tokenKey);
+
   static Future<LoginResult> loginFromTicketOrId(
     Uri uri,
     String? casToken,
@@ -29,16 +39,6 @@ final class CasCredentials extends PasswordCredentials {
       workspace: workspace ?? session.stack.temporaryWorkspace,
     ).loginBody(session);
   }
-
-  const CasCredentials({
-    required super.deviceUuid,
-    super.navIdentifier,
-    required String tokenId,
-    required String tokenKey,
-    required super.baseUrl,
-    required super.cookies,
-    required super.workspace,
-  }) : super(username: tokenId, password: tokenKey);
 
   @override
   Future<LoginResult> loginBody(RemoteSession session) async {
