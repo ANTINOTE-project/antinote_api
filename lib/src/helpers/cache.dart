@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:antinote/src/helpers/json_codec.dart';
+import 'package:antinote/src/helpers/serial.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/protos/antinote/session.pbenum.dart';

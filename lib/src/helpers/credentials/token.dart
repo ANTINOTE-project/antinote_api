@@ -1,25 +1,16 @@
 part of 'credentials.dart';
 
-class TokenCredentials extends Credentials {
-  final String username;
-  final String token;
+final class const TokenCredentials({
+  required final String username,
+  required final String token,
 
-  @override
-  final Workspace workspace;
-  @override
-  final Uri baseUrl;
-  final List<Cookie> cookies;
+  @override required final Workspace workspace,
+  @override required final Uri baseUrl,
+  required final List<Cookie> cookies,
 
-  const TokenCredentials({
-    required this.username,
-    required this.token,
-    required this.workspace,
-    required this.baseUrl,
-    required this.cookies,
-    required super.deviceUuid,
-    super.navIdentifier,
-  });
-
+  required super.deviceUuid,
+  super.navIdentifier,
+}) extends Credentials with SerializableObject<SerializedTokenCredentials> {
   factory TokenCredentials.restore(SerializedTokenCredentials serialized) {
     return TokenCredentials(
       username: serialized.username,
@@ -38,6 +29,7 @@ class TokenCredentials extends Credentials {
   factory TokenCredentials.restoreJson(String data) =>
       TokenCredentials.restore(SerializedTokenCredentials.fromJson(data));
 
+  @override
   SerializedTokenCredentials serialize() {
     return SerializedTokenCredentials(
       username: username,
@@ -49,12 +41,6 @@ class TokenCredentials extends Credentials {
       navIdentifier: navIdentifier,
     );
   }
-
-  Map<String, dynamic> exportJson() => serialize().writeToJsonMap();
-
-  String exportString() => serialize().writeToJson();
-
-  Uint8List exportBinary() => serialize().writeToBuffer();
 
   @override
   Future<RemoteSession> createSession(SessionOptions options) =>
