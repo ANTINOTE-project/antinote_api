@@ -43,3 +43,32 @@ final $typed_data.Uint8List serializedTokenCredentialsDescriptor = $convert.base
     'cmlhbGl6ZWRXb3Jrc3BhY2VSCXdvcmtzcGFjZRIZCghiYXNlX3VybBgEIAEoCVIHYmFzZVVybB'
     'IYCgdjb29raWVzGAUgAygJUgdjb29raWVzEh8KC2RldmljZV91dWlkGAYgASgJUgpkZXZpY2VV'
     'dWlkEiUKDm5hdl9pZGVudGlmaWVyGAcgASgJUg1uYXZJZGVudGlmaWVy');
+
+@$core.Deprecated('Use serializedPasswordCredentialsDescriptor instead')
+const SerializedPasswordCredentials$json = {
+  '1': 'SerializedPasswordCredentials',
+  '2': [
+    {'1': 'username', '3': 1, '4': 1, '5': 9, '10': 'username'},
+    {'1': 'password', '3': 2, '4': 1, '5': 9, '10': 'password'},
+    {
+      '1': 'workspace',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.antinote.SerializedWorkspace',
+      '10': 'workspace'
+    },
+    {'1': 'base_url', '3': 4, '4': 1, '5': 9, '10': 'baseUrl'},
+    {'1': 'cookies', '3': 5, '4': 3, '5': 9, '10': 'cookies'},
+    {'1': 'device_uuid', '3': 6, '4': 1, '5': 9, '10': 'deviceUuid'},
+    {'1': 'nav_identifier', '3': 7, '4': 1, '5': 9, '10': 'navIdentifier'},
+  ],
+};
+
+/// Descriptor for `SerializedPasswordCredentials`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List serializedPasswordCredentialsDescriptor = $convert.base64Decode(
+    'Ch1TZXJpYWxpemVkUGFzc3dvcmRDcmVkZW50aWFscxIaCgh1c2VybmFtZRgBIAEoCVIIdXNlcm'
+    '5hbWUSGgoIcGFzc3dvcmQYAiABKAlSCHBhc3N3b3JkEjsKCXdvcmtzcGFjZRgDIAEoCzIdLmFu'
+    'dGlub3RlLlNlcmlhbGl6ZWRXb3Jrc3BhY2VSCXdvcmtzcGFjZRIZCghiYXNlX3VybBgEIAEoCV'
+    'IHYmFzZVVybBIYCgdjb29raWVzGAUgAygJUgdjb29raWVzEh8KC2RldmljZV91dWlkGAYgASgJ'
+    'UgpkZXZpY2VVdWlkEiUKDm5hdl9pZGVudGlmaWVyGAcgASgJUg1uYXZJZGVudGlmaWVy');

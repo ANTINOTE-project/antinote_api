@@ -94,7 +94,6 @@ sealed class Credentials {
 
   Future<LoginResult> login({SessionOptions? options}) async {
     final session = await createSession(options ?? SessionOptions.getDefault());
-    await accessInstanceParameters(session);
     return loginBody(session);
   }
 

@@ -25,6 +25,7 @@ final class CasCredentials extends PasswordCredentials {
       tokenId: session.stack.tokenId!,
       tokenKey: session.stack.tokenKey!,
       baseUrl: session.stack.baseUrl,
+      cookies: session.stack.cookies,
       workspace: workspace ?? session.stack.temporaryWorkspace,
     ).loginBody(session);
   }
@@ -35,6 +36,7 @@ final class CasCredentials extends PasswordCredentials {
     required String tokenId,
     required String tokenKey,
     required super.baseUrl,
+    required super.cookies,
     required super.workspace,
   }) : super(username: tokenId, password: tokenKey);
 

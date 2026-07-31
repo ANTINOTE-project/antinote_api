@@ -7,11 +7,12 @@ void main() {
     final credentials = PasswordCredentials(
       username: 'demonstration',
       password: 'pronotevs',
-      workspace: Workspace(
+      workspace: const Workspace(
         type: .mobileEleve,
         label: '',
         pathSegment: 'mobile.eleve.html',
       ),
+      cookies: [],
       baseUrl: .parse('https://demo.index-education.net/pronote'),
       deviceUuid: Credentials.generateDeviceUuid(),
     );
@@ -39,7 +40,7 @@ void main() {
     } catch (e) {
       rethrow;
     } finally {
-      await session.access(DisconnectionAccessor.logged());
+      await session.access(const DisconnectionAccessor.logged());
     }
   });
 }
