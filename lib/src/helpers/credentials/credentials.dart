@@ -5,7 +5,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:antinote/antinote.dart';
-import 'package:antinote/src/helpers/serial.dart';
 import 'package:uuid/data.dart';
 import 'package:uuid/rng.dart';
 import 'package:uuid/uuid.dart';
@@ -17,10 +16,7 @@ part 'token.dart';
 
 final _uuid = const Uuid();
 
-typedef LoginResult = ({
-  RemoteSession session,
-  TokenCredentials refreshCredentials,
-});
+typedef LoginResult = ({RemoteSession session, Credentials? credentials});
 
 sealed class const Credentials({
   required final String deviceUuid,
@@ -76,20 +72,21 @@ sealed class const Credentials({
 
     return (
       session: session,
-      // TODO: Nullify refreshCredentials since it doesn't exist when on desktop
-      refreshCredentials: TokenCredentials(
-        cookies: [
-          Cookie('uuidAppliMobile', deviceUuid),
-          Cookie('appliMobile', '1'),
-        ],
-        username: challenge.username ?? username,
-        token: authentication.relogToken ?? mod,
-        workspace: workspace ?? session.instance.workspace,
-        baseUrl: baseUrl,
-        deviceUuid: deviceUuid,
-        navIdentifier: /*session.instance.navigatorIdentifier ?? */
-            navIdentifier, // TODO: Find the exact scenario where navigatorIdentifier is present.
-      ),
+      credentials: authentication.relogToken != null
+          ? TokenCredentials(
+              cookies: [
+                Cookie('uuidAppliMobile', deviceUuid),
+                Cookie('appliMobile', '1'),
+              ],
+              username: challenge.username ?? username,
+              token: authentication.relogToken!,
+              workspace: workspace ?? session.instance.workspace,
+              baseUrl: baseUrl,
+              deviceUuid: deviceUuid,
+              navIdentifier: /*session.instance.navigatorIdentifier ?? */
+                  navIdentifier, // TODO: Find the exact scenario where navigatorIdentifier is present.
+            )
+          : null,
     );
   }
 
