@@ -3,7 +3,7 @@ part of 'call.dart';
 final class _PollingCall extends Call {
   // dart format off
   @override get callType => 'appelpolling';
-  @override get orderBehavior => OrderBehavior.poll;
+  @override get orderBehavior => .poll;
   @override get appendOrderToUrl => true;
   @override final Completer<void> cancellationSignal;
   @override final bool addSignature;

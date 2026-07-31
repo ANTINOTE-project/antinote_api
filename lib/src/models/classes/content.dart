@@ -89,7 +89,7 @@ final class const StudentClassContent({required super.value})
     with ValueIdClassContentMixin;
 
 final class const UnknownContent({required super.value})
-    extends ClassContent<MapJsonNavigator> {
+    extends ClassContent<Map<String, dynamic>> {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield jsonEncode(value).visualIdData();

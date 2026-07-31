@@ -2,12 +2,15 @@ part of '../widget.dart';
 
 final class const DS({required final List<ExamPreview> exams})
     extends HomePageWidget {
-  factory decode(MapJsonNavigator nav, RemoteSession _) => .new(
+  factory decode(Map<String, dynamic> nav, RemoteSession _) => .new(
     exams: nav.go('devoirSurveille').getLM('listeDS').mapL((e) => .decode(e)),
   );
 
-  static HomePageModule module() =>
-      HomePageModule(widget: .ds, data: (session) => {});
+  static HomePageModule module() => HomePageModule(
+    widget: .ds,
+    canQuerySpecifically: true,
+    data: (session) => {},
+  );
 
   @override
   HomePageWidgetType get widgetId => .ds;

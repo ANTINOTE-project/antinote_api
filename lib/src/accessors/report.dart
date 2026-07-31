@@ -1,19 +1,26 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/call/call.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/period.dart';
 import 'package:antinote/src/models/report/report.dart';
 
-/// WARNING! The behavior of this function changes depending on which tab your
-/// signature currently is!
-final class const ReportAccessor({required final Period period})
-    extends StatelessAccessor<BaseReport> {
+enum ReportSection { student, clazz }
+
+final class const ReportAccessor({
+  required final ReportSection section,
+  required final Period period,
+}) extends StatelessAccessor<BaseReport> {
   @override
   bool get exclusiveFriendly => true;
+
+  @override
+  int? get page => switch (section) {
+    .student => 13,
+    .clazz => 41,
+  };
 
   @override
   FutureOr<Map<String, dynamic>> access(
@@ -33,12 +40,10 @@ final class const ReportAccessor({required final Period period})
           name: 'PageBulletins',
         ),
       )
-      .resultCompleter
-      .future
       .thenField(session.stack.vocab.data);
 
   @override
-  FutureOr<BaseReport> interpretStateless(MapJsonNavigator<dynamic> nav) =>
+  FutureOr<BaseReport> interpretStateless(Map<String, dynamic> nav) =>
       .decode(nav);
 
   @override

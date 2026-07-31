@@ -12,7 +12,7 @@ final class const HomePage({
   required final bool duringDisconnectionPeriod,
   required final DisconnectionPeriodData? disconnectionPeriodData,
 }) with VisualIdMixin {
-  factory decode(MapJsonNavigator nav, RemoteSession session) {
+  factory decode(Map<String, dynamic> nav, RemoteSession session) {
     final elements = widgetDefinitions
         .where((element) => element.shouldCreate(nav, session))
         .map((e) => e.create(nav, session))

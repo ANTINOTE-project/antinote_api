@@ -30,10 +30,12 @@ final class _DisconnectionCall extends Call {
     String orderId, {
     bool debugMode = false,
   }) {
-    final rawJson = jsonEncode({
-      stack.vocab.orderNumber: orderId,
-      stack.vocab.sessionNumber: stack.sessionId,
-    }, toEncodable: _helpEncode);
+    final rawJson = RemoteJsonEncoder(
+      data: {
+        stack.vocab.orderNumber: orderId,
+        stack.vocab.sessionNumber: stack.sessionId,
+      },
+    ).encode();
 
     if (debugMode) {
       stack.log.fine('Sending:');

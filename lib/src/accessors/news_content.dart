@@ -4,14 +4,14 @@ import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/news/display_mode.dart';
+import 'package:antinote/src/models/news/news.dart';
 import 'package:antinote/src/models/news/page.dart';
 
-final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
-    extends StatelessAccessor<NewsPage> {
-  const NewsPageAccessor.defaultMode() : this(modes: const [.reception]);
-
+final class const NewsContentAccessor({
+  required final NewsDisplayMode mode,
+  required final News baseNews,
+}) extends StatelessAccessor<NewsContent> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -29,28 +29,26 @@ final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
             name: 'PageActualites',
             dataSec: {
               session.stack.vocab.data: {
-                'genreRequeteActualite': NewsPageRequestType.display.id,
-                'modesAffActus': {
-                  '_T': 26,
-                  'V': modes.map((e) => e.id).asDomain(),
+                // Only those three fields are actually required.
+                'actualite': {
+                  'N': baseNews.id,
+                  'public': baseNews.recipient.toJson(),
+                  'genrePublic': baseNews.recipientType,
                 },
+                'genreRequeteActualite': NewsPageRequestType.details.id,
+                'modeAffActu': mode.id,
               },
             },
             cancellationSignal: cancellationSignal,
           ),
         )
-        .resultCompleter
-        .future
         .thenField(session.stack.vocab.data);
   }
 
   @override
-  FutureOr<NewsPage> interpretStateless(Map<String, dynamic> nav) =>
+  FutureOr<NewsContent> interpretStateless(Map<String, dynamic> nav) =>
       .decode(nav);
 
   @override
-  List<VisualIdMixin> store(NewsPage result) => [
-    ...result.categories,
-    for (final collection in result.collections) ...collection.news,
-  ];
+  List<VisualIdMixin> store(NewsContent result) => [];
 }

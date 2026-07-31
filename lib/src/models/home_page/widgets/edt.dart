@@ -5,7 +5,7 @@ final class const EDT({
   required final int selectedCycleDay,
   required final int? currentSlot,
 }) extends HomePageWidget {
-  factory decode(MapJsonNavigator nav, RemoteSession session) => .new(
+  factory decode(Map<String, dynamic> nav, RemoteSession session) => .new(
     timetable: Timetable(
       withCanceledClasses: nav.get('avecCoursAnnule'),
       classes: nav.getLM('ListeCours').mapL((e) => .decode(session, e))
@@ -27,7 +27,7 @@ final class const EDT({
   // TODO: Probably delete this as it could give misleading information.
   factory EDT.decodeUpdate(
     EDT old,
-    MapJsonNavigator nav,
+    Map<String, dynamic> nav,
     RemoteSession session,
   ) => .new(
     timetable: Timetable(
@@ -50,6 +50,7 @@ final class const EDT({
 
   static HomePageModule module(Date date) => HomePageModule(
     widget: .edt,
+    canQuerySpecifically: true,
     data: (session) => {
       'numeroSemaine': date.toRemoteWeekNumber(session),
       'date': date,

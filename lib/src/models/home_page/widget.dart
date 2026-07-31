@@ -5,7 +5,6 @@ import 'package:antinote/src/helpers/datetime.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/exam/preview.dart';
 import 'package:antinote/src/models/grades/page.dart';
 import 'package:antinote/src/models/homework/homework.dart';
@@ -36,10 +35,12 @@ List<WidgetDefinition> widgetDefinitions = [
 
 final class const WidgetDefinition<T extends HomePageWidget>({
   required final HomePageWidgetType type,
-  required final bool Function(MapJsonNavigator nav, RemoteSession session)
+  required final bool Function(Map<String, dynamic> nav, RemoteSession session)
   shouldCreate,
-  required final T Function(MapJsonNavigator nav, RemoteSession session) create,
-  final T Function(T old, MapJsonNavigator nav, RemoteSession session)? update,
+  required final T Function(Map<String, dynamic> nav, RemoteSession session)
+  create,
+  final T Function(T old, Map<String, dynamic> nav, RemoteSession session)?
+  update,
 });
 
 sealed class const HomePageWidget() {

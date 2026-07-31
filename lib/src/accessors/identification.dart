@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
@@ -64,6 +63,9 @@ final class IdentificationAccessor extends StatelessAccessor<Challenge> {
   bool get exclusiveFriendly => true;
 
   @override
+  int? get page => null;
+
+  @override
   Future<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -93,7 +95,7 @@ final class IdentificationAccessor extends StatelessAccessor<Challenge> {
   }
 
   @override
-  Challenge interpretStateless(MapJsonNavigator nav) => .decode(nav);
+  Challenge interpretStateless(Map<String, dynamic> nav) => .decode(nav);
 
   @override
   List<VisualIdMixin> store(Challenge result) => [result];

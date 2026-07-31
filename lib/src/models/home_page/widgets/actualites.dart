@@ -2,7 +2,7 @@ part of '../widget.dart';
 
 final class const Actualites({required final List<News> news})
     extends HomePageWidget {
-  factory Actualites.decode(MapJsonNavigator nav, RemoteSession _) => .new(
+  factory Actualites.decode(Map<String, dynamic> nav, RemoteSession _) => .new(
     news: nav
         .go('actualites')
         .getL('listeModesAff')

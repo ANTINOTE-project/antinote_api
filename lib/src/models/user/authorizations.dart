@@ -33,7 +33,7 @@ final class const UserAuthorizations({
 
     final List<int> locations = [];
     if (tabs.notEmpty) {
-      void traverse(MapJsonNavigator obj) {
+      void traverse(Map<String, dynamic> obj) {
         if (obj.has('G')) {
           locations.add(obj.get('G'));
         }

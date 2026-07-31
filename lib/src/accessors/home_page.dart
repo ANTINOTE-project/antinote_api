@@ -9,6 +9,9 @@ final class const HomePageAccessor({
   bool get exclusiveFriendly => true;
 
   @override
+  int? get page => 7;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -36,14 +39,15 @@ final class const HomePageAccessor({
   FutureOr<RemoteSession> collectState(RemoteSession session) => session;
 
   @override
-  FutureOr<HomePage> interpret(MapJsonNavigator nav, RemoteSession state) =>
+  FutureOr<HomePage> interpret(Map<String, dynamic> nav, RemoteSession state) =>
       HomePage.decode(nav, state);
 
   @override
   List<VisualIdMixin> store(HomePage result) => [result];
 }
 
-class HomePageModule({
+final class const HomePageModule({
   required final HomePageWidgetType widget,
+  final canQuerySpecifically = false,
   required final Map<String, dynamic> Function(RemoteSession session) data,
 });

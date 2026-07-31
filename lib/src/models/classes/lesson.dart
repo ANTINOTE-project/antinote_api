@@ -19,7 +19,10 @@ final class const Lesson({
   required super.weekNumber,
   required super.studentCountString,
 }) extends Class {
-  factory Lesson.decode(ClassMessage classMessage, MapJsonNavigator lesson) {
+  factory Lesson.decode(
+    ClassMessage classMessage,
+    Map<String, dynamic> lesson,
+  ) {
     final List<ClassContent> contents = [];
     String? lessonResourceId;
 
@@ -34,7 +37,7 @@ final class const Lesson({
     }
 
     if (lesson.has('ListeContenus')) {
-      for (final MapJsonNavigator data in lesson.getLM('ListeContenus')) {
+      for (final Map<String, dynamic> data in lesson.getLM('ListeContenus')) {
         contents.add(ClassContent.decode(data));
       }
     }

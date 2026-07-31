@@ -3,9 +3,12 @@ import 'dart:async';
 import '../../antinote.dart';
 
 final class const PollingAccessor()
-    extends StatelessAccessor<MapJsonNavigator> {
+    extends StatelessAccessor<Map<String, dynamic>> {
   @override
   bool get exclusiveFriendly => true;
+
+  @override
+  int? get page => null;
 
   @override
   Future<Map<String, dynamic>> access(
@@ -26,10 +29,12 @@ final class const PollingAccessor()
   }
 
   @override
-  FutureOr<MapJsonNavigator> interpretStateless(MapJsonNavigator nav) async {
+  FutureOr<Map<String, dynamic>> interpretStateless(
+    Map<String, dynamic> nav,
+  ) async {
     return nav;
   }
 
   @override
-  List<VisualIdMixin> store(MapJsonNavigator result) => [];
+  List<VisualIdMixin> store(Map<String, dynamic> result) => [];
 }

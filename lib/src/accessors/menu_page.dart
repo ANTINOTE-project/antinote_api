@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
@@ -12,6 +11,9 @@ final class const MenuPageAccessor({required final DateTime date})
     extends StatelessAccessor<MenuPage> {
   @override
   bool get exclusiveFriendly => true;
+
+  @override
+  int? get page => 10;
 
   @override
   FutureOr<Map<String, dynamic>> access(
@@ -36,7 +38,8 @@ final class const MenuPageAccessor({required final DateTime date})
   }
 
   @override
-  FutureOr<MenuPage> interpretStateless(MapJsonNavigator nav) => .decode(nav);
+  FutureOr<MenuPage> interpretStateless(Map<String, dynamic> nav) =>
+      .decode(nav);
 
   @override
   List<VisualIdMixin> store(MenuPage result) => [

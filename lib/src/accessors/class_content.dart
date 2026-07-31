@@ -13,6 +13,10 @@ final class const ClassContentAccessor({
   bool get exclusiveFriendly => true;
 
   @override
+  // Can be in the home page or the timetable.
+  int? get page => null;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -43,7 +47,7 @@ final class const ClassContentAccessor({
 
   @override
   FutureOr<List<Class>> interpret(
-    MapJsonNavigator<dynamic> nav,
+    Map<String, dynamic> nav,
     RemoteSession session,
   ) => nav.getLM('listeCours').mapL((e) => .decode(session, e));
 

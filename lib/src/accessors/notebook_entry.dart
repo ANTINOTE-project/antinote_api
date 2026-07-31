@@ -14,6 +14,10 @@ final class const NotebookEntryAccessor({required final String entryId})
   bool get exclusiveFriendly => true;
 
   @override
+  // Can be in the home page or in the notebook page (and maybe the timetable).
+  int? get page => null;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -36,7 +40,7 @@ final class const NotebookEntryAccessor({required final String entryId})
   }
 
   @override
-  FutureOr<NotebookEntry> interpretStateless(MapJsonNavigator nav) {
+  FutureOr<NotebookEntry> interpretStateless(Map<String, dynamic> nav) {
     assert(
       nav.getLM('ListeCahierDeTextes').length == 1,
       'Got multiple (or no) entries from function call donnesContenusCDT',

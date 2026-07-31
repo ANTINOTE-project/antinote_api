@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/crypto.dart';
-import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/session_access_type.dart';
@@ -18,6 +17,9 @@ final class const AuthenticationAccessor({
 
   @override
   bool get sensitiveResponse => true;
+
+  @override
+  int? get page => null;
 
   @override
   Future<Map<String, dynamic>> access(
@@ -42,7 +44,7 @@ final class const AuthenticationAccessor({
   }
 
   @override
-  AuthenticationResponse interpretStateless(MapJsonNavigator nav) =>
+  AuthenticationResponse interpretStateless(Map<String, dynamic> nav) =>
       .decode(nav);
 
   @override

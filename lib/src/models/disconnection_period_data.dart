@@ -21,7 +21,7 @@ final class const DisconnectionPeriodData({
   required final int communicationDeactivationStartHour,
   required final int communicationDeactivationEndHour,
 }) with VisualIdMixin {
-  factory decode(RemoteSession session, MapJsonNavigator nav) {
+  factory decode(RemoteSession session, Map<String, dynamic> nav) {
     final grades = nav.mGo('notes');
     final homework = nav.mGo('taf');
     final communication = nav.mGo('messagerie');

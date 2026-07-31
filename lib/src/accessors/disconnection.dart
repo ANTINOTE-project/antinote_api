@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/call/call.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 
@@ -15,6 +14,9 @@ final class DisconnectionAccessor extends StatelessAccessor<void> {
 
   @override
   bool get exclusiveFriendly => true;
+
+  @override
+  int? get page => null;
 
   @override
   FutureOr<Map<String, dynamic>> access(
@@ -36,7 +38,7 @@ final class DisconnectionAccessor extends StatelessAccessor<void> {
   }
 
   @override
-  FutureOr<void> interpretStateless(MapJsonNavigator<dynamic> nav) => null;
+  FutureOr<void> interpretStateless(Map<String, dynamic> nav) => null;
 
   @override
   List<VisualIdMixin> store(void result) => [];

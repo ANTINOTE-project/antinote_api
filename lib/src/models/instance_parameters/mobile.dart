@@ -53,7 +53,7 @@ final class MobileInstanceParameters {
 }
 // InfoMobileApp.json?id=0D264427-EEFC-4810-A9E9-346942A862A4
 
-extension AsMobileInstanceParameters on MapJsonNavigator {
+extension AsMobileInstanceParameters on Map<String, dynamic> {
   MobileInstanceParameters asMobileInstanceParameters(Uri baseUrl) {
     return MobileInstanceParameters(
       baseUrl: baseUrl,

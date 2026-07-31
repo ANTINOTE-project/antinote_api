@@ -11,7 +11,7 @@ final class const FoodAllergen({
   required final String name,
   required final int color,
 }) with VisualIdMixin {
-  factory FoodAllergen.decode(MapJsonNavigator nav) {
+  factory FoodAllergen.decode(Map<String, dynamic> nav) {
     return FoodAllergen(
       type: nav.get('G'),
       place: nav.get('P'),

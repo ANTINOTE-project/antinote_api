@@ -15,6 +15,10 @@ final class const ChangeHomeworkStateAccessor({
   bool get exclusiveFriendly => false;
 
   @override
+  // Can be either in the home page or the homework page
+  int? get page => null;
+
+  @override
   Future<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -43,7 +47,7 @@ final class const ChangeHomeworkStateAccessor({
   }
 
   @override
-  FutureOr<void> interpretStateless(MapJsonNavigator nav) {
+  FutureOr<void> interpretStateless(Map<String, dynamic> nav) {
     assert(
       nav.mGetM('RapportSaisie')?.isNotEmpty ?? true,
       'Update request unsuccessful',

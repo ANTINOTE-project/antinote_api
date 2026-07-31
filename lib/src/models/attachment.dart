@@ -24,7 +24,7 @@ enum FileAttachmentType {
 
 sealed class Attachment({required final String title, required final String id})
     with VisualIdMixin {
-  factory decode(MapJsonNavigator nav) {
+  factory decode(Map<String, dynamic> nav) {
     return switch (nav.get<int>('G')) {
       0 => LinkAttachment.decode(nav),
       1 => FileAttachment.decode(nav),
@@ -35,7 +35,7 @@ sealed class Attachment({required final String title, required final String id})
 
   factory decodeResource(
     NotebookResourceEntryType resourceType,
-    MapJsonNavigator nav,
+    Map<String, dynamic> nav,
   ) {
     return switch (resourceType) {
       .website => LinkAttachment.decode(nav),
@@ -82,7 +82,7 @@ sealed class Attachment({required final String title, required final String id})
 
 final class FileAttachment({required super.title, required super.id})
     extends Attachment {
-  factory FileAttachment.decode(MapJsonNavigator nav) =>
+  factory FileAttachment.decode(Map<String, dynamic> nav) =>
       .new(title: nav.get('L'), id: nav.get('N'));
 
   @override
@@ -123,7 +123,7 @@ final class LinkAttachment({
   required super.id,
   required final String url,
 }) extends Attachment {
-  factory decode(MapJsonNavigator nav) {
+  factory decode(Map<String, dynamic> nav) {
     return .new(
       title: nav.get('L') ?? nav.get('url'),
       id: nav.get('N'),
@@ -149,7 +149,7 @@ final class SubmittedFileAttachment({
   required super.id,
   required final DateTime deadline,
 }) extends FileAttachment {
-  factory SubmittedFileAttachment.decode(MapJsonNavigator nav) =>
+  factory SubmittedFileAttachment.decode(Map<String, dynamic> nav) =>
       .new(title: nav.get('L'), id: nav.get('N'), deadline: nav.get('pourLe'));
 
   @override
@@ -164,6 +164,6 @@ final class SubmittedFileAttachment({
 
 final class CustomFileAttachment({required super.title, required super.id})
     extends FileAttachment {
-  factory CustomFileAttachment.decode(MapJsonNavigator nav) =>
+  factory CustomFileAttachment.decode(Map<String, dynamic> nav) =>
       .new(title: nav.get('L'), id: nav.get('N'));
 }

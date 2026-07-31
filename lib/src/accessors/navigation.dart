@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 
@@ -11,6 +10,10 @@ final class const NavigationAccessor({
 }) extends StatelessAccessor<void> {
   @override
   bool get exclusiveFriendly => true;
+
+  @override
+  // Would be recursive if non-null.
+  int? get page => null;
 
   @override
   Future<Map<String, dynamic>> access(
@@ -35,7 +38,7 @@ final class const NavigationAccessor({
   }
 
   @override
-  FutureOr<void> interpretStateless(MapJsonNavigator nav) {}
+  FutureOr<void> interpretStateless(Map<String, dynamic> nav) {}
 
   @override
   List<VisualIdMixin> store(void result) => [];

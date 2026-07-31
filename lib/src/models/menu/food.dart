@@ -13,7 +13,7 @@ final class const Food({
   required final List<FoodLabel> foodLabels,
   required final List<FoodAllergen> foodAllergens,
 }) with VisualIdMixin {
-  factory Food.decode(MapJsonNavigator nav) {
+  factory Food.decode(Map<String, dynamic> nav) {
     return Food(
       name: nav.get('L'),
       id: nav.get('N'),

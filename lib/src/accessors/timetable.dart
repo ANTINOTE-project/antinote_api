@@ -64,6 +64,11 @@ final class const TimetableAccessor({
   bool get exclusiveFriendly => true;
 
   @override
+  // There are plenty pages that use this request, but since we currently only
+  // support the student session, we keep only one page.
+  int? get page => 16;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -98,7 +103,10 @@ final class const TimetableAccessor({
   FutureOr<RemoteSession> collectState(RemoteSession session) => session;
 
   @override
-  FutureOr<Timetable> interpret(MapJsonNavigator nav, RemoteSession session) {
+  FutureOr<Timetable> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) {
     return Timetable(
       absences: nav.get('absences'),
       withCanceledClasses: nav.get('avecCoursAnnule') ?? true,

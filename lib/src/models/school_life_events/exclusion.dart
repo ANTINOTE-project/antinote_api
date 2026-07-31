@@ -18,7 +18,7 @@ final class const Exclusion({
 }) extends SchoolLifeEvent {
   factory Exclusion.decode(
     SchoolLifeEventMessage message,
-    MapJsonNavigator nav,
+    Map<String, dynamic> nav,
   ) => .new(
     id: message.id,
     start: message.start,

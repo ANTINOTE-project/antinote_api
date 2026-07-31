@@ -24,6 +24,9 @@ final class RecipientListAccessor extends StatelessAccessor<List<Person>> {
   bool get exclusiveFriendly => false;
 
   @override
+  int? get page => 131;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -48,7 +51,7 @@ final class RecipientListAccessor extends StatelessAccessor<List<Person>> {
   }
 
   @override
-  FutureOr<List<Person>> interpretStateless(MapJsonNavigator nav) {
+  FutureOr<List<Person>> interpretStateless(Map<String, dynamic> nav) {
     return nav.getLM('listeDest').mapL((e) => .decode(e));
   }
 

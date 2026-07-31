@@ -20,7 +20,7 @@ final class const Notification({
   required final List<int>? tabList,
   required final String? documentModelId,
 }) {
-  factory Notification.decode(MapJsonNavigator nav) {
+  factory Notification.decode(Map<String, dynamic> nav) {
     return Notification(
       type: nav.get('type'),
       action: nav.get('action'),

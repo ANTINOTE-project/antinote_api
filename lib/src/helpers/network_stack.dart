@@ -328,7 +328,6 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
         log.fine(rawResponse);
       }
 
-      // Don't ask me why I made this so complicated. TODO
       final decoder = RemoteJsonDecoder(data: rawResponse);
       decoders.add(decoder);
       response = decoder.decode();

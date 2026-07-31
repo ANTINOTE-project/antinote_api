@@ -2,15 +2,18 @@ part of '../widget.dart';
 
 final class const TravailAFaire({required final List<Homework> homeworks})
     extends HomePageWidget {
-  factory decode(MapJsonNavigator nav, RemoteSession _) => .new(
+  factory decode(Map<String, dynamic> nav, RemoteSession _) => .new(
     homeworks: nav
         .go('travailAFaire')
         .getLM('listeTAF')
         .mapL((e) => .decode(e)),
   );
 
-  static HomePageModule module() =>
-      HomePageModule(widget: .travailAFaire, data: (session) => {});
+  static HomePageModule module() => HomePageModule(
+    widget: .travailAFaire,
+    canQuerySpecifically: true,
+    data: (session) => {},
+  );
 
   @override
   HomePageWidgetType get widgetId => .travailAFaire;

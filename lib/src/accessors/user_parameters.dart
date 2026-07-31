@@ -13,6 +13,9 @@ final class const UserParametersAccessor()
   bool get exclusiveFriendly => true;
 
   @override
+  int? get page => null;
+
+  @override
   Future<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -31,8 +34,8 @@ final class const UserParametersAccessor()
   }
 
   @override
-  FutureOr<UserParameters> interpretStateless(MapJsonNavigator nav) {
-    List<MapJsonNavigator> resources = [
+  FutureOr<UserParameters> interpretStateless(Map<String, dynamic> nav) {
+    List<Map<String, dynamic>> resources = [
       ...?nav.go('ressource').mGetLM('listeRessources'),
     ];
 

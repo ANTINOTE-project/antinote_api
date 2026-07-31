@@ -6,7 +6,7 @@ import 'package:antinote/src/models/notebook/resource/set.dart';
 final class const NotebookPage({
   required final List<NotebookEntry> entries,
   required final PedagogicalResourceSet? resourceSet,
-  required final MapJsonNavigator? numericResourceSet,
+  required final Map<String, dynamic>? numericResourceSet,
   required final NotebookHomeworkSet? homeworkSet,
 }) {
   factory decode(Map<String, dynamic> nav) => .new(

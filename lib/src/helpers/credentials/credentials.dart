@@ -16,7 +16,10 @@ part 'token.dart';
 
 final _uuid = const Uuid();
 
-typedef LoginResult = ({RemoteSession session, Credentials? credentials});
+final class const LoginResult({
+  required final RemoteSession session,
+  required final Credentials? credentials,
+});
 
 sealed class const Credentials({
   required final String deviceUuid,
@@ -70,7 +73,7 @@ sealed class const Credentials({
     session.stack.changeTab(7);
     session.currentUserResourceId = 0;
 
-    return (
+    return LoginResult(
       session: session,
       credentials: authentication.relogToken != null
           ? TokenCredentials(

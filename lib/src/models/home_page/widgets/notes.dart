@@ -5,8 +5,11 @@ final class const Notes({required final LatestGradesPage page})
   factory decode(Map<String, dynamic> nav, RemoteSession _) =>
       .new(page: .decode(nav.getM('notes')));
 
-  static HomePageModule module() =>
-      HomePageModule(widget: .notes, data: (session) => {});
+  static HomePageModule module() => HomePageModule(
+    widget: .notes,
+    canQuerySpecifically: true,
+    data: (session) => {},
+  );
 
   @override
   HomePageWidgetType get widgetId => .notes;

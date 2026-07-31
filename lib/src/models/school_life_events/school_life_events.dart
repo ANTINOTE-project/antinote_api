@@ -31,7 +31,7 @@ class SchoolLifeEventMessage {
     required this.reasons,
   });
 
-  factory SchoolLifeEventMessage.decode(MapJsonNavigator nav) {
+  factory SchoolLifeEventMessage.decode(Map<String, dynamic> nav) {
     return SchoolLifeEventMessage(
       id: nav.get('N'),
       start: nav.get('dateDebut'),
@@ -61,7 +61,7 @@ sealed class SchoolLifeEvent with VisualIdMixin {
   List<VisualIdMixin> get toStore => [...reasons];
 }
 
-extension AsSchoolLifeEvent on MapJsonNavigator {
+extension AsSchoolLifeEvent on Map<String, dynamic> {
   SchoolLifeEventMessage asSchoolLifeEventMessage() {
     return SchoolLifeEventMessage.decode(this);
   }
@@ -96,7 +96,7 @@ class SchoolLifeEventReason with VisualIdMixin {
 
   const SchoolLifeEventReason({required this.id, required this.name});
 
-  factory SchoolLifeEventReason.decode(MapJsonNavigator nav) {
+  factory SchoolLifeEventReason.decode(Map<String, dynamic> nav) {
     return SchoolLifeEventReason(id: nav.get('N'), name: nav.get('L'));
   }
 

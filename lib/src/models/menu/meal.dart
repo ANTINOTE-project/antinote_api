@@ -15,7 +15,7 @@ final class const Meal({
   required final int mealType,
   required final List<Dish> dishes,
 }) with VisualIdMixin {
-  factory Meal.decode(MapJsonNavigator nav) {
+  factory Meal.decode(Map<String, dynamic> nav) {
     return Meal(
       title: nav.get('L'),
       id: nav.get('N'),

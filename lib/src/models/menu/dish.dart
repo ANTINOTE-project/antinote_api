@@ -8,7 +8,7 @@ final class const Dish({
   /// This is not the order for the dishes, only its type (which is undocumented)
   required final int index,
 }) {
-  factory Dish.decode(MapJsonNavigator nav) {
+  factory Dish.decode(Map<String, dynamic> nav) {
     return Dish(
       foods: nav.eGetLM(['listeAliments', 'ListeAliments'])!.mapL(Food.decode),
       index: nav.get('G'),

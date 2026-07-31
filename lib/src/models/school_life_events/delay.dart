@@ -13,7 +13,10 @@ final class const Delay({
   required final String justification,
   required super.reasons,
 }) extends SchoolLifeEvent {
-  factory Delay.decode(SchoolLifeEventMessage message, MapJsonNavigator nav) {
+  factory Delay.decode(
+    SchoolLifeEventMessage message,
+    Map<String, dynamic> nav,
+  ) {
     return Delay(
       id: message.id,
       start: null,

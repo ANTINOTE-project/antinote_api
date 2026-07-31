@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
@@ -11,6 +10,9 @@ final class const NotificationCenterAccessor()
     extends StatelessAccessor<NotificationCenter> {
   @override
   bool get exclusiveFriendly => true;
+
+  @override
+  int? get page => null;
 
   @override
   FutureOr<Map<String, dynamic>> access(
@@ -31,7 +33,7 @@ final class const NotificationCenterAccessor()
   }
 
   @override
-  FutureOr<NotificationCenter> interpretStateless(MapJsonNavigator nav) =>
+  FutureOr<NotificationCenter> interpretStateless(Map<String, dynamic> nav) =>
       .decode(nav);
 
   @override

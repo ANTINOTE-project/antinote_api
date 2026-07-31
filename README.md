@@ -85,7 +85,7 @@ Ensuite, il faut se connecter en utilisant les identifiants :
 ```dart
 final (
   session: session,
-  refreshCredentials: refreshCredentials
+  credentials: refreshCredentials
 ) = await credentials.login(options: .new(debugMode: true)); // Active les logs.
 ```
 Les `refreshCredentials` sont à stocker afin de se reconnecter (ils sont d'ailleurs exportables en Protobuf).
@@ -97,20 +97,7 @@ Il peut y avoir des exceptions durant cet appel :
 - `UnexpectedCASRedirect` : quand une connexion "naïve" se fait rediriger vers un CAS alors qu'elle ne s'y attendait pas.
 - `AuthException` : quand les identifiants sont incorrects.
 
-Finalement, il suffit de se positionner dans la bonne page en faisant appel à :
-```dart
-await session.ensurePage(7); // Page d'accueil
-```
-
-Un annuaire des numéros de pages n'est pas encore disponible.
-
-Pour savoir quelle page utiliser, rendez-vous sur un compte PRONOTE et naviguez vers la page désirée tout en ayant votre
-outil DevTools d'ouvert sur la page "réseau". Vous trouverez une requête POST sous format JSON avec un champ `id` égal à
-`Navigation`. Depuis, trouvez le champ `onglet` **dans la requête que vous envoyez**. L'identifiant est celui à
-renseigner dans `RemoteSession.ensurePage`. À terme, cette méthode sera supprimée et le changement d'onglet sera
-automatiquement effectué par les requêtes elles-mêmes.
-
-Et d'accéder à la ressource souhaitée :
+Il ne reste plus qu'à accéder à la ressource souhaitée :
 ```dart
 final homePageWidgets = await session.access(
   HomePageAccessor(

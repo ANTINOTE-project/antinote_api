@@ -7,13 +7,15 @@ import 'package:antinote/src/helpers/visual_id.dart';
 final class const NewsCategory({
   required final String label,
   required final String id,
-  required final bool? isDefault,
+  required final bool isDefault,
 }) with VisualIdMixin {
   factory decode(Map<String, dynamic> nav) => .new(
     label: nav.get('L'),
     id: nav.get('N'),
-    isDefault: nav.get('estDefault'),
+    isDefault: nav.getB('estDefaut'),
   );
+
+  Map<String, dynamic> asRaw() => {'L': label, 'N': id, 'estDefaut': isDefault};
 
   @override
   CacheType? get cacheType => .NEWS_CATEGORY;
@@ -21,6 +23,6 @@ final class const NewsCategory({
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield label.visualIdData();
-    yield isDefault?.visualIdData();
+    yield isDefault.visualIdData();
   }
 }

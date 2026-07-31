@@ -1,5 +1,3 @@
-typedef MapJsonNavigator<E> = Map<String, E>;
-
 extension MapJsonNavigatorExt<E> on Map<String, E> {
   T get<T extends E>(String key) {
     final value = this[key];
@@ -24,7 +22,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
     };
   }
 
-  MapJsonNavigator goIterable(List<String> keys) {
+  Map<String, dynamic> goIterable(List<String> keys) {
     if (keys.isEmpty) return this;
 
     return getM(keys.first).goIterable(keys.sublist(1));
@@ -32,7 +30,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
 
   // Yes, it looks really bad. But Dart does it too so I am doing it too.
   // dart format off
-  MapJsonNavigator go(String key1,
+  Map<String, dynamic> go(String key1,
       [String? key2, String? key3, String? key4, String? key5,
         String? key6, String? key7, String? key8, String? key9, String? key10,
         String? key11, String? key12, String? key13, String? key14, String? key15,
@@ -46,7 +44,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
 
   // dart format on
 
-  MapJsonNavigator? mGoIterable(List<String> keys) {
+  Map<String, dynamic>? mGoIterable(List<String> keys) {
     if (keys.isEmpty) return this;
 
     if (!has(keys.first)) return null;
@@ -55,7 +53,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
   }
 
   // dart format off
-  MapJsonNavigator? mGo(String key1,
+  Map<String, dynamic>? mGo(String key1,
       [String? key2, String? key3, String? key4, String? key5,
         String? key6, String? key7, String? key8, String? key9, String? key10,
         String? key11, String? key12, String? key13, String? key14, String? key15,
@@ -69,7 +67,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
 
   // dart format on
 
-  MapJsonNavigator? eGoIterable(List<List<String>> keys) {
+  Map<String, dynamic>? eGoIterable(List<List<String>> keys) {
     if (keys.isEmpty) return this;
 
     final foundKey = keys.first.cast<String?>().firstWhere(
@@ -82,7 +80,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
   }
 
   // dart format off
-  MapJsonNavigator? eGo(List<String> key1,
+  Map<String, dynamic>? eGo(List<String> key1,
       [List<String>? key2, List<String>? key3, List<String>? key4,
         List<String>? key5, List<String>? key6, List<String>? key7,
         List<String>? key8, List<String>? key9, List<String>? key10,
@@ -103,23 +101,23 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
 
   bool hasAny(List<String> keys) => keys.any((key) => containsKey(key));
 
-  ListJsonNavigator<T> getL<T>(String key) =>
-      (get(key) as ListJsonNavigator).cast<T>();
+  List<T> getL<T>(String key) =>
+      (get(key) as List<dynamic>).cast<T>();
 
-  ListJsonNavigator<T>? mGetL<T>(String key) =>
-      has(key) ? (get(key) as ListJsonNavigator).cast<T>() : null;
+  List<T>? mGetL<T>(String key) =>
+      has(key) ? (get(key) as List<dynamic>).cast<T>() : null;
 
-  ListJsonNavigator<MapJsonNavigator> getLM(String key) =>
-      (get(key) as ListJsonNavigator).cast<MapJsonNavigator>().toList();
+  List<Map<String, dynamic>> getLM(String key) =>
+      (get(key) as List<dynamic>).cast<Map<String, dynamic>>().toList();
 
-  ListJsonNavigator<MapJsonNavigator>? mGetLM(String key) => has(key)
-      ? (get(key) as ListJsonNavigator).cast<MapJsonNavigator>().toList()
+  List<Map<String, dynamic>>? mGetLM(String key) => has(key)
+      ? (get(key) as List<dynamic>).cast<Map<String, dynamic>>().toList()
       : null;
 
-  MapJsonNavigator<T> getM<T>(String key) =>
-      (get(key) as MapJsonNavigator).cast<String, T>();
+  Map<String, T> getM<T>(String key) =>
+      (get(key) as Map<String, dynamic>).cast<String, T>();
 
-  MapJsonNavigator<T>? mGetM<T>(String key) =>
+  Map<String, T>? mGetM<T>(String key) =>
       has(key) ? (get(key) as Map<String, dynamic>).cast<String, T>() : null;
 
   String? _getCorrectKey(Iterable<String> keys) {
@@ -130,27 +128,27 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
     return null;
   }
 
-  ListJsonNavigator<T>? eGetL<T>(Iterable<String> keys) {
+  List<T>? eGetL<T>(Iterable<String> keys) {
     final correctKey = _getCorrectKey(keys);
     if (correctKey == null) return null;
 
-    return (get(correctKey) as ListJsonNavigator).cast<T>();
+    return (get(correctKey) as List<dynamic>).cast<T>();
   }
 
-  ListJsonNavigator<MapJsonNavigator>? eGetLM(Iterable<String> keys) {
+  List<Map<String, dynamic>>? eGetLM(Iterable<String> keys) {
     final correctKey = _getCorrectKey(keys);
     if (correctKey == null) return null;
 
-    return (get(correctKey) as ListJsonNavigator)
-        .cast<MapJsonNavigator>()
+    return (get(correctKey) as List<dynamic>)
+        .cast<Map<String, dynamic>>()
         .toList();
   }
 
-  MapJsonNavigator<T>? eGetM<T extends E>(Iterable<String> keys) {
+  Map<String, T>? eGetM<T extends E>(Iterable<String> keys) {
     final correctKey = _getCorrectKey(keys);
     if (correctKey == null) return null;
 
-    return (get(correctKey) as MapJsonNavigator).cast<String, T>();
+    return (get(correctKey) as Map<String, dynamic>).cast<String, T>();
   }
 
   T? eGet<T extends E>(Iterable<String> keys) {
@@ -169,9 +167,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
   // TODO: Add a system that ensures all fields of a map are read or else it gives out warnings.
 }
 
-typedef ListJsonNavigator<E> = List<E>;
-
-extension ListJsonNavigatorExt<E> on ListJsonNavigator<E> {
+extension ListJsonNavigatorExt<E> on List<E> {
   T get<T extends E>(int index) {
     final value = this[index];
 
@@ -183,19 +179,19 @@ extension ListJsonNavigatorExt<E> on ListJsonNavigator<E> {
     return value as T;
   }
 
-  ListJsonNavigator<T> mapL<T>(
+  List<T> mapL<T>(
     T Function(E e) toElement, [
     bool growable = false,
   ]) => map(toElement).toList(growable: growable);
 
-  ListJsonNavigator<T> getL<T extends E>(int index) =>
-      (get(index) as ListJsonNavigator).cast<T>();
+  List<T> getL<T extends E>(int index) =>
+      (get(index) as List<dynamic>).cast<T>();
 
-  ListJsonNavigator<MapJsonNavigator> getLM(int index) =>
-      (get(index) as ListJsonNavigator).cast<MapJsonNavigator>();
+  List<Map<String, dynamic>> getLM(int index) =>
+      (get(index) as List<dynamic>).cast<Map<String, dynamic>>();
 
-  MapJsonNavigator<T> getM<T extends E>(int index) =>
-      (get(index) as MapJsonNavigator).cast<String, T>();
+  Map<String, T> getM<T extends E>(int index) =>
+      (get(index) as Map<String, dynamic>).cast<String, T>();
 
   bool get empty => isEmpty;
 
@@ -204,7 +200,7 @@ extension ListJsonNavigatorExt<E> on ListJsonNavigator<E> {
 
 class JsonReference<T> {
   final dynamic rawReference;
-  final T Function(MapJsonNavigator nav) _resolver;
+  final T Function(Map<String, dynamic> nav) _resolver;
   final dynamic Function(T resolved) _serializer;
 
   bool _loaded = false;
@@ -216,7 +212,7 @@ class JsonReference<T> {
     required this._serializer,
   });
 
-  void resolve(MapJsonNavigator nav) {
+  void resolve(Map<String, dynamic> nav) {
     value = _resolver(nav);
     _loaded = true;
   }

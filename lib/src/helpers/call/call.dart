@@ -5,9 +5,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/enum_id.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/serial.dart';
 import 'package:antinote/src/helpers/signatures/client.dart';
 import 'package:http/http.dart';
 
@@ -72,14 +72,6 @@ sealed class Call {
     ],
   );
 
-  Object? _helpEncode(Object? unencodable) {
-    if (unencodable is EnumId) {
-      return unencodable.id;
-    }
-
-    return null;
-  }
-
   FutureOr<HttpClientRequest> serialize(
     NetworkStack stack,
     HttpClientRequest req,
@@ -88,20 +80,23 @@ sealed class Call {
   }) {
     req.headers.set(HttpHeaders.contentTypeHeader, 'application/json');
 
-    final rawJson = jsonEncode({
-      stack.vocab.session: stack.sessionId,
-      stack.vocab.orderNumber: orderId,
-      stack.vocab.requestId: name,
-      stack.vocab.secureData: deepMergeMaps(
-        dataSec,
-        addSignature
-            ? {
-                if (stack.clientSignature != null)
-                  stack.vocab.signature: stack.clientSignature?.toJson() ?? {},
-              }
-            : {},
-      ),
-    }, toEncodable: _helpEncode);
+    final rawJson = RemoteJsonEncoder(
+      data: {
+        stack.vocab.session: stack.sessionId,
+        stack.vocab.orderNumber: orderId,
+        stack.vocab.requestId: name,
+        stack.vocab.secureData: deepMergeMaps(
+          dataSec,
+          addSignature
+              ? {
+                  if (stack.clientSignature != null)
+                    stack.vocab.signature:
+                        stack.clientSignature?.toJson() ?? {},
+                }
+              : {},
+        ),
+      },
+    ).encode();
 
     if (debugMode) {
       stack.log.fine('Sending:');

@@ -14,12 +14,14 @@ final class const Detention({
 }) extends Class {
   factory Detention.decode(
     ClassMessage classMessage,
-    MapJsonNavigator detention,
+    Map<String, dynamic> detention,
   ) {
     final List<ClassContent> contents = [];
 
     if (detention.has('ListeContenus')) {
-      for (final MapJsonNavigator data in detention.getLM('ListeContenus')) {
+      for (final Map<String, dynamic> data in detention.getLM(
+        'ListeContenus',
+      )) {
         contents.add(ClassContent.decode(data));
       }
     }

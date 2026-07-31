@@ -17,6 +17,9 @@ final class const ChangeNewsStateAccessor({
   bool get exclusiveFriendly => false;
 
   @override
+  int? get page => 8;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -83,7 +86,7 @@ final class const ChangeNewsStateAccessor({
   }
 
   @override
-  FutureOr<void> interpretStateless(MapJsonNavigator nav) {
+  FutureOr<void> interpretStateless(Map<String, dynamic> nav) {
     assert(
       nav.mGetM('RapportSaisie')?.isNotEmpty ?? true,
       'Update request unsuccessful',

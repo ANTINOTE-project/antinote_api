@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
+import 'package:antinote/src/helpers/call/call.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/instance_parameters/shared.dart';
@@ -15,6 +14,9 @@ final class const InstanceParametersAccessor({
 }) extends StatefulAccessor<InstanceParameters, Workspace> {
   @override
   bool get exclusiveFriendly => true;
+
+  @override
+  int? get page => null;
 
   @override
   Future<Map<String, dynamic>> access(
@@ -42,7 +44,7 @@ final class const InstanceParametersAccessor({
 
   @override
   FutureOr<InstanceParameters> interpret(
-    MapJsonNavigator<dynamic> nav,
+    Map<String, dynamic> nav,
     Workspace tempWorkspace,
   ) => .decode(nav, tempWorkspace, casToken: casToken);
 

@@ -16,7 +16,7 @@ final class const NotebookContent({
   required final String notebookThemeLabel,
   required final int educationalPath,
   required final List<Attachment> attachments,
-  required final MapJsonNavigator training,
+  required final Map<String, dynamic> training,
 }) with VisualIdMixin {
   factory decode(Map<String, dynamic> nav) => .new(
     label: nav.get('L'),

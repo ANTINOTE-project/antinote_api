@@ -25,7 +25,7 @@ final class GeolocatedInstance {
 
 const _earthDiameter = 6371.2 * 2;
 
-extension AsGeolocatedInstance on MapJsonNavigator {
+extension AsGeolocatedInstance on Map<String, dynamic> {
   double _toRadians(double degrees) => degrees * pi / 180;
 
   double _hav(double angle) {
@@ -84,10 +84,10 @@ Future<List<GeolocatedInstance>> findNearbyInstances(
   final res = await req.send();
   final resBody = await res.stream.bytesToString();
   try {
-    final parsed = jsonDecode(resBody) as ListJsonNavigator;
+    final parsed = jsonDecode(resBody) as List<dynamic>;
 
     return parsed.mapL(
-      (e) => (e as MapJsonNavigator).asGeolocatedInstance(lat, lon),
+      (e) => (e as Map<String, dynamic>).asGeolocatedInstance(lat, lon),
     )..sort((a, b) => a.distance.compareTo(b.distance));
   } catch (e, st) {
     libLog.severe('Could not read geolocated instances.', e, st);

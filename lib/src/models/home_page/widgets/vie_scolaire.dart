@@ -6,7 +6,7 @@ final class const VieScolaire({
   required final bool absenceCommentRequired,
   required final bool lateArrivalCommentRequired,
 }) extends HomePageWidget {
-  factory decode(MapJsonNavigator nav, RemoteSession _) => .new(
+  factory decode(Map<String, dynamic> nav, RemoteSession _) => .new(
     elementTypes: nav.go('vieScolaire').get('L'),
     absences: nav
         .go('vieScolaire')
@@ -20,8 +20,11 @@ final class const VieScolaire({
         .getB('commentaireRetardObligatoire'),
   );
 
-  static HomePageModule module() =>
-      HomePageModule(widget: .vieScolaire, data: (session) => {});
+  static HomePageModule module() => HomePageModule(
+    widget: .vieScolaire,
+    canQuerySpecifically: true,
+    data: (session) => {},
+  );
 
   @override
   HomePageWidgetType get widgetId => .vieScolaire;

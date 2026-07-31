@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
@@ -13,6 +12,9 @@ final class const DiscussionPageAccessor({
 }) extends StatelessAccessor<DiscussionPage> {
   @override
   bool get exclusiveFriendly => true;
+
+  @override
+  int? get page => 131;
 
   @override
   FutureOr<Map<String, dynamic>> access(
@@ -38,7 +40,7 @@ final class const DiscussionPageAccessor({
   }
 
   @override
-  FutureOr<DiscussionPage> interpretStateless(MapJsonNavigator nav) =>
+  FutureOr<DiscussionPage> interpretStateless(Map<String, dynamic> nav) =>
       .decode(nav);
 
   @override

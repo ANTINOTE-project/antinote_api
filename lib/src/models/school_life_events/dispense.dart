@@ -11,7 +11,7 @@ final class const Dispense({
 }) extends SchoolLifeEvent {
   factory Dispense.decode(
     SchoolLifeEventMessage message,
-    MapJsonNavigator nav,
+    Map<String, dynamic> nav,
   ) => .new(
     id: message.id,
     start: message.start!,

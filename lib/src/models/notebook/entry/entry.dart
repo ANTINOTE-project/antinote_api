@@ -21,7 +21,7 @@ final class const NotebookEntry({
   required final DateTime endDateTime,
   required final DateTime? homeworkDate,
   required final List<NotebookContent> contentList,
-  required final ListJsonNavigator<MapJsonNavigator> cdtProgramElementList,
+  required final List<Map<String, dynamic>> cdtProgramElementList,
 }) with VisualIdMixin {
   factory decode(Map<String, dynamic> nav) => .new(
     id: nav.get('N'),

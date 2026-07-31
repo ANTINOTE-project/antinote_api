@@ -19,6 +19,7 @@ export 'src/accessors/instance_parameters.dart';
 export 'src/accessors/latest_grades_page.dart';
 export 'src/accessors/menu_page.dart';
 export 'src/accessors/navigation.dart';
+export 'src/accessors/news_content.dart';
 export 'src/accessors/news_page.dart';
 export 'src/accessors/notebook_entry.dart';
 export 'src/accessors/notebook_page.dart';

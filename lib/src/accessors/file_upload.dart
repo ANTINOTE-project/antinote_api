@@ -21,6 +21,10 @@ final class const FileUploadAccessor({
   bool get exclusiveFriendly => false;
 
   @override
+  // Can be either in a lot of places.
+  int? get page => null;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -88,7 +92,7 @@ final class const FileUploadAccessor({
   }
 
   @override
-  FutureOr<String> interpretStateless(MapJsonNavigator<dynamic> nav) =>
+  FutureOr<String> interpretStateless(Map<String, dynamic> nav) =>
       nav.get('fileId');
 
   @override

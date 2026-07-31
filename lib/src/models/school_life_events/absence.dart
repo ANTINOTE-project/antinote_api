@@ -15,7 +15,7 @@ final class const Absence({
 }) extends SchoolLifeEvent {
   factory Absence.decode(
     SchoolLifeEventMessage message,
-    MapJsonNavigator nav,
+    Map<String, dynamic> nav,
   ) => .new(
     id: message.id,
     start: message.start!,

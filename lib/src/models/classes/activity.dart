@@ -17,7 +17,7 @@ final class const Activity({
 }) extends Class {
   factory Activity.decode(
     ClassMessage classMessage,
-    MapJsonNavigator activity,
+    Map<String, dynamic> activity,
   ) => .new(
     title: activity.get('motif'),
     attendants: activity.getL<String>('accompagnateurs'),

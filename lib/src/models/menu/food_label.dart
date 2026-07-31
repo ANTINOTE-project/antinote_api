@@ -11,7 +11,7 @@ final class const FoodLabel({
   required final String name,
   required final int color,
 }) with VisualIdMixin {
-  factory FoodLabel.decode(MapJsonNavigator nav) {
+  factory FoodLabel.decode(Map<String, dynamic> nav) {
     return FoodLabel(
       id: nav.get('N'),
       index: nav.get('G'),

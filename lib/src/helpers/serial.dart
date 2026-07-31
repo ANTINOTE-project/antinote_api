@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/enum_id.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/domain.dart';
@@ -22,7 +23,7 @@ class RemoteJsonDecoder {
     return result as Map<String, dynamic>;
   }
 
-  void resolveAll(MapJsonNavigator nav) {
+  void resolveAll(Map<String, dynamic> nav) {
     for (final reference in references) {
       reference.resolve(nav);
     }
@@ -113,7 +114,6 @@ class RemoteJsonDecoder {
   }
 }
 
-// TODO: Make this WAY more useful...
 class RemoteJsonEncoder {
   final Map<String, dynamic> data;
 
@@ -122,19 +122,28 @@ class RemoteJsonEncoder {
   String encode() => JsonEncoder(toEncodable).convert(data);
 
   dynamic toEncodable(dynamic value) {
-    if (value is Set<int>) {
-      return {'_T': _intSetType, 'V': value.toList(growable: false)};
-    } else if (value is DateTime) {
-      return {'_T': 7, 'V': value.asRemoteDate()};
-    } else if (value is Grade) {
-      return {'_T': 10, 'V': value.rawContent ?? value.value};
-    } else if (value is JsonReference) {
-      return {'_T': _resolvedJsonReferenceType, 'V': value.serialize()};
-    } else {
-      throw UnimplementedError(
+    return switch (value) {
+      Set<int>(toList: final toList) => {
+        '_T': _intSetType,
+        'V': toList(growable: false),
+      },
+      DateTime(asRemoteDate: final asRemoteDate) => {
+        '_T': 7,
+        'V': asRemoteDate(),
+      },
+      Grade(rawContent: final rawContent, value: final value) => {
+        '_T': 10,
+        'V': rawContent ?? value,
+      },
+      JsonReference(serialize: final serialize) => {
+        '_T': _resolvedJsonReferenceType,
+        'V': serialize(),
+      },
+      EnumId(id: final id) => id,
+      _ => throw UnimplementedError(
         "Don't know how to serialize $value of type ${value.runtimeType}",
-      );
-    }
+      ),
+    };
   }
 }
 

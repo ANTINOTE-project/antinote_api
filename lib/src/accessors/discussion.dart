@@ -16,6 +16,9 @@ final class const DiscussionAccessor({
   bool get exclusiveFriendly => true;
 
   @override
+  int? get page => 131;
+
+  @override
   FutureOr<Map<String, dynamic>> access(
     RemoteSession session,
     Completer<void>? cancellationSignal,
@@ -45,7 +48,8 @@ final class const DiscussionAccessor({
   }
 
   @override
-  FutureOr<Discussion> interpretStateless(MapJsonNavigator nav) => .decode(nav);
+  FutureOr<Discussion> interpretStateless(Map<String, dynamic> nav) =>
+      .decode(nav);
 
   @override
   List<VisualIdMixin> store(Discussion result) => [...result.messages];

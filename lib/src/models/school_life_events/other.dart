@@ -17,22 +17,24 @@ final class const Other({
   required final SchoolLifeEventSection section,
   required super.reasons,
 }) extends SchoolLifeEvent {
-  factory Other.decode(SchoolLifeEventMessage message, MapJsonNavigator nav) =>
-      .new(
-        displayName: nav.get('L'),
-        id: message.id,
-        start: null,
-        end: null,
-        date: nav.get('date'),
-        read: nav.get('estLue'),
-        withArObservation: nav.get('avecARObservation'),
-        subject: .decode(nav.getM('matiere')),
-        demandeur: nav.getM('demandeur'),
-        comment: nav.get('commentaire'),
-        observationType: nav.get('genreObservation'),
-        section: .decode(nav.getM('rubrique')),
-        reasons: message.reasons,
-      );
+  factory Other.decode(
+    SchoolLifeEventMessage message,
+    Map<String, dynamic> nav,
+  ) => .new(
+    displayName: nav.get('L'),
+    id: message.id,
+    start: null,
+    end: null,
+    date: nav.get('date'),
+    read: nav.get('estLue'),
+    withArObservation: nav.get('avecARObservation'),
+    subject: .decode(nav.getM('matiere')),
+    demandeur: nav.getM('demandeur'),
+    comment: nav.get('commentaire'),
+    observationType: nav.get('genreObservation'),
+    section: .decode(nav.getM('rubrique')),
+    reasons: message.reasons,
+  );
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
