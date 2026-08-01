@@ -94,5 +94,5 @@ final class const ChangeNewsStateAccessor({
   }
 
   @override
-  List<VisualIdMixin> store(void result) => [];
+  List<VisualNavigator> store(void result) => [];
 }

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/call/call.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 
 final class DisconnectionAccessor extends StatelessAccessor<void> {
   final bool logged;
@@ -41,5 +41,5 @@ final class DisconnectionAccessor extends StatelessAccessor<void> {
   FutureOr<void> interpretStateless(Map<String, dynamic> nav) => null;
 
   @override
-  List<VisualIdMixin> store(void result) => [];
+  List<VisualNavigator> store(void result) => [];
 }

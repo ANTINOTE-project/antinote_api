@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/grades/page.dart';
 import 'package:antinote/src/models/period.dart';
 
@@ -32,8 +32,6 @@ final class const LatestGradesPageAccessor({required final Period period})
             name: 'DernieresNotes',
           ),
         )
-        .resultCompleter
-        .future
         .thenField(session.stack.vocab.data);
   }
 
@@ -42,9 +40,5 @@ final class const LatestGradesPageAccessor({required final Period period})
       .decode(nav);
 
   @override
-  List<VisualIdMixin> store(LatestGradesPage result) => [
-    ?result.period,
-    ...?result.services,
-    ...result.exams,
-  ];
+  List<VisualNavigator> store(LatestGradesPage result) => [.stay(result)];
 }

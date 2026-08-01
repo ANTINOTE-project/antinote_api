@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/homework/homework.dart';
 import 'package:antinote/src/models/state.dart';
 
@@ -55,5 +55,5 @@ final class const ChangeHomeworkStateAccessor({
   }
 
   @override
-  List<VisualIdMixin> store(void result) => [];
+  List<VisualNavigator> store(void result) => [];
 }

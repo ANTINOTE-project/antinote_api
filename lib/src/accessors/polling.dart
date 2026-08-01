@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../../antinote.dart';
+import 'package:antinote/antinote.dart';
 
 final class const PollingAccessor()
     extends StatelessAccessor<Map<String, dynamic>> {
@@ -36,5 +36,5 @@ final class const PollingAccessor()
   }
 
   @override
-  List<VisualIdMixin> store(Map<String, dynamic> result) => [];
+  List<VisualNavigator> store(Map<String, dynamic> result) => [];
 }

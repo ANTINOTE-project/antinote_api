@@ -119,5 +119,12 @@ final class const MCQExecution({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [...themes, mcq, service, ...teachers];
+  List<VisualNavigator> get toStore => [
+    for (final (index, theme) in themes.indexed)
+      .indexed(theme, field: 'ListeThemes', index: index),
+    .go(mcq, field: 'QCM'),
+    .go(service, field: 'service'),
+    for (final (index, teacher) in teachers.indexed)
+      .indexed(teacher, field: 'listeProfesseurs', index: index),
+  ];
 }

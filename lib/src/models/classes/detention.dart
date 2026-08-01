@@ -3,6 +3,7 @@ part of 'classes.dart';
 final class const Detention({
   @override required final List<ClassContent> contents,
   required super.id,
+  required super.index,
   required super.backgroundColor,
   required super.startDate,
   required super.endDate,
@@ -19,16 +20,20 @@ final class const Detention({
     final List<ClassContent> contents = [];
 
     if (detention.has('ListeContenus')) {
-      for (final Map<String, dynamic> data in detention.getLM(
-        'ListeContenus',
-      )) {
-        contents.add(ClassContent.decode(data));
+      for (final (index, data) in detention.getLM('ListeContenus').indexed) {
+        contents.add(
+          ClassContent.decode(
+            data,
+            (nav) => nav.getLM('ListeContenus').getM(index),
+          ),
+        );
       }
     }
 
     return .new(
       contents: contents,
       id: classMessage.id,
+      index: classMessage.index,
       backgroundColor: classMessage.backgroundColor,
       startDate: classMessage.startDate,
       endDate: classMessage.endDate,

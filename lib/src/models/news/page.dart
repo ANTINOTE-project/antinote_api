@@ -1,5 +1,9 @@
+import 'dart:typed_data';
+
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/enum_id.dart';
 import 'package:antinote/src/helpers/json.dart';
+import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/news/category.dart';
 import 'package:antinote/src/models/news/collection.dart';
 import 'package:antinote/src/models/news/question/question.dart';
@@ -14,7 +18,7 @@ final class const NewsPage({
   required final List<NewsCategory> categories,
 
   required final NewsPageRequestType type,
-}) {
+}) with VisualIdMixin {
   factory decode(Map<String, dynamic> nav) => .new(
     collections: nav.getLM('listeModesAff').mapL((e) => .decode(e)),
     categories: nav
@@ -24,6 +28,27 @@ final class const NewsPage({
         ? .values.byId(nav.get('genreRequeteActualite'))
         : .display,
   );
+
+  @override
+  CacheType? get cacheType => null;
+
+  @override
+  Iterable<Uint8List?> collectVisualIdData() sync* {
+    yield* categories.visualIdForEach();
+    yield* collections.visualIdForEach();
+  }
+
+  @override
+  List<VisualNavigator> get toStore => [
+    for (final (index, category) in categories.indexed)
+      .eIndexed(
+        category,
+        possibleFields: ['listeCategories', 'listeNatures'],
+        index: index,
+      ),
+    for (final (index, collection) in collections.indexed)
+      .indexed(collection, field: 'listeModesAff', index: index),
+  ];
 }
 
 final class const NewsContent({

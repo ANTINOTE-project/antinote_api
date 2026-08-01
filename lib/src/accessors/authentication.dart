@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/crypto.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/session_access_type.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/authentication_response.dart';
 
 final class const AuthenticationAccessor({
@@ -14,9 +14,6 @@ final class const AuthenticationAccessor({
 }) extends StatelessAccessor<AuthenticationResponse> {
   @override
   bool get exclusiveFriendly => true;
-
-  @override
-  bool get sensitiveResponse => true;
 
   @override
   int? get page => null;
@@ -48,5 +45,5 @@ final class const AuthenticationAccessor({
       .decode(nav);
 
   @override
-  List<VisualIdMixin> store(AuthenticationResponse result) => [result];
+  List<VisualNavigator> store(AuthenticationResponse result) => [.stay(result)];
 }

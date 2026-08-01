@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/discussion/page.dart';
 
 final class const DiscussionPageAccessor({
@@ -34,8 +34,6 @@ final class const DiscussionPageAccessor({
             cancellationSignal: cancellationSignal,
           ),
         )
-        .resultCompleter
-        .future
         .thenField(session.stack.vocab.data);
   }
 
@@ -44,5 +42,5 @@ final class const DiscussionPageAccessor({
       .decode(nav);
 
   @override
-  List<VisualIdMixin> store(DiscussionPage result) => [...result.discussions];
+  List<VisualNavigator> store(DiscussionPage result) => [.stay(result)];
 }

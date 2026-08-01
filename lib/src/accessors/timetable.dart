@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/json.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/timetable.dart';
 import 'package:antinote/src/models/user/resource.dart';
@@ -106,24 +105,8 @@ final class const TimetableAccessor({
   FutureOr<Timetable> interpret(
     Map<String, dynamic> nav,
     RemoteSession session,
-  ) {
-    return Timetable(
-      absences: nav.get('absences'),
-      withCanceledClasses: nav.get('avecCoursAnnule') ?? true,
-      classes:
-          (nav.mGetLM('ListeCours')?.mapL((e) => .decode(session, nav)) ?? [])
-            ..sort(
-              (a, b) => a.startDate.millisecondsSinceEpoch.compareTo(
-                b.startDate.millisecondsSinceEpoch,
-              ),
-            ),
-      firstSlotForDay: nav.get('premierePlaceHebdoDuJour'),
-      middayMealStartSlot: nav.get('debutDemiPensionHebdo'),
-      middayMealEndSlot: nav.get('finDemiPensionHebdo'),
-      breaks: nav.mGetLM('recreations')?.mapL((e) => .decode(e)) ?? [],
-    );
-  }
+  ) => .decode(nav, session);
 
   @override
-  List<VisualIdMixin> store(Timetable result) => result.classes;
+  List<VisualNavigator> store(Timetable result) => [.stay(result)];
 }

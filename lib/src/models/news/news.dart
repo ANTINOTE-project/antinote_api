@@ -95,10 +95,13 @@ final class const News({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [
-    ?category,
-    authorProfile,
-    recipient,
-    ...?questions,
+  List<VisualNavigator> get toStore => [
+    if (category != null) .eGo(category!, fields: ['categorie', 'nature']),
+    .go(authorProfile, field: 'elmauteur'),
+    .go(recipient, field: 'public'),
+
+    if (questions != null)
+      for (final (index, question) in questions!.indexed)
+        .indexed(question, field: 'listeQuestions', index: index),
   ];
 }

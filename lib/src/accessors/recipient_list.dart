@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/person.dart';
 
 final class RecipientListAccessor extends StatelessAccessor<List<Person>> {
@@ -45,8 +45,6 @@ final class RecipientListAccessor extends StatelessAccessor<List<Person>> {
             cancellationSignal: cancellationSignal,
           ),
         )
-        .resultCompleter
-        .future
         .thenField(session.stack.vocab.data);
   }
 
@@ -56,5 +54,8 @@ final class RecipientListAccessor extends StatelessAccessor<List<Person>> {
   }
 
   @override
-  List<VisualIdMixin> store(List<Person> result) => [...result];
+  List<VisualNavigator> store(List<Person> result) => [
+    for (final (index, person) in result.indexed)
+      .indexed(person, field: 'listeDest', index: index),
+  ];
 }

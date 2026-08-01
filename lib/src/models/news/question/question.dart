@@ -65,5 +65,13 @@ final class const NewsQuestion({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [answer, ...attachments, ...picks];
+  List<VisualNavigator> get toStore => [
+    .go(answer, field: 'reponse'),
+
+    for (final (index, attachment) in attachments.indexed)
+      .indexed(attachment, field: 'listePiecesJointes', index: index),
+
+    for (final (index, pick) in picks.indexed)
+      .indexed(pick, field: 'listeChoix', index: index),
+  ];
 }

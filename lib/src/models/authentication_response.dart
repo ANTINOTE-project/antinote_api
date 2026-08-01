@@ -31,6 +31,9 @@ final class const AuthenticationResponse({
   CacheType? get cacheType => .UNIQUE;
 
   @override
+  bool get sensitive => true;
+
+  @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield "AuthenticationResponse".visualIdData();
   }

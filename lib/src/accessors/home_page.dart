@@ -40,10 +40,10 @@ final class const HomePageAccessor({
 
   @override
   FutureOr<HomePage> interpret(Map<String, dynamic> nav, RemoteSession state) =>
-      HomePage.decode(nav, state);
+      .decode(nav, state);
 
   @override
-  List<VisualIdMixin> store(HomePage result) => [result];
+  List<VisualNavigator> store(HomePage result) => [.stay(result)];
 }
 
 final class const HomePageModule({

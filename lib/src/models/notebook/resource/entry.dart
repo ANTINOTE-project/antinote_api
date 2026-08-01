@@ -70,5 +70,10 @@ final class const NotebookResourceEntry({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [entry, ...themes, subject];
+  List<VisualNavigator> get toStore => [
+    .go(entry, field: 'ressource'),
+    for (final (index, theme) in themes.indexed)
+      .indexed(theme, field: 'ListeThemes', index: index),
+    .go(subject, field: 'matiere'),
+  ];
 }

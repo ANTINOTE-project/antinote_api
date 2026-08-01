@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/notebook/page.dart';
@@ -69,8 +69,6 @@ final class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
             cancellationSignal: cancellationSignal,
           ),
         )
-        .resultCompleter
-        .future
         .thenField(session.stack.vocab.data);
   }
 
@@ -79,9 +77,5 @@ final class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
       .decode(nav);
 
   @override
-  List<VisualIdMixin> store(NotebookPage result) => [
-    ...result.entries,
-    ...?result.homeworkSet?.homeworks,
-    ...?result.resourceSet?.entries,
-  ];
+  List<VisualNavigator> store(NotebookPage result) => [.stay(result)];
 }

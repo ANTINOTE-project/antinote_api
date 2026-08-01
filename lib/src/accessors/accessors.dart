@@ -3,7 +3,6 @@ import 'dart:core';
 
 import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -11,8 +10,6 @@ abstract class const StatefulAccessor<R, S>() {
   FutureOr<S> collectState(RemoteSession session);
 
   bool get exclusiveFriendly;
-
-  bool get sensitiveResponse => false;
 
   int? get page;
 
@@ -23,7 +20,7 @@ abstract class const StatefulAccessor<R, S>() {
 
   FutureOr<R> interpret(Map<String, dynamic> nav, S state);
 
-  List<VisualIdMixin> store(R result);
+  List<VisualNavigator> store(R result);
 
   Future<R> fetch(
     RemoteSession session,
@@ -36,7 +33,7 @@ abstract class const StatefulAccessor<R, S>() {
     final accessed = await access(session, cancellationSignal);
     final interpreted = await interpret(accessed, await collectState(session));
 
-    session.updateCache(store(interpreted), accessed, sensitiveResponse);
+    session.updateCache(store(interpreted), accessed);
 
     return interpreted;
   }
@@ -61,7 +58,7 @@ abstract class const StatelessAccessor<R>() extends StatefulAccessor<R, void> {
     final accessed = await access(session, cancellationSignal);
     final interpreted = await interpretStateless(accessed);
 
-    session.updateCache(store(interpreted), accessed, sensitiveResponse);
+    session.updateCache(store(interpreted), accessed);
 
     return interpreted;
   }

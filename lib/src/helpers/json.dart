@@ -144,7 +144,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
         .toList();
   }
 
-  Map<String, T>? eGetM<T extends E>(Iterable<String> keys) {
+  Map<String, T>? eGetM<T >(Iterable<String> keys) {
     final correctKey = _getCorrectKey(keys);
     if (correctKey == null) return null;
 
@@ -184,13 +184,13 @@ extension ListJsonNavigatorExt<E> on List<E> {
     bool growable = false,
   ]) => map(toElement).toList(growable: growable);
 
-  List<T> getL<T extends E>(int index) =>
+  List<T> getL<T>(int index) =>
       (get(index) as List<dynamic>).cast<T>();
 
   List<Map<String, dynamic>> getLM(int index) =>
       (get(index) as List<dynamic>).cast<Map<String, dynamic>>();
 
-  Map<String, T> getM<T extends E>(int index) =>
+  Map<String, T> getM<T>(int index) =>
       (get(index) as Map<String, dynamic>).cast<String, T>();
 
   bool get empty => isEmpty;

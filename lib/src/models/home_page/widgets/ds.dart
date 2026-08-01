@@ -29,5 +29,12 @@ final class const DS({required final List<ExamPreview> exams})
   );
 
   @override
-  List<VisualIdMixin> get toStore => exams;
+  List<VisualNavigator> get toStore => [
+    for (final (index, exam) in exams.indexed)
+      .new(
+        exchanger: (nav) =>
+            nav.go('devoirSurveille').getLM('listeDS').getM(index),
+        value: exam,
+      ),
+  ];
 }

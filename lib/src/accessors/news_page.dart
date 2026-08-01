@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/news/display_mode.dart';
 import 'package:antinote/src/models/news/page.dart';
@@ -39,8 +39,6 @@ final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
             cancellationSignal: cancellationSignal,
           ),
         )
-        .resultCompleter
-        .future
         .thenField(session.stack.vocab.data);
   }
 
@@ -49,8 +47,5 @@ final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
       .decode(nav);
 
   @override
-  List<VisualIdMixin> store(NewsPage result) => [
-    ...result.categories,
-    for (final collection in result.collections) ...collection.news,
-  ];
+  List<VisualNavigator> store(NewsPage result) => [.stay(result)];
 }

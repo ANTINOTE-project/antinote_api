@@ -53,6 +53,10 @@ class RemoteSession with SerializableObject<SerializedSession> {
       .visualId;
   static final _challengeKey = 'Challenge'.visualIdData().visualId;
 
+  static final _disconnectionDataKey = 'DisconnectionPeriodData'
+      .visualIdData()
+      .visualId;
+
   // TODO: Make this self-contained
   Future<void> _reconstructCache() async {
     for (final MapEntry(key: cacheType, value: cached)
@@ -67,17 +71,20 @@ class RemoteSession with SerializableObject<SerializedSession> {
             content,
             stack.temporaryWorkspace,
           );
-          updateCache(accessor.store(parsedValue), null);
+          updateCache(accessor.store(parsedValue), content);
         } else if (visualId == _userParametersKey) {
           final accessor = const UserParametersAccessor();
           parsedValue = await accessor.interpretStateless(content);
-          updateCache(accessor.store(parsedValue), null);
+          updateCache(accessor.store(parsedValue), content);
         } else if (visualId == _authenticationResponseKey) {
           parsedValue = AuthenticationResponse.decode(content);
-          updateCache([parsedValue], null, true);
+          updateCache([parsedValue], content);
         } else if (visualId == _challengeKey) {
           parsedValue = Challenge.decode(content);
-          updateCache([parsedValue], null);
+          updateCache([parsedValue], content);
+        } else if (visualId == _disconnectionDataKey) {
+          parsedValue = DisconnectionPeriodData.decode(this, content);
+          updateCache([parsedValue], content);
         } else {
           throw UnimplementedError(
             'Unknown serializable entry name ${cacheType.name}:$visualId.',

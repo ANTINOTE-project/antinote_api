@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 
 final class const NavigationAccessor({
   required final int previousTabId,
@@ -41,5 +41,5 @@ final class const NavigationAccessor({
   FutureOr<void> interpretStateless(Map<String, dynamic> nav) {}
 
   @override
-  List<VisualIdMixin> store(void result) => [];
+  List<VisualNavigator> store(void result) => [];
 }

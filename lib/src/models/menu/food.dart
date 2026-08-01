@@ -30,14 +30,15 @@ final class const Food({
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
     yield name.visualIdData();
-    yield* foodLabels
-        .map((e) => e.collectVisualIdData())
-        .fold([], (previousValue, element) => [...previousValue, ...element]);
-    yield* foodAllergens
-        .map((e) => e.collectVisualIdData())
-        .fold([], (previousValue, element) => [...previousValue, ...element]);
+    yield* foodLabels.visualIdForEach();
+    yield* foodAllergens.visualIdForEach();
   }
 
   @override
-  List<VisualIdMixin> get toStore => [...foodLabels, ...foodAllergens];
+  List<VisualNavigator> get toStore => [
+    for (final (index, foodLabel) in foodLabels.indexed)
+      .indexed(foodLabel, field: 'listeLabelsAlimentaires', index: index),
+    for (final (index, foodAllergen) in foodLabels.indexed)
+      .indexed(foodAllergen, field: 'listeAllergenesAlimentaire', index: index),
+  ];
 }

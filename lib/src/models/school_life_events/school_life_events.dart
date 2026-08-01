@@ -41,24 +41,20 @@ class SchoolLifeEventMessage {
   }
 }
 
-sealed class SchoolLifeEvent with VisualIdMixin {
-  final String id;
-  final DateTime? start;
-  final DateTime? end;
-  final List<SchoolLifeEventReason> reasons;
-
-  const SchoolLifeEvent({
-    required this.id,
-    required this.start,
-    required this.end,
-    required this.reasons,
-  });
-
+sealed class const SchoolLifeEvent({
+  required final String id,
+  required final DateTime? start,
+  required final DateTime? end,
+  required final List<SchoolLifeEventReason> reasons,
+}) with VisualIdMixin {
   @override
   CacheType? get cacheType => .SCHOOL_LIFE_EVENT;
 
   @override
-  List<VisualIdMixin> get toStore => [...reasons];
+  List<VisualNavigator> get toStore => [
+    for (final (index, reason) in reasons.indexed)
+      .indexed(reason, field: 'listeMotifs', index: index),
+  ];
 }
 
 extension AsSchoolLifeEvent on Map<String, dynamic> {

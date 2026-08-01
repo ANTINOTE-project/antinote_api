@@ -32,5 +32,8 @@ final class const Dispense({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [subject, ...reasons];
+  List<VisualNavigator> get toStore => [
+    .go(subject, field: 'matiere'),
+    ...super.toStore,
+  ];
 }

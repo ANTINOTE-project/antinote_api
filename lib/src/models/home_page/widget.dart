@@ -1,10 +1,10 @@
 library;
 
 import 'package:antinote/src/accessors/home_page.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/datetime.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/exam/preview.dart';
 import 'package:antinote/src/models/grades/page.dart';
 import 'package:antinote/src/models/homework/homework.dart';
@@ -39,14 +39,12 @@ final class const WidgetDefinition<T extends HomePageWidget>({
   shouldCreate,
   required final T Function(Map<String, dynamic> nav, RemoteSession session)
   create,
-  final T Function(T old, Map<String, dynamic> nav, RemoteSession session)?
-  update,
 });
 
 sealed class const HomePageWidget() {
   HomePageWidgetType get widgetId;
 
-  List<VisualIdMixin> get toStore;
+  List<VisualNavigator> get toStore;
 }
 
 /// Scrapped from EGenreWidget, TODO localize.

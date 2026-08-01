@@ -10,6 +10,7 @@ final class const Lesson({
   required final String? lessonResourceId,
 
   required super.id,
+  required super.index,
   required super.backgroundColor,
   required super.startDate,
   required super.endDate,
@@ -31,19 +32,27 @@ final class const Lesson({
         contents.add(
           VirtualClassroomContent(
             value: Uri.parse(virtualClassroom.get('url')),
+            navigate: null,
           ),
         );
       }
     }
 
     if (lesson.has('ListeContenus')) {
-      for (final Map<String, dynamic> data in lesson.getLM('ListeContenus')) {
-        contents.add(ClassContent.decode(data));
+      for (final (index, data) in lesson.getLM('ListeContenus').indexed) {
+        contents.add(
+          .decode(data, (nav) => nav.getLM('ListeContenus').getM(index)),
+        );
       }
     }
 
     if (lesson.has('matiere')) {
-      contents.add(SubjectContent(value: .decode(lesson.getM('matiere'))));
+      contents.add(
+        SubjectContent(
+          value: .decode(lesson.getM('matiere')),
+          navigate: (nav) => nav.getM('matiere'),
+        ),
+      );
     }
 
     if (lesson.get('AvecCdT') == true && lesson.get('cahierDeTextes') != null) {
@@ -61,6 +70,7 @@ final class const Lesson({
       contents: contents,
       lessonResourceId: lessonResourceId,
       id: classMessage.id,
+      index: classMessage.index,
       backgroundColor: classMessage.backgroundColor,
       startDate: classMessage.startDate,
       endDate: classMessage.endDate,
@@ -116,5 +126,10 @@ final class const Lesson({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [?notebookEntryPreview, ?subject];
+  List<VisualNavigator> get toStore => [
+    if (notebookEntryPreview != null)
+      .go(notebookEntryPreview!, field: 'cahierDeTextes'),
+
+    ...super.toStore,
+  ];
 }

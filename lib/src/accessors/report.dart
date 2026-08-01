@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/call/call.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/period.dart';
 import 'package:antinote/src/models/report/report.dart';
 
@@ -47,5 +47,5 @@ final class const ReportAccessor({
       .decode(nav);
 
   @override
-  List<VisualIdMixin> store(BaseReport result) => []; // TODO: Populate this.
+  List<VisualNavigator> store(BaseReport result) => []; // TODO: Populate this.
 }

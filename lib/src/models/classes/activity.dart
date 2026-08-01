@@ -6,6 +6,7 @@ final class const Activity({
   required final String resourceTypeName,
   required final String resourceValue,
   required super.id,
+  required super.index,
   required super.backgroundColor,
   required super.startDate,
   required super.endDate,
@@ -24,6 +25,7 @@ final class const Activity({
     resourceTypeName: activity.get('strGenreRess'),
     resourceValue: activity.get('strRess'),
     id: classMessage.id,
+    index: classMessage.index,
     backgroundColor: classMessage.backgroundColor,
     startDate: classMessage.startDate,
     endDate: classMessage.endDate,
@@ -42,7 +44,7 @@ final class const Activity({
 
   @override
   List<ClassContent<dynamic>> get contents => [
-    TitleContent(value: title, isTime: false),
+    TitleContent(value: title, isTime: false, navigate: null),
     for (final attendant in attendants)
       PersonalContent(
         value: Person(
@@ -52,6 +54,7 @@ final class const Activity({
           place: null,
           withDiscussion: false,
         ),
+        navigate: null,
       ),
   ];
 

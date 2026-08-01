@@ -488,5 +488,19 @@ final class SpecificInstanceParameters({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [...holidays, ...periods];
+  List<VisualNavigator> get toStore => [
+    for (final (index, holiday) in holidays.indexed)
+      .new(
+        exchanger: (nav) =>
+            nav.go('General').getLM('listeJoursFeries').getM(index),
+        value: holiday,
+      ),
+
+    for (final (index, period) in periods.indexed)
+      .new(
+        exchanger: (nav) =>
+            nav.go('General').getLM('ListePeriodes').getM(index),
+        value: period,
+      ),
+  ];
 }

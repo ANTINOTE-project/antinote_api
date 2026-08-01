@@ -37,8 +37,6 @@ final class const ClassContentAccessor({
             name: 'FicheCours',
           ),
         )
-        .resultCompleter
-        .future
         .thenField(session.stack.vocab.data);
   }
 
@@ -49,8 +47,15 @@ final class const ClassContentAccessor({
   FutureOr<List<Class>> interpret(
     Map<String, dynamic> nav,
     RemoteSession session,
-  ) => nav.getLM('listeCours').mapL((e) => .decode(session, e));
+  ) => nav
+      .getLM('listeCours')
+      .indexed
+      .map((e) => Class.decode(session, e.$2, e.$1))
+      .toList(growable: false);
 
   @override
-  List<VisualIdMixin> store(List<Class> result) => result;
+  List<VisualNavigator> store(List<Class> result) => [
+    for (final clazz in result)
+      .indexed(clazz, field: 'listeCours', index: clazz.index),
+  ];
 }

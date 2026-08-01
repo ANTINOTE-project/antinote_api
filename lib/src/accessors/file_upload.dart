@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart';
 import 'package:mime/mime.dart';
@@ -96,5 +96,5 @@ final class const FileUploadAccessor({
       nav.get('fileId');
 
   @override
-  List<VisualIdMixin> store(String result) => [];
+  List<VisualNavigator> store(String result) => [];
 }

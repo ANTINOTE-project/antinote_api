@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/call/call.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/instance_parameters/shared.dart';
 import 'package:antinote/src/models/workspace/workspace.dart';
 
@@ -49,5 +49,5 @@ final class const InstanceParametersAccessor({
   ) => .decode(nav, tempWorkspace, casToken: casToken);
 
   @override
-  List<VisualIdMixin> store(InstanceParameters result) => [result];
+  List<VisualNavigator> store(InstanceParameters result) => [.stay(result)];
 }

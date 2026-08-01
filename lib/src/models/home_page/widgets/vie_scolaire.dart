@@ -39,5 +39,12 @@ final class const VieScolaire({
   );
 
   @override
-  List<VisualIdMixin> get toStore => [...absences];
+  List<VisualNavigator> get toStore => [
+    for (final (index, absence) in absences.indexed)
+      .new(
+        exchanger: (nav) =>
+            nav.go('vieScolaire').getLM('listeAbsences').getM(index),
+        value: absence,
+      ),
+  ];
 }

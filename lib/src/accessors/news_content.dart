@@ -50,5 +50,5 @@ final class const NewsContentAccessor({
   }
 
   @override
-  List<VisualIdMixin> store(NewsContent result) => [];
+  List<VisualNavigator> store(NewsContent result) => [];
 }

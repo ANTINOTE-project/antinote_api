@@ -65,5 +65,8 @@ final class const DiscussionMessage({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [...attachments];
+  List<VisualNavigator> get toStore => [
+    for (final (index, attachment) in attachments.indexed)
+      .indexed(attachment, field: 'listeDocumentsJoints', index: index),
+  ];
 }

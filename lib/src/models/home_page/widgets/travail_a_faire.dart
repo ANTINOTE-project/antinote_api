@@ -33,5 +33,12 @@ final class const TravailAFaire({required final List<Homework> homeworks})
   );
 
   @override
-  List<VisualIdMixin> get toStore => homeworks;
+  List<VisualNavigator> get toStore => [
+    for (final (index, homework) in homeworks.indexed)
+      .new(
+        exchanger: (nav) =>
+            nav.go('travailAFaire').getLM('listeTAF').getM(index),
+        value: homework,
+      ),
+  ];
 }

@@ -44,5 +44,11 @@ final class const NotebookContent({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [?category, ...themes, ...attachments];
+  List<VisualNavigator> get toStore => [
+    if (category != null) .go(category!, field: 'categorie'),
+    for (final (index, theme) in themes.indexed)
+      .indexed(theme, field: 'ListeThemes', index: index),
+    for (final (index, attachment) in attachments.indexed)
+      .indexed(attachment, field: 'ListePieceJointe', index: index),
+  ];
 }

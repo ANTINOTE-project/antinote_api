@@ -23,6 +23,7 @@ enum ClassType { lesson, detention, activity }
 
 final class const ClassMessage({
   required final String id,
+  required final int index,
   required final int? backgroundColor,
   required final String? notes,
   required final DateTime startDate,
@@ -32,7 +33,7 @@ final class const ClassMessage({
   required final int weekNumber,
   required final String? studentCountString,
 }) {
-  factory decode(RemoteSession session, Map<String, dynamic> nav) {
+  factory decode(RemoteSession session, Map<String, dynamic> nav, int index) {
     final startDate = nav.get<DateTime>('DateDuCours');
     final int blockSlot = nav.get('place');
     final int blockLength = nav.get('duree');
@@ -50,6 +51,7 @@ final class const ClassMessage({
 
     return .new(
       id: nav.get('N'),
+      index: index,
       backgroundColor: nav.get<String?>('CouleurFond')?.asRGB(),
       notes: nav.get('memo'),
       startDate: startDate,
@@ -65,6 +67,7 @@ final class const ClassMessage({
 
 sealed class const Class({
   required final String id,
+  required final int index,
   required final int? backgroundColor,
   required final DateTime startDate,
   required final DateTime endDate,
@@ -74,8 +77,8 @@ sealed class const Class({
   required final int weekNumber,
   required final String? studentCountString,
 }) with VisualIdMixin {
-  factory decode(RemoteSession session, Map<String, dynamic> nav) {
-    final classMessage = ClassMessage.decode(session, nav);
+  factory decode(RemoteSession session, Map<String, dynamic> nav, int index) {
+    final classMessage = ClassMessage.decode(session, nav, index);
 
     return switch (nav) {
       _ when nav.getB('estSortiePedagogique') => Activity.decode(
@@ -101,4 +104,11 @@ sealed class const Class({
 
   @override
   CacheType? get cacheType => .CLAZZ;
+
+  @override
+  List<VisualNavigator> get toStore => [
+    for (final content in contents)
+      if (content.value is VisualIdMixin && content.navigate != null)
+        .new(exchanger: content.navigate!, value: content.value),
+  ];
 }

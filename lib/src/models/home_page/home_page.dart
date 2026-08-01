@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/disconnection_period_data.dart';
 import 'package:antinote/src/models/home_page/widget.dart';
-import 'package:antinote/src/protos/antinote/session.pbenum.dart';
 
 final class const HomePage({
   required final List<HomePageWidget> widgets,
@@ -39,8 +39,10 @@ final class const HomePage({
   Iterable<Uint8List?> collectVisualIdData() => throw UnimplementedError();
 
   @override
-  List<VisualIdMixin> get toStore => [
-    ?disconnectionPeriodData,
+  List<VisualNavigator> get toStore => [
+    if (disconnectionPeriodData != null)
+      .go(disconnectionPeriodData!, field: 'infosDroitDeconnexion'),
+
     for (final widget in widgets) ...widget.toStore,
   ];
 }

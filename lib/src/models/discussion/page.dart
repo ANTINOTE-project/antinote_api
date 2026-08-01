@@ -1,11 +1,12 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:antinote/antinote.dart';
 
 final class const DiscussionPage({
   required final List<DiscussionLabel> labels,
   required final List<DiscussionRootNode> discussions,
-}) {
+}) with VisualIdMixin {
   static List<DiscussionRootNode> _buildDiscussionTree(
     List<Map<String, dynamic>> nav,
   ) {
@@ -25,6 +26,7 @@ final class const DiscussionPage({
         if (rawNode.get('profondeur') != depth) continue;
 
         final node = DiscussionNode.decode(
+          nodeIndex,
           rawNode,
           depthMaps.remove(nodeIndex) ?? [],
         );
@@ -57,4 +59,22 @@ final class const DiscussionPage({
             .inn((value) => _buildDiscussionTree(value)) ??
         [],
   );
+
+  @override
+  CacheType? get cacheType => null;
+
+  @override
+  Iterable<Uint8List?> collectVisualIdData() sync* {
+    yield* discussions.visualIdForEach();
+  }
+
+  @override
+  List<VisualNavigator> get toStore => [
+    for (final rootDiscussion in discussions)
+      for (final node in rootDiscussion.flatten())
+        .new(
+          exchanger: (nav) => nav.getLM('listeMessagerie').get(node.index),
+          value: node,
+        ),
+  ];
 }

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/challenge.dart';
 
 final class IdentificationAccessor extends StatelessAccessor<Challenge> {
@@ -98,5 +98,5 @@ final class IdentificationAccessor extends StatelessAccessor<Challenge> {
   Challenge interpretStateless(Map<String, dynamic> nav) => .decode(nav);
 
   @override
-  List<VisualIdMixin> store(Challenge result) => [result];
+  List<VisualNavigator> store(Challenge result) => [.stay(result)];
 }

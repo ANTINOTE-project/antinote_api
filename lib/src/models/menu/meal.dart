@@ -37,7 +37,12 @@ final class const Meal({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [
-    for (final dish in dishes) ...[...dish.foods],
+  List<VisualNavigator> get toStore => [
+    for (final (index, dish) in dishes.indexed)
+      .new(
+        exchanger: (nav) =>
+            nav.eGetLM(['listePlats', 'ListePlats'])!.get(index),
+        value: dish,
+      ),
   ];
 }

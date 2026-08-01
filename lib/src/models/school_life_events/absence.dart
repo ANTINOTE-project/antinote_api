@@ -42,7 +42,4 @@ final class const Absence({
     yield hourCount.visualIdData();
     yield dayCount.visualIdData();
   }
-
-  @override
-  List<VisualIdMixin> get toStore => [...reasons];
 }

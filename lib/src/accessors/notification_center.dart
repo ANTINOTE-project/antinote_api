@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/notification/center.dart';
 
 final class const NotificationCenterAccessor()
@@ -27,8 +27,6 @@ final class const NotificationCenterAccessor()
             cancellationSignal: cancellationSignal,
           ),
         )
-        .resultCompleter
-        .future
         .thenField(session.stack.vocab.data);
   }
 
@@ -37,5 +35,5 @@ final class const NotificationCenterAccessor()
       .decode(nav);
 
   @override
-  List<VisualIdMixin> store(NotificationCenter result) => [];
+  List<VisualNavigator> store(NotificationCenter result) => [];
 }

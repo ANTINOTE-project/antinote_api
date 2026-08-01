@@ -18,20 +18,25 @@ final class const MessageRecipient({required final String id})
 
 sealed class const DiscussionNode({
   required final String id,
+  required final int index,
   required final List<MessageRecipient> recipients,
   required final bool isNotARecipient,
   required final int depth,
 
   required final List<DiscussionNode> children,
 }) with VisualIdMixin {
-  factory decode(Map<String, dynamic> nav, List<DiscussionNode> children) =>
-      switch (nav) {
-        _ when nav.getB('estUneDiscussion') => DiscussionRootNode.decode(
-          nav,
-          children,
-        ),
-        _ => DiscussionMessageNode.decode(nav, children),
-      };
+  factory decode(
+    int index,
+    Map<String, dynamic> nav,
+    List<DiscussionNode> children,
+  ) => switch (nav) {
+    _ when nav.getB('estUneDiscussion') => DiscussionRootNode.decode(
+      index,
+      nav,
+      children,
+    ),
+    _ => DiscussionMessageNode.decode(index, nav, children),
+  };
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
@@ -41,25 +46,33 @@ sealed class const DiscussionNode({
     // We do not put children because we still want the visual id to stay the
     // same if a message is posted beneath it.
   }
+
+  List<DiscussionNode> flatten() => [
+    this,
+    for (final child in children) ...child.flatten(),
+  ];
 }
 
 final class const DiscussionMessageNode({
   required super.id,
+  required super.index,
   required super.recipients,
   required super.isNotARecipient,
   required super.depth,
   required super.children,
 }) extends DiscussionNode {
-  factory decode(Map<String, dynamic> nav, List<DiscussionNode> children) =>
-      .new(
-        id: nav.get('N'),
-        recipients: nav
-            .getLM('listePossessionsMessages')
-            .mapL((e) => .decode(e)),
-        isNotARecipient: nav.get('estNonPossede'),
-        depth: nav.get('profondeur'),
-        children: children,
-      );
+  factory decode(
+    int index,
+    Map<String, dynamic> nav,
+    List<DiscussionNode> children,
+  ) => .new(
+    id: nav.get('N'),
+    index: index,
+    recipients: nav.getLM('listePossessionsMessages').mapL((e) => .decode(e)),
+    isNotARecipient: nav.get('estNonPossede'),
+    depth: nav.get('profondeur'),
+    children: children,
+  );
 
   @override
   CacheType? get cacheType => .DISCUSSION_NODE;
@@ -83,6 +96,7 @@ final class const DiscussionRootNode({
   required final bool canEdit,
 
   required super.id,
+  required super.index,
   required super.recipients,
   required super.isNotARecipient,
   required super.depth,
@@ -109,7 +123,11 @@ final class const DiscussionRootNode({
     r'^(?<hour>\d{1,2})h(?<minute>\d{2})',
   );
 
-  factory decode(Map<String, dynamic> nav, List<DiscussionNode> children) {
+  factory decode(
+    int index,
+    Map<String, dynamic> nav,
+    List<DiscussionNode> children,
+  ) {
     final matchedDate =
         _dateLabelParser.firstMatch(nav.get<String>('libelleDate')) ??
         _secondDateLabelParser.firstMatch(nav.get<String>('libelleDate'));
@@ -176,6 +194,7 @@ final class const DiscussionRootNode({
 
     return .new(
       id: nav.get('N'),
+      index: index,
       recipients: nav.getLM('listePossessionsMessages').mapL((e) => .decode(e)),
       isNotARecipient: nav.get('estNonPossede') ?? false,
       depth: nav.get('profondeur'),

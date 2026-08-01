@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
 import 'package:antinote/src/models/notebook/entry/entry.dart';
 import 'package:antinote/src/models/notebook/page.dart';
 
@@ -34,8 +34,6 @@ final class const NotebookEntryAccessor({required final String entryId})
             cancellationSignal: cancellationSignal,
           ),
         )
-        .resultCompleter
-        .future
         .thenField(session.stack.vocab.data);
   }
 
@@ -50,11 +48,10 @@ final class const NotebookEntryAccessor({required final String entryId})
   }
 
   @override
-  List<VisualIdMixin> store(NotebookEntry result) => [
-    result,
-    result.subject,
-    ...result.groupList,
-    ...result.teacherList,
-    ...result.contentList,
+  List<VisualNavigator> store(NotebookEntry result) => [
+    .new(
+      exchanger: (nav) => nav.getLM('ListeCahierDeTextes').getM(0),
+      value: result,
+    ),
   ];
 }

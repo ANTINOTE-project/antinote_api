@@ -22,9 +22,5 @@ final class const Notes({required final LatestGradesPage page})
   );
 
   @override
-  List<VisualIdMixin> get toStore => [
-    ...page.exams,
-    ...?page.services,
-    ?page.period,
-  ];
+  List<VisualNavigator> get toStore => [.go(page, field: 'notes')];
 }

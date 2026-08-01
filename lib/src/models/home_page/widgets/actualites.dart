@@ -31,5 +31,16 @@ final class const Actualites({required final List<News> news})
   );
 
   @override
-  List<VisualIdMixin> get toStore => news;
+  List<VisualNavigator> get toStore => [
+    for (final (index, newsPiece) in news.indexed)
+      .new(
+        exchanger: (nav) => nav
+            .go('actualites')
+            .getL('listeModesAff')
+            .getM(NewsDisplayMode.reception.id)
+            .getLM('listeActualites')
+            .getM(index),
+        value: newsPiece,
+      ),
+  ];
 }

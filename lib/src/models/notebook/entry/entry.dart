@@ -13,28 +13,28 @@ final class const NotebookEntry({
   required final String id,
   required final String lessonId,
   required final bool locked,
-  required final List<NotebookEntryGroup> groupList,
+  required final List<NotebookEntryGroup> groups,
   required final Subject subject,
   required final int backgroundColor,
-  required final List<Person> teacherList,
+  required final List<Person> teachers,
   required final DateTime dateTime,
   required final DateTime endDateTime,
   required final DateTime? homeworkDate,
-  required final List<NotebookContent> contentList,
+  required final List<NotebookContent> contents,
   required final List<Map<String, dynamic>> cdtProgramElementList,
 }) with VisualIdMixin {
   factory decode(Map<String, dynamic> nav) => .new(
     id: nav.get('N'),
     lessonId: nav.go('cours').get('N'),
     locked: nav.get('verrouille'),
-    groupList: nav.getLM('listeGroupes').mapL((e) => .decode(e)),
+    groups: nav.getLM('listeGroupes').mapL((e) => .decode(e)),
     subject: .decode(nav.getM('Matiere')),
     backgroundColor: nav.get<String>('CouleurFond').asRGB(),
-    teacherList: nav.getLM('listeProfesseurs').mapL((e) => .decode(e)),
+    teachers: nav.getLM('listeProfesseurs').mapL((e) => .decode(e)),
     dateTime: nav.get('Date'),
     endDateTime: nav.get('DateFin'),
     homeworkDate: nav.get('DateTAF'),
-    contentList: nav.getLM('listeContenus').mapL((e) => .decode(e)),
+    contents: nav.getLM('listeContenus').mapL((e) => .decode(e)),
     cdtProgramElementList: nav.getLM('listeElementsProgrammeCDT'),
   );
 
@@ -47,10 +47,13 @@ final class const NotebookEntry({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [
-    subject,
-    ...groupList,
-    ...teacherList,
-    ...contentList,
+  List<VisualNavigator> get toStore => [
+    .go(subject, field: 'Matiere'),
+    for (final (index, group) in groups.indexed)
+      .indexed(group, field: 'listeGroupes', index: index),
+    for (final (index, teacher) in teachers.indexed)
+      .indexed(teacher, field: 'listeProfesseurs', index: index),
+    for (final (index, content) in contents.indexed)
+      .indexed(content, field: 'listeContenus', index: index),
   ];
 }

@@ -1,9 +1,5 @@
-import 'dart:collection';
-
+import 'package:antinote/antinote.dart';
 import 'package:antinote/src/helpers/serial.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/protos/antinote/session.pbenum.dart';
 
 export 'package:antinote/src/protos/antinote/session.pbenum.dart'
     show CacheType;
@@ -26,29 +22,60 @@ final class VisualReference<T> {
 
 extension CacheExtension on RemoteSession {
   void updateCache(
-    List<VisualIdMixin> objects,
-    Map<String, dynamic>? rawRequest, [
-    bool sensitive = false,
-  ]) {
-    final totalToStore = Queue<VisualIdMixin>.from(objects);
-    while (totalToStore.isNotEmpty) {
-      final toStore = totalToStore.removeFirst();
-      totalToStore.addAll(toStore.toStore);
-      if (toStore.cacheType == null) continue;
+    List<VisualNavigator> objects,
+    Map<String, dynamic>? rawContent,
+  ) {
+    for (final object in objects) {
+      final curNav = rawContent == null
+          ? null
+          : Map<String, dynamic>.fromEntries(
+              object.exchanger(rawContent).entries,
+            );
 
-      if (rawRequest != null &&
-          cacheTypesToSerialize.contains(toStore.cacheType!) &&
-          !sensitive) {
+      if (curNav != null &&
+          cacheTypesToSerialize.contains(object.value.cacheType) &&
+          !object.value.sensitive) {
         serializableCache.putIfAbsent(
-          toStore.cacheType!,
+          object.value.cacheType!,
           () => {},
-        )[toStore.visualId] = RemoteJsonEncoder(data: rawRequest)
+        )[object.value.visualId] = RemoteJsonEncoder(data: curNav)
             .encode();
       }
 
-      if (!sensitive) {
-        cache[toStore.cacheType!]![toStore.visualId] = toStore;
+      if (!object.value.sensitive && object.value.cacheType != null) {
+        cache[object.value.cacheType!]![object.value.visualId] = object.value;
       }
+
+      updateCache(object.value.toStore, curNav);
     }
   }
+}
+
+typedef VisualNavigatorCallback = Map<String, dynamic> Function(
+  Map<String, dynamic> nav,
+);
+
+final class const VisualNavigator({
+  required final VisualNavigatorCallback exchanger,
+  required final VisualIdMixin value,
+}) {
+  new stay(VisualIdMixin value) : this(exchanger: (nav) => nav, value: value);
+
+  new go(VisualIdMixin value, {required String field})
+    : this(exchanger: (nav) => nav.getM(field), value: value);
+
+  new eGo(VisualIdMixin value, {required List<String> fields})
+    : this(exchanger: (nav) => nav.eGo(fields)!, value: value);
+
+  new indexed(VisualIdMixin value, {required String field, required int index})
+    : this(exchanger: (nav) => nav.getLM(field).getM(index), value: value);
+
+  new eIndexed(
+    VisualIdMixin value, {
+    required List<String> possibleFields,
+    required int index,
+  }) : this(
+         exchanger: (nav) => nav.eGetLM(possibleFields)!.getM(index),
+         value: value,
+       );
 }

@@ -23,5 +23,7 @@ final class const MenuDeLaCantine({required final Menu currentMenu})
   );
 
   @override
-  List<VisualIdMixin> get toStore => [...currentMenu.meals];
+  List<VisualNavigator> get toStore => [
+    .go(currentMenu, field: 'menuDeLaCantine'),
+  ];
 }

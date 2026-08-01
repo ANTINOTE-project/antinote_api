@@ -37,7 +37,9 @@ mixin VisualIdMixin {
 
   CacheType? get cacheType;
 
-  List<VisualIdMixin> get toStore => [];
+  List<VisualNavigator> get toStore => [];
+
+  bool get sensitive => false;
 }
 
 extension EachVisualIdData on Iterable<VisualIdMixin> {

@@ -119,9 +119,16 @@ final class const Homework({
   }
 
   @override
-  List<VisualIdMixin> get toStore => [
-    subject,
-    ...attachments,
-    ?handedAssignment,
+  List<VisualNavigator> get toStore => [
+    .eGo(subject, fields: ['matiere', 'Matiere']),
+    for (final (index, attachment) in attachments.indexed)
+      .eIndexed(
+        attachment,
+        possibleFields: ['listeDocumentJoint', 'ListePieceJointe'],
+        index: index,
+      ),
+
+    if (handedAssignment != null)
+      .go(handedAssignment!, field: 'documentRendu'),
   ];
 }
