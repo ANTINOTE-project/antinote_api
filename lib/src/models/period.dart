@@ -21,7 +21,7 @@ final class const Period({
     endDate: nav.get('dateFin'),
   );
 
-  Map<String, dynamic> asRaw() => {'G': type, 'L': name, 'N': id ?? 0};
+  Map<String, dynamic> asJson() => {'G': type, 'L': name, 'N': id ?? 0};
 
   @override
   CacheType? get cacheType => .PERIOD;

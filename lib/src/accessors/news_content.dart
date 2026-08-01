@@ -1,12 +1,6 @@
 import 'dart:async';
 
-import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/news/display_mode.dart';
-import 'package:antinote/src/models/news/news.dart';
-import 'package:antinote/src/models/news/page.dart';
+import 'package:antinote/antinote.dart';
 
 final class const NewsContentAccessor({
   required final NewsDisplayMode mode,
@@ -46,8 +40,14 @@ final class const NewsContentAccessor({
   }
 
   @override
-  FutureOr<NewsContent> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<NewsContent> interpretStateless(Map<String, dynamic> nav) {
+    assert(
+      nav.getM('detailsActualite').length == 1,
+      'Other unexpected fields were found in the news details response.',
+    );
+
+    return .decode(nav);
+  }
 
   @override
   List<VisualIdMixin> store(NewsContent result) => [];

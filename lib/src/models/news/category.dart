@@ -15,7 +15,11 @@ final class const NewsCategory({
     isDefault: nav.getB('estDefaut'),
   );
 
-  Map<String, dynamic> asRaw() => {'L': label, 'N': id, 'estDefaut': isDefault};
+  Map<String, dynamic> asJson() => {
+    'L': label,
+    'N': id,
+    'estDefaut': isDefault,
+  };
 
   @override
   CacheType? get cacheType => .NEWS_CATEGORY;

@@ -2,6 +2,7 @@ import 'package:antinote/src/helpers/enum_id.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/models/news/category.dart';
 import 'package:antinote/src/models/news/collection.dart';
+import 'package:antinote/src/models/news/question/question.dart';
 
 enum NewsPageRequestType(@override final int id) implements EnumId {
   display(0),
@@ -27,10 +28,13 @@ final class const NewsPage({
 
 final class const NewsContent({
   required final NewsPageRequestType type,
-  required final Map<String, dynamic> newsContent,
+  required final List<NewsQuestion> questions,
 }) {
   factory decode(Map<String, dynamic> nav) => .new(
     type: .values.byId(nav.get('genreRequeteActualite')),
-    newsContent: nav.getM('detailsActualite'),
+    questions: nav
+        .getM('detailsActualite')
+        .getLM('listeQuestions')
+        .mapL((e) => .decode(e)),
   );
 }
