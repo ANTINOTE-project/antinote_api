@@ -35,8 +35,6 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
     required this.tokenKey,
     this.debugMode = false,
   }) {
-    log.level = debugMode ? .ALL : .WARNING;
-
     log.onRecord.listen((event) {
       // ignore: avoid_print
       print('[${event.level.name}]($sessionId) : ${event.message}');
