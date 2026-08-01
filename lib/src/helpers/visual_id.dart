@@ -27,6 +27,8 @@ mixin VisualIdMixin {
     return results.events.single;
   }
 
+  SerialObjectId? get overrideSerialId => null;
+
   VisualId get visualId {
     return base64Encode(_hashContents().bytes);
   }

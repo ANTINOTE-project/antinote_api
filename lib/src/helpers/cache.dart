@@ -38,7 +38,8 @@ extension CacheExtension on RemoteSession {
         serializableCache.putIfAbsent(
           object.value.cacheType!,
           () => {},
-        )[object.value.visualId] = RemoteJsonEncoder(data: curNav)
+        )[object.value.overrideSerialId?.writtenId ??
+            object.value.visualId] = RemoteJsonEncoder(data: curNav)
             .encode();
       }
 
@@ -78,4 +79,12 @@ final class const VisualNavigator({
          exchanger: (nav) => nav.eGetLM(possibleFields)!.getM(index),
          value: value,
        );
+}
+
+enum SerialObjectId(final String writtenId) {
+  instanceParameters('instance'),
+  userParameters('user'),
+  authenticationData('auth'),
+  challenge('challenge'),
+  offPeriod('off_period')
 }

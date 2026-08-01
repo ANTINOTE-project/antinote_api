@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/protos/antinote/session.pbenum.dart';
 
 final class const DisconnectionPeriodData({
   required final bool gradesPublicationPauseActive,
@@ -61,9 +61,10 @@ final class const DisconnectionPeriodData({
   CacheType? get cacheType => .UNIQUE;
 
   @override
-  Iterable<Uint8List?> collectVisualIdData() sync* {
-    yield 'DisconnectionPeriodData'.visualIdData();
-  }
+  SerialObjectId? get overrideSerialId => .offPeriod;
+
+  @override
+  Iterable<Uint8List?> collectVisualIdData() sync* {}
 
   // TODO: Implement scheduling algorithm for when off periods appear.
 }

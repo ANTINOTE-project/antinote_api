@@ -28,9 +28,10 @@ final class const Challenge({
   CacheType? get cacheType => .UNIQUE;
 
   @override
-  Iterable<Uint8List?> collectVisualIdData() sync* {
-    yield "Challenge".visualIdData();
-  }
+  SerialObjectId? get overrideSerialId => .challenge;
+
+  @override
+  Iterable<Uint8List?> collectVisualIdData() sync* {}
 
   Future<CipherWand> createWand({
     required String cLog,

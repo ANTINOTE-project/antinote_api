@@ -41,16 +41,7 @@ final class const UserParametersAccessor()
       resources.add(nav.getM('ressource'));
     }
 
-    return UserParameters(
-      id: nav.go('ressource').get('N'),
-      type: nav.go('ressource').get('G'),
-      name: nav.go('ressource').get('L'),
-      resources: resources.mapL((e) => .decode(e)),
-      authorizations: .decode(nav),
-      tabs: nav.getLM('listeOnglets').mapL((e) => .decode(e)),
-      hiddenTabIds: nav.getL<int>('listeOngletsInvisibles'),
-      notificationTabIds: nav.getL<int>('listeOngletsNotification'),
-    );
+    return .decode(nav);
   }
 
   @override

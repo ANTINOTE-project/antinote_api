@@ -44,53 +44,34 @@ class RemoteSession with SerializableObject<SerializedSession> {
     SessionOptions? options,
   }) async => restore(SerializedSession.fromJson(data), options: options);
 
-  static final _instanceParametersKey = 'InstanceParameters'
-      .visualIdData()
-      .visualId;
-  static final _userParametersKey = 'UserParameters'.visualIdData().visualId;
-  static final _authenticationResponseKey = 'AuthenticationResponse'
-      .visualIdData()
-      .visualId;
-  static final _challengeKey = 'Challenge'.visualIdData().visualId;
-
-  static final _disconnectionDataKey = 'DisconnectionPeriodData'
-      .visualIdData()
-      .visualId;
-
-  // TODO: Make this self-contained
   Future<void> _reconstructCache() async {
     for (final MapEntry(key: cacheType, value: cached)
         in serializableCache.entries) {
       for (final MapEntry(key: visualId, value: rawContent) in cached.entries) {
         final content = RemoteJsonDecoder(data: rawContent).decode();
 
-        final dynamic parsedValue;
-        if (visualId == _instanceParametersKey) {
-          final accessor = const InstanceParametersAccessor();
-          parsedValue = await accessor.interpret(
+        final parsedValue = switch (SerialObjectId.values
+            .where((element) => element.writtenId == visualId)
+            .singleOrNull) {
+          null => throw UnimplementedError(
+            'Unknown serializable entry name ${cacheType.name}:$visualId.',
+          ),
+          SerialObjectId.instanceParameters => InstanceParameters.decode(
             content,
             stack.temporaryWorkspace,
-          );
-          updateCache(accessor.store(parsedValue), content);
-        } else if (visualId == _userParametersKey) {
-          final accessor = const UserParametersAccessor();
-          parsedValue = await accessor.interpretStateless(content);
-          updateCache(accessor.store(parsedValue), content);
-        } else if (visualId == _authenticationResponseKey) {
-          parsedValue = AuthenticationResponse.decode(content);
-          updateCache([parsedValue], content);
-        } else if (visualId == _challengeKey) {
-          parsedValue = Challenge.decode(content);
-          updateCache([parsedValue], content);
-        } else if (visualId == _disconnectionDataKey) {
-          parsedValue = DisconnectionPeriodData.decode(this, content);
-          updateCache([parsedValue], content);
-        } else {
-          throw UnimplementedError(
-            'Unknown serializable entry name ${cacheType.name}:$visualId.',
-          );
-        }
+          ),
+          SerialObjectId.userParameters => UserParameters.decode(content),
+          SerialObjectId.authenticationData => AuthenticationResponse.decode(
+            content,
+          ),
+          SerialObjectId.challenge => Challenge.decode(content),
+          SerialObjectId.offPeriod => DisconnectionPeriodData.decode(
+            this,
+            content,
+          ),
+        };
 
+        updateCache([.stay(parsedValue)], content);
         cache[cacheType]![visualId] = parsedValue;
       }
     }

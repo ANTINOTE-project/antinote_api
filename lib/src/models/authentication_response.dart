@@ -34,7 +34,8 @@ final class const AuthenticationResponse({
   bool get sensitive => true;
 
   @override
-  Iterable<Uint8List?> collectVisualIdData() sync* {
-    yield "AuthenticationResponse".visualIdData();
-  }
+  SerialObjectId? get overrideSerialId => .authenticationData;
+
+  @override
+  Iterable<Uint8List?> collectVisualIdData() sync* {}
 }

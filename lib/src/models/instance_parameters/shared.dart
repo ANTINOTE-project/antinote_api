@@ -101,9 +101,10 @@ sealed class InstanceParameters with VisualIdMixin {
   CacheType? get cacheType => .UNIQUE;
 
   @override
-  Iterable<Uint8List?> collectVisualIdData() sync* {
-    yield "InstanceParameters".visualIdData();
-  }
+  SerialObjectId? get overrideSerialId => .instanceParameters;
+
+  @override
+  Iterable<Uint8List?> collectVisualIdData() sync* {}
 
   final String? casToken;
   final bool isShownInDW;
