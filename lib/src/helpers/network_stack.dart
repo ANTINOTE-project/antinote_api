@@ -169,7 +169,7 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
   final int sessionId;
 
   /// The logger for the session. Outputs if [debugMode] is true.
-  late final Logger log = Logger('ANTINOTE-$sessionId');
+  late final Logger log = Logger('ANTINOTE-$sessionId-${DateTime.now().millisecondsSinceEpoch}');
 
   /// The "Token ID" is some form of encrypted username used on CAS login.
   final String? tokenId;
