@@ -53,21 +53,16 @@ class RemoteSession with SerializableObject<SerializedSession> {
         final parsedValue = switch (SerialObjectId.values
             .where((element) => element.writtenId == visualId)
             .singleOrNull) {
-          null => throw UnimplementedError(
-            'Unknown serializable entry name ${cacheType.name}:$visualId.',
-          ),
-          SerialObjectId.instanceParameters => InstanceParameters.decode(
+          .instanceParameters => InstanceParameters.decode(
             content,
             stack.temporaryWorkspace,
           ),
-          SerialObjectId.userParameters => UserParameters.decode(content),
-          SerialObjectId.authenticationData => AuthenticationResponse.decode(
-            content,
-          ),
-          SerialObjectId.challenge => Challenge.decode(content),
-          SerialObjectId.offPeriod => DisconnectionPeriodData.decode(
-            this,
-            content,
+          .userParameters => UserParameters.decode(content),
+          .authenticationData => AuthenticationResponse.decode(content),
+          .challenge => Challenge.decode(content),
+          .offPeriod => DisconnectionPeriodData.decode(this, content),
+          null => throw UnimplementedError(
+            'Unknown serializable entry name ${cacheType.name}:$visualId.',
           ),
         };
 
@@ -114,29 +109,36 @@ class RemoteSession with SerializableObject<SerializedSession> {
     return await accessor.fetch(this, cancellationSignal);
   }
 
-  T expectAccessorNamed<T>(String key) =>
-      cache[CacheType.UNIQUE]![key.visualIdData().visualId];
+  T expectAccessorNamed<T>(SerialObjectId key) =>
+      cache[CacheType.UNIQUE]![key.writtenId];
 
-  bool hasAccessorNamed(String key) =>
-      cache[CacheType.UNIQUE]!.containsKey(key.visualIdData().visualId);
+  bool hasAccessorNamed(SerialObjectId key) =>
+      cache[CacheType.UNIQUE]!.containsKey(key.writtenId);
 
   T getCachedValue<T>(CacheType type, String visualId) =>
       cache[type]!.get(visualId);
 
   SpecificInstanceParameters get instance =>
-      expectAccessorNamed<SpecificInstanceParameters>("InstanceParameters");
+      expectAccessorNamed<SpecificInstanceParameters>(
+        SerialObjectId.instanceParameters,
+      );
 
   BroadInstanceParameters get broadInstance =>
-      expectAccessorNamed<BroadInstanceParameters>("InstanceParameters");
+      expectAccessorNamed<BroadInstanceParameters>(
+        SerialObjectId.instanceParameters,
+      );
 
-  InstanceParameters get anyInstance =>
-      expectAccessorNamed<InstanceParameters>("InstanceParameters");
+  InstanceParameters get anyInstance => expectAccessorNamed<InstanceParameters>(
+    SerialObjectId.instanceParameters,
+  );
 
   UserParameters get user =>
-      expectAccessorNamed<UserParameters>("UserParameters");
+      expectAccessorNamed<UserParameters>(SerialObjectId.userParameters);
 
   AuthenticationResponse get auth =>
-      expectAccessorNamed<AuthenticationResponse>("AuthenticationResponse");
+      expectAccessorNamed<AuthenticationResponse>(
+        SerialObjectId.authenticationData,
+      );
 
   int _currentUserResourceId = 0;
 
