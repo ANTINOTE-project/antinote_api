@@ -232,8 +232,9 @@ class RemoteSession with SerializableObject<SerializedSession> {
     if (splitServerHeader != null && splitServerHeader[0] == 'PRONOTE') {
       remoteVersion = Version.parse(splitServerHeader[1]);
     } else {
-      // TODO: Add scraping for this.
-      remoteVersion = Version(0, 0, 0);
+      // We assume this is a change that could happen in a future version, we
+      // put it to the latest supported version.
+      remoteVersion = Version(2026, 1, 3);
     }
 
     final body = await seedPageResponse
@@ -248,30 +249,29 @@ class RemoteSession with SerializableObject<SerializedSession> {
       throw const InvalidInstanceException();
     }
 
-    // Thank you Mikkel ALMONTE-RINGAUD from the Pawnote.js project for the RegEx.
-    // Licensing information (GPL-3.0) available in the app. TODO: Credit properly
     final seed = jsonDecode(
-      body
-          .substring(seedStart, seedEnd)
-          .replaceAllMapped(
-            RegExp(r'''(['"])?([a-z0-9A-Z_]+)(['"])?:''', unicode: true),
-            (match) => '"${match.group(2)}": ',
-          )
-          .replaceAll("'", '"'),
+      remoteVersion.major >= 2026
+          ? body.substring(seedStart, seedEnd)
+          : body
+                .substring(seedStart, seedEnd)
+                .replaceAllMapped(
+                  RegExp(r'([{,])(\w+):', unicode: true),
+                  (match) => '${match.group(1)}"${match.group(2)}":',
+                )
+                .replaceAll("'", '"'),
     ) as Map<String, dynamic>;
 
-    final rsaFromConstants =
-        (!seed.containsKey('MR')) && (!seed.containsKey('ER'));
+    final rsaFromConstants = (!seed.has('MR')) && (!seed.has('ER'));
 
     bool skipEncryption;
     bool skipCompression;
 
     if (remoteVersion >= Version(2025, 1, 3)) {
-      skipEncryption = !(seed.containsKey('CrA') && seed['CrA']);
-      skipCompression = !(seed.containsKey('CoA') && seed['CoA']);
+      skipEncryption = !seed.getB('CrA');
+      skipCompression = !seed.getB('CoA');
     } else {
-      skipEncryption = seed['sCrA'] ?? false;
-      skipCompression = seed['sCoA'] ?? false;
+      skipEncryption = seed.getB('sCrA');
+      skipCompression = seed.getB('sCoA');
     }
 
     assert(skipEncryption && skipCompression);
@@ -287,10 +287,10 @@ class RemoteSession with SerializableObject<SerializedSession> {
       ),
       rsaModulus: rsaFromConstants
           ? rsaModulo1024
-          : BigInt.parse(seed['MR'], radix: 16),
+          : BigInt.parse(seed.get<String>('MR'), radix: 16),
       rsaExponent: rsaFromConstants
           ? rsaExponent1024
-          : BigInt.parse(seed['ER'], radix: 16),
+          : BigInt.parse(seed.get<String>('ER'), radix: 16),
     );
     await crypto.setAesKey(crypto.aesKey);
 
@@ -303,22 +303,22 @@ class RemoteSession with SerializableObject<SerializedSession> {
         crypto: crypto,
         baseUrl: baseUri,
         remoteVersion: remoteVersion,
-        demo: seed['d'] ?? false,
-        http: (seed.containsKey('http') && seed['http']),
+        demo: seed.getB('d'),
+        http: seed.getB('http'),
         poll:
-            (seed.containsKey('poll') && seed['poll']) ||
+            seed.getB('poll') ||
             remoteVersion >= Version(2025, 1, 3),
         rsaFromConstants: rsaFromConstants,
         skipCompression: skipCompression,
         skipEncryption: skipEncryption,
-        sessionId: int.parse(seed['h'].toString()),
+        sessionId: int.parse(seed.get('h').toString()),
         temporaryWorkspace: Workspace(
           type: workspaceId ?? workspace.type,
           label: workspace.label,
           pathSegment: workspace.pathSegment,
         ),
-        tokenId: seed['e'],
-        tokenKey: seed['f'],
+        tokenId: seed.get('e'),
+        tokenKey: seed.get('f'),
         debugMode: options.debugMode,
       ),
       options: options,

@@ -38,7 +38,7 @@ final class const Food({
   List<VisualNavigator> get toStore => [
     for (final (index, foodLabel) in foodLabels.indexed)
       .indexed(foodLabel, field: 'listeLabelsAlimentaires', index: index),
-    for (final (index, foodAllergen) in foodLabels.indexed)
+    for (final (index, foodAllergen) in foodAllergens.indexed)
       .indexed(foodAllergen, field: 'listeAllergenesAlimentaire', index: index),
   ];
 }

@@ -29,7 +29,7 @@ void main() {
 
     test('Home page', () async {
       final day = session.instance.demoDateTime!.toDay();
-      final homepage = await session.access(
+      await session.access(
         HomePageAccessor(
           modules: [
             Actualites.module(),
@@ -42,8 +42,29 @@ void main() {
           ],
         ),
       );
+    });
 
-      print(homepage);
+    test('Menu page', () async {
+      final day = session.instance.demoDateTime!.toDay();
+      await session.access(MenuPageAccessor(date: day));
+    });
+
+    group('Discussion page', () {
+      List<DiscussionRootNode>? discussions;
+
+      test('Discussion list', () async {
+        final discussionList = await session.access(
+          const DiscussionPageAccessor(showRead: true, withMessages: true),
+        );
+
+        discussions = discussionList.discussions;
+      });
+
+      test('Discussion content', () async {
+        if (discussions == null || discussions!.isEmpty) return;
+
+        await session.access(DiscussionAccessor(node: discussions!.first));
+      });
     });
 
     test('News page', () async {
@@ -51,32 +72,56 @@ void main() {
         const NewsPageAccessor.defaultMode(),
       );
 
-      print(newsPage);
-
       for (final collection in newsPage.collections) {
         if (collection.news.isEmpty) continue;
 
-        final details = await session.access(
+        await session.access(
           NewsContentAccessor(
             mode: collection.mode,
             baseNews: collection.news.first,
           ),
         );
-
-        print(details);
       }
     });
 
     test('Grades page', () async {
-      final page = await session.access(
+      await session.access(
         LatestGradesPageAccessor(
           period: session.instance.defaultPeriod(
             session.instance.demoDateTime ?? session.instance.serverDateTime,
           ),
         ),
       );
+    });
 
-      print(page);
+    test('Homeworks page', () async {
+      final day = session.instance.demoDateTime!.toDay();
+      final page = await session.access(
+        NotebookPageAccessor.upcoming(section: .homework, date: day),
+      );
+
+      expect(page.homeworkSet, isNotNull);
+    });
+
+    test('Notebook page', () async {
+      final lastWeekNumber = session.instance.getWeekNumberForDate(
+        session.instance.lastDate,
+      );
+      final page = await session.access(
+        NotebookPageAccessor(
+          section: .resources,
+          weeks: {
+            for (
+              int i = session.instance.firstWeekNumber;
+              i <= lastWeekNumber;
+              i++
+            )
+              i,
+          },
+        ),
+      );
+
+      expect(page.entries, isNotEmpty);
     });
 
     tearDownAll(() async {
