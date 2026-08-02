@@ -10,7 +10,7 @@ import 'package:antinote/src/models/state.dart';
 
 final class const ChangeHomeworkStateAccessor({
   required final Map<Homework, bool?> homeworksToUpdate,
-}) extends StatelessAccessor<void> {
+}) extends Accessor<void> {
   @override
   bool get exclusiveFriendly => false;
 
@@ -47,7 +47,7 @@ final class const ChangeHomeworkStateAccessor({
   }
 
   @override
-  FutureOr<void> interpretStateless(Map<String, dynamic> nav) {
+  FutureOr<void> interpret(Map<String, dynamic> nav, RemoteSession session) {
     assert(
       nav.mGetM('RapportSaisie')?.isNotEmpty ?? true,
       'Update request unsuccessful',

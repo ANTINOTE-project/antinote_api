@@ -10,7 +10,7 @@ import 'package:antinote/src/models/notebook/page.dart';
 
 enum NotebookSection { homework, resources }
 
-final class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
+final class NotebookPageAccessor extends Accessor<NotebookPage> {
   final NotebookSection section;
   final Set<int>? weeks;
   final DateTime? date;
@@ -73,8 +73,10 @@ final class NotebookPageAccessor extends StatelessAccessor<NotebookPage> {
   }
 
   @override
-  FutureOr<NotebookPage> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<NotebookPage> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(NotebookPage result) => [.stay(result)];

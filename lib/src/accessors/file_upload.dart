@@ -14,7 +14,7 @@ final class const FileUploadAccessor({
   final String fileCategory = 'selecfile',
   required final XFile file,
   required final String nextCallName,
-}) extends StatelessAccessor<String> {
+}) extends Accessor<String> {
   static const int _chunkSize = 100 * 1024; // Same as remote
 
   @override
@@ -92,7 +92,7 @@ final class const FileUploadAccessor({
   }
 
   @override
-  FutureOr<String> interpretStateless(Map<String, dynamic> nav) =>
+  FutureOr<String> interpret(Map<String, dynamic> nav, RemoteSession session) =>
       nav.get('fileId');
 
   @override

@@ -8,7 +8,7 @@ final class const ClassContentAccessor({
 
   required final Class classToAccess,
   required final UserResource resource,
-}) extends StatefulAccessor<List<Class>, RemoteSession> {
+}) extends Accessor<List<Class>> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -39,9 +39,6 @@ final class const ClassContentAccessor({
         )
         .thenField(session.stack.vocab.data);
   }
-
-  @override
-  FutureOr<RemoteSession> collectState(RemoteSession session) => session;
 
   @override
   FutureOr<List<Class>> interpret(

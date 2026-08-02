@@ -7,7 +7,7 @@ import 'package:antinote/src/helpers/session.dart';
 final class const NavigationAccessor({
   required final int previousTabId,
   required final int currentTabId,
-}) extends StatelessAccessor<void> {
+}) extends Accessor<void> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -38,7 +38,7 @@ final class const NavigationAccessor({
   }
 
   @override
-  FutureOr<void> interpretStateless(Map<String, dynamic> nav) {}
+  FutureOr<void> interpret(Map<String, dynamic> nav, RemoteSession session) {}
 
   @override
   List<VisualNavigator> store(void result) => [];

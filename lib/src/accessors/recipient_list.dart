@@ -7,7 +7,7 @@ import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/models/person.dart';
 
-final class RecipientListAccessor extends StatelessAccessor<List<Person>> {
+final class RecipientListAccessor extends Accessor<List<Person>> {
   final String messageId;
   final bool isParticipant;
   final bool isResponseRecipient;
@@ -49,7 +49,10 @@ final class RecipientListAccessor extends StatelessAccessor<List<Person>> {
   }
 
   @override
-  FutureOr<List<Person>> interpretStateless(Map<String, dynamic> nav) {
+  FutureOr<List<Person>> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) {
     return nav.getLM('listeDest').mapL((e) => .decode(e));
   }
 

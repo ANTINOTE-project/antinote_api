@@ -11,7 +11,7 @@ final class const ChangeHomeworkSubmissionAccessor({
   required final String homeworkId,
   required final String fileId,
   required final String filename,
-}) extends StatelessAccessor<void> {
+}) extends Accessor<void> {
   static String callName = 'SaisieTAFARendreEleve';
 
   @override
@@ -53,7 +53,7 @@ final class const ChangeHomeworkSubmissionAccessor({
   }
 
   @override
-  FutureOr<void> interpretStateless(Map<String, dynamic> nav) {
+  FutureOr<void> interpret(Map<String, dynamic> nav, RemoteSession session) {
     assert(
       nav.mGetM('RapportSaisie')?.isNotEmpty ?? true,
       'Update request unsuccessful',

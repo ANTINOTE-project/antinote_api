@@ -6,9 +6,7 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-abstract class const StatefulAccessor<R, S>() {
-  FutureOr<S> collectState(RemoteSession session);
-
+abstract class const Accessor<R>() {
   bool get exclusiveFriendly;
 
   int? get page;
@@ -18,7 +16,7 @@ abstract class const StatefulAccessor<R, S>() {
     Completer<void>? cancellationSignal,
   );
 
-  FutureOr<R> interpret(Map<String, dynamic> nav, S state);
+  FutureOr<R> interpret(Map<String, dynamic> nav, RemoteSession state);
 
   List<VisualNavigator> store(R result);
 
@@ -31,38 +29,10 @@ abstract class const StatefulAccessor<R, S>() {
     }
 
     final accessed = await access(session, cancellationSignal);
-    final interpreted = await interpret(accessed, await collectState(session));
+    final interpreted = await interpret(accessed, session);
 
     session.updateCache(store(interpreted), accessed);
 
     return interpreted;
   }
-}
-
-abstract class const StatelessAccessor<R>() extends StatefulAccessor<R, void> {
-  FutureOr<R> interpretStateless(Map<String, dynamic> nav);
-
-  @override
-  FutureOr<R> interpret(Map<String, dynamic> nav, void state) =>
-      interpretStateless(nav);
-
-  @override
-  Future<R> fetch(
-    RemoteSession session,
-    Completer<void>? cancellationSignal,
-  ) async {
-    if (page != null) {
-      await session.ensurePage(page!);
-    }
-
-    final accessed = await access(session, cancellationSignal);
-    final interpreted = await interpretStateless(accessed);
-
-    session.updateCache(store(interpreted), accessed);
-
-    return interpreted;
-  }
-
-  @override
-  Future<void> collectState(RemoteSession session) => Future.value(null);
 }

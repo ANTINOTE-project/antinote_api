@@ -8,7 +8,7 @@ import 'package:antinote/src/models/date.dart';
 import 'package:antinote/src/models/menu/page.dart';
 
 final class const MenuPageAccessor({required final DateTime date})
-    extends StatelessAccessor<MenuPage> {
+    extends Accessor<MenuPage> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -36,8 +36,10 @@ final class const MenuPageAccessor({required final DateTime date})
   }
 
   @override
-  FutureOr<MenuPage> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<MenuPage> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(MenuPage result) => [.stay(result)];

@@ -9,7 +9,7 @@ import 'package:antinote/src/models/news/display_mode.dart';
 import 'package:antinote/src/models/news/page.dart';
 
 final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
-    extends StatelessAccessor<NewsPage> {
+    extends Accessor<NewsPage> {
   const NewsPageAccessor.defaultMode() : this(modes: const [.reception]);
 
   @override
@@ -43,8 +43,10 @@ final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
   }
 
   @override
-  FutureOr<NewsPage> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<NewsPage> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(NewsPage result) => [.stay(result)];

@@ -11,7 +11,7 @@ import 'package:antinote/src/models/user/resource.dart';
 final class const TimetableAccessor({
   required final UserResource resource,
   required final Map<String, dynamic> extra,
-}) extends StatefulAccessor<Timetable, RemoteSession> {
+}) extends Accessor<Timetable> {
   factory TimetableAccessor.forRange({
     required UserResource resource,
     required DateTime from,
@@ -97,9 +97,6 @@ final class const TimetableAccessor({
         )
         .thenField(session.stack.vocab.data);
   }
-
-  @override
-  FutureOr<RemoteSession> collectState(RemoteSession session) => session;
 
   @override
   FutureOr<Timetable> interpret(

@@ -9,8 +9,8 @@ import 'package:antinote/src/models/home_page/widget.dart';
 
 final class const HomePage({
   required final List<HomePageWidget> widgets,
-  required final bool duringDisconnectionPeriod,
-  required final DisconnectionPeriodData? disconnectionPeriodData,
+  required final bool duringOffTime,
+  required final OffTimeParameters? offTimeParameters,
 }) with VisualIdMixin {
   factory decode(Map<String, dynamic> nav, RemoteSession session) {
     final elements = widgetDefinitions
@@ -19,16 +19,13 @@ final class const HomePage({
         .toList(growable: true);
 
     final offData = nav.has('infosDroitDeconnexion')
-        ? DisconnectionPeriodData.decode(
-            session,
-            nav.go('infosDroitDeconnexion'),
-          )
+        ? OffTimeParameters.decode(session, nav.go('infosDroitDeconnexion'))
         : null;
 
     return HomePage(
       widgets: elements,
-      duringDisconnectionPeriod: nav.getB('estDansUnePeriodeDeDeconnexion'),
-      disconnectionPeriodData: offData,
+      duringOffTime: nav.getB('estDansUnePeriodeDeDeconnexion'),
+      offTimeParameters: offData,
     );
   }
 
@@ -40,8 +37,8 @@ final class const HomePage({
 
   @override
   List<VisualNavigator> get toStore => [
-    if (disconnectionPeriodData != null)
-      .go(disconnectionPeriodData!, field: 'infosDroitDeconnexion'),
+    if (offTimeParameters != null)
+      .go(offTimeParameters!, field: 'infosDroitDeconnexion'),
 
     for (final widget in widgets) ...widget.toStore,
   ];

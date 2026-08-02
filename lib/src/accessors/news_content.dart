@@ -5,7 +5,7 @@ import 'package:antinote/antinote.dart';
 final class const NewsContentAccessor({
   required final NewsDisplayMode mode,
   required final News baseNews,
-}) extends StatelessAccessor<NewsContent> {
+}) extends Accessor<NewsContent> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -40,7 +40,10 @@ final class const NewsContentAccessor({
   }
 
   @override
-  FutureOr<NewsContent> interpretStateless(Map<String, dynamic> nav) {
+  FutureOr<NewsContent> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) {
     assert(
       nav.getM('detailsActualite').length == 1,
       'Other unexpected fields were found in the news details response.',

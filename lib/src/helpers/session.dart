@@ -57,10 +57,10 @@ class RemoteSession with SerializableObject<SerializedSession> {
             content,
             stack.temporaryWorkspace,
           ),
-          .userParameters => UserParameters.decode(content),
+          .userParameters => UserParameters.decode(this, content),
           .authenticationData => AuthenticationResponse.decode(content),
           .challenge => Challenge.decode(content),
-          .offPeriod => DisconnectionPeriodData.decode(this, content),
+          .offPeriod => OffTimeParameters.decode(this, content),
           null => throw UnimplementedError(
             'Unknown serializable entry name ${cacheType.name}:$visualId.',
           ),
@@ -103,7 +103,7 @@ class RemoteSession with SerializableObject<SerializedSession> {
   }
 
   Future<T> access<T>(
-    StatefulAccessor<T, dynamic> accessor, {
+    Accessor<T> accessor, {
     Completer<void>? cancellationSignal,
   }) async {
     return await accessor.fetch(this, cancellationSignal);

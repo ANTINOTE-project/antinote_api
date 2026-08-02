@@ -9,7 +9,7 @@ import 'package:antinote/src/models/notebook/entry/entry.dart';
 import 'package:antinote/src/models/notebook/page.dart';
 
 final class const NotebookEntryAccessor({required final String entryId})
-    extends StatelessAccessor<NotebookEntry> {
+    extends Accessor<NotebookEntry> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -38,7 +38,10 @@ final class const NotebookEntryAccessor({required final String entryId})
   }
 
   @override
-  FutureOr<NotebookEntry> interpretStateless(Map<String, dynamic> nav) {
+  FutureOr<NotebookEntry> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) {
     assert(
       nav.getLM('ListeCahierDeTextes').length == 1,
       'Got multiple (or no) entries from function call donnesContenusCDT',

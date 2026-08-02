@@ -9,7 +9,7 @@ import 'package:antinote/src/models/discussion/page.dart';
 final class const DiscussionPageAccessor({
   required final bool showRead,
   required final bool withMessages,
-}) extends StatelessAccessor<DiscussionPage> {
+}) extends Accessor<DiscussionPage> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -38,8 +38,10 @@ final class const DiscussionPageAccessor({
   }
 
   @override
-  FutureOr<DiscussionPage> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<DiscussionPage> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(DiscussionPage result) => [.stay(result)];

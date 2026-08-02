@@ -4,7 +4,7 @@ import 'package:antinote/antinote.dart';
 
 final class const HomePageAccessor({
   required final List<HomePageModule>? modules,
-}) extends StatefulAccessor<HomePage, RemoteSession> {
+}) extends Accessor<HomePage> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -25,7 +25,8 @@ final class const HomePageAccessor({
                 for (final module in modules ?? <HomePageModule>[])
                   ...module.data(session),
 
-                if (modules != null)
+                if (modules != null &&
+                    !modules!.any((element) => !element.canQuerySpecifically))
                   'widgets': modules!.mapL((e) => e.widget.id),
               },
             },
@@ -34,9 +35,6 @@ final class const HomePageAccessor({
         )
         .thenField(session.stack.vocab.data);
   }
-
-  @override
-  FutureOr<RemoteSession> collectState(RemoteSession session) => session;
 
   @override
   FutureOr<HomePage> interpret(Map<String, dynamic> nav, RemoteSession state) =>
@@ -48,6 +46,10 @@ final class const HomePageAccessor({
 
 final class const HomePageModule({
   required final HomePageWidgetType widget,
+
+  /// Unfortunately, some widget's can't be fetched individually (functionality
+  /// wasn't implemented by remote). When we need to fetch one of those widgets,
+  /// we resort to fetching the whole page.
   final canQuerySpecifically = false,
   required final Map<String, dynamic> Function(RemoteSession session) data,
 });

@@ -11,7 +11,7 @@ import 'package:antinote/src/models/discussion/node.dart';
 final class const DiscussionAccessor({
   required final DiscussionRootNode node,
   final bool markAsRead = true,
-}) extends StatelessAccessor<Discussion> {
+}) extends Accessor<Discussion> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -46,8 +46,10 @@ final class const DiscussionAccessor({
   }
 
   @override
-  FutureOr<Discussion> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<Discussion> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(Discussion result) => [.stay(result)];

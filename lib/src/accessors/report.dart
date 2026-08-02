@@ -12,7 +12,7 @@ enum ReportSection { student, clazz }
 final class const ReportAccessor({
   required final ReportSection section,
   required final Period period,
-}) extends StatelessAccessor<BaseReport> {
+}) extends Accessor<BaseReport> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -43,8 +43,10 @@ final class const ReportAccessor({
       .thenField(session.stack.vocab.data);
 
   @override
-  FutureOr<BaseReport> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<BaseReport> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(BaseReport result) => []; // TODO: Populate this.

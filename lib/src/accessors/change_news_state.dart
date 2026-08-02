@@ -12,7 +12,7 @@ final class const NewsUpdate({
 
 final class const ChangeNewsStateAccessor({
   required final Map<News, NewsUpdate> updatesToPerform,
-}) extends StatelessAccessor<void> {
+}) extends Accessor<void> {
   @override
   bool get exclusiveFriendly => false;
 
@@ -86,7 +86,7 @@ final class const ChangeNewsStateAccessor({
   }
 
   @override
-  FutureOr<void> interpretStateless(Map<String, dynamic> nav) {
+  FutureOr<void> interpret(Map<String, dynamic> nav, RemoteSession session) {
     assert(
       nav.mGetM('RapportSaisie')?.isNotEmpty ?? true,
       'Update request unsuccessful',

@@ -11,7 +11,7 @@ import 'package:antinote/src/models/authentication_response.dart';
 
 final class const AuthenticationAccessor({
   required final Uint8List challengeSolution,
-}) extends StatelessAccessor<AuthenticationResponse> {
+}) extends Accessor<AuthenticationResponse> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -41,8 +41,10 @@ final class const AuthenticationAccessor({
   }
 
   @override
-  AuthenticationResponse interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  AuthenticationResponse interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(AuthenticationResponse result) => [.stay(result)];

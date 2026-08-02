@@ -51,13 +51,15 @@ final class const UserResource({
       name: nav.get('L'),
       studentClass: nav.mGo('classeDEleve').inn((value) => .decode(value)),
       establishmentName: nav.mGo('Etablissement')?.get('L'),
-      profilePicture: (nav.get('avecPhoto') ?? false)
-          ? nav.get('photoBase64')
-          : null,
-      isDirector: nav.get('estDirecteur') ?? false,
-      isDelegate: nav.get('estDelegue') ?? false,
-      isMemberCa: nav.get('estMembreCA') ?? false,
+      profilePicture: nav.getB('avecPhoto') ? nav.get('photoBase64') : null,
+      isDirector: nav.getB('estDirecteur'),
+      isDelegate: nav.getB('estDelegue'),
+      isMemberCa: nav.getB('estMembreCA'),
       tabsForPeriods: tabs,
+      // TODO: To add:
+      // - Useful numbers (listeNumerosUtiles)
+      // - Group list (listeGroupes)
+      // - historical classes (listeClassesHistoriques)
     );
   }
 

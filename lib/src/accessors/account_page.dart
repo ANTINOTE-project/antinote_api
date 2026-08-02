@@ -6,7 +6,7 @@ import 'package:antinote/src/helpers/call/call.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/models/account/page.dart';
 
-final class const AccountPageAccessor() extends StatelessAccessor<AccountPage> {
+final class const AccountPageAccessor() extends Accessor<AccountPage> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -30,8 +30,10 @@ final class const AccountPageAccessor() extends StatelessAccessor<AccountPage> {
   }
 
   @override
-  FutureOr<AccountPage> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<AccountPage> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(AccountPage result) => [];

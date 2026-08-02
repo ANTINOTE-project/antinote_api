@@ -5,13 +5,12 @@ import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/call/call.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/models/instance_parameters/shared.dart';
-import 'package:antinote/src/models/workspace/workspace.dart';
 
 final class const InstanceParametersAccessor({
   final String? navIdentifier,
   final String? ivUuid,
   final String? casToken,
-}) extends StatefulAccessor<InstanceParameters, Workspace> {
+}) extends Accessor<InstanceParameters> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -39,14 +38,10 @@ final class const InstanceParametersAccessor({
       .thenField(session.stack.vocab.data);
 
   @override
-  FutureOr<Workspace> collectState(RemoteSession session) =>
-      session.stack.temporaryWorkspace;
-
-  @override
   FutureOr<InstanceParameters> interpret(
     Map<String, dynamic> nav,
-    Workspace tempWorkspace,
-  ) => .decode(nav, tempWorkspace, casToken: casToken);
+    RemoteSession session,
+  ) => .decode(nav, session.stack.temporaryWorkspace, casToken: casToken);
 
   @override
   List<VisualNavigator> store(InstanceParameters result) => [.stay(result)];

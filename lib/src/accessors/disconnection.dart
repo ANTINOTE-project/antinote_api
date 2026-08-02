@@ -5,7 +5,7 @@ import 'package:antinote/src/helpers/cache.dart';
 import 'package:antinote/src/helpers/call/call.dart';
 import 'package:antinote/src/helpers/session.dart';
 
-final class DisconnectionAccessor extends StatelessAccessor<void> {
+final class DisconnectionAccessor extends Accessor<void> {
   final bool logged;
 
   const DisconnectionAccessor.logged() : logged = true;
@@ -38,7 +38,8 @@ final class DisconnectionAccessor extends StatelessAccessor<void> {
   }
 
   @override
-  FutureOr<void> interpretStateless(Map<String, dynamic> nav) => null;
+  FutureOr<void> interpret(Map<String, dynamic> nav, RemoteSession session) =>
+      null;
 
   @override
   List<VisualNavigator> store(void result) => [];

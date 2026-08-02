@@ -8,7 +8,7 @@ import 'package:antinote/src/models/grades/page.dart';
 import 'package:antinote/src/models/period.dart';
 
 final class const LatestGradesPageAccessor({required final Period period})
-    extends StatelessAccessor<LatestGradesPage> {
+    extends Accessor<LatestGradesPage> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -36,8 +36,10 @@ final class const LatestGradesPageAccessor({required final Period period})
   }
 
   @override
-  FutureOr<LatestGradesPage> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<LatestGradesPage> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(LatestGradesPage result) => [.stay(result)];

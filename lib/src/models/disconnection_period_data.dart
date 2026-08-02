@@ -5,7 +5,7 @@ import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/helpers/visual_id.dart';
 
-final class const DisconnectionPeriodData({
+final class const OffTimeParameters({
   required final bool gradesPublicationPauseActive,
   required final int gradesPublicationHour,
   required final int gradesPublicationDelay,
@@ -26,7 +26,7 @@ final class const DisconnectionPeriodData({
     final homework = nav.mGo('taf');
     final communication = nav.mGo('messagerie');
 
-    return DisconnectionPeriodData(
+    return OffTimeParameters(
       gradesPublicationPauseActive: grades != null,
       gradesPublicationHour: grades?.get('heurePublicationNote') ?? 0,
       gradesPublicationDelay:

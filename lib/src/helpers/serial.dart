@@ -8,12 +8,34 @@ import 'package:antinote/src/models/domain.dart';
 import 'package:antinote/src/models/grades/grade.dart';
 import 'package:protobuf/protobuf.dart';
 
+final class FileReference<T>({
+  required final dynamic rawReference,
+  required final T Function(Map<String, dynamic> nav) _resolver,
+  required final dynamic Function(T resolved) _serializer,
+}) {
+  bool _loaded = false;
+  T? value;
+
+  void resolve(Map<String, dynamic> nav) {
+    value = _resolver(nav);
+    _loaded = true;
+  }
+
+  dynamic serialize() {
+    if (!_loaded) {
+      throw StateError("Tried to serialize reference that wasn't resolved");
+    }
+
+    return _serializer(value as T);
+  }
+}
+
 const _intSetType = -1;
 const _resolvedJsonReferenceType = -2;
 
 class RemoteJsonDecoder {
   final String data;
-  List<JsonReference> references = [];
+  List<FileReference> references = [];
 
   RemoteJsonDecoder({required this.data});
 
@@ -29,10 +51,10 @@ class RemoteJsonDecoder {
     }
   }
 
-  Object? revive(Object? key, Object? value) {
+  dynamic revive(dynamic key, dynamic value) {
     if (value is! Map<String, dynamic>) return value;
 
-    if (value case {'_T': final type, 'V': final value}) {
+    if (value case {'_T': final int type, 'V': final value}) {
       final dynamic parsedValue;
 
       switch (type) {
@@ -83,7 +105,7 @@ class RemoteJsonDecoder {
         case 25:
           // This is a file. In this case, we put a reference to the file that's
           // upper and parse it later when we resolve it.
-          final ref = JsonReference(
+          final ref = FileReference(
             rawReference: value,
             resolver: (nav) => base64Decode(
               nav
@@ -93,6 +115,7 @@ class RemoteJsonDecoder {
             ),
             serializer: (resolved) => base64Encode(resolved),
           );
+
           references.add(ref);
           parsedValue = ref;
         case 26:
@@ -135,7 +158,7 @@ class RemoteJsonEncoder {
         '_T': 10,
         'V': rawContent ?? value,
       },
-      JsonReference(serialize: final serialize) => {
+      FileReference(serialize: final serialize) => {
         '_T': _resolvedJsonReferenceType,
         'V': serialize(),
       },

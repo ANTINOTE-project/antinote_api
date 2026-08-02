@@ -6,7 +6,7 @@ import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/models/challenge.dart';
 
-final class IdentificationAccessor extends StatelessAccessor<Challenge> {
+final class IdentificationAccessor extends Accessor<Challenge> {
   final String username;
   final String deviceUuid;
 
@@ -95,7 +95,8 @@ final class IdentificationAccessor extends StatelessAccessor<Challenge> {
   }
 
   @override
-  Challenge interpretStateless(Map<String, dynamic> nav) => .decode(nav);
+  Challenge interpret(Map<String, dynamic> nav, RemoteSession session) =>
+      .decode(nav);
 
   @override
   List<VisualNavigator> store(Challenge result) => [.stay(result)];

@@ -1,8 +1,10 @@
+import 'package:antinote/src/helpers/serial.dart';
+
 extension MapJsonNavigatorExt<E> on Map<String, E> {
   T get<T extends E>(String key) {
     final value = this[key];
 
-    if (value is JsonReference) {
+    if (value is FileReference) {
       assert(value.value is T);
       return value.value;
     }
@@ -101,8 +103,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
 
   bool hasAny(List<String> keys) => keys.any((key) => containsKey(key));
 
-  List<T> getL<T>(String key) =>
-      (get(key) as List<dynamic>).cast<T>();
+  List<T> getL<T>(String key) => (get(key) as List<dynamic>).cast<T>();
 
   List<T>? mGetL<T>(String key) =>
       has(key) ? (get(key) as List<dynamic>).cast<T>() : null;
@@ -144,7 +145,7 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
         .toList();
   }
 
-  Map<String, T>? eGetM<T >(Iterable<String> keys) {
+  Map<String, T>? eGetM<T>(Iterable<String> keys) {
     final correctKey = _getCorrectKey(keys);
     if (correctKey == null) return null;
 
@@ -171,7 +172,7 @@ extension ListJsonNavigatorExt<E> on List<E> {
   T get<T extends E>(int index) {
     final value = this[index];
 
-    if (value is JsonReference) {
+    if (value is FileReference) {
       assert(value.value is T);
       return value.value;
     }
@@ -179,13 +180,10 @@ extension ListJsonNavigatorExt<E> on List<E> {
     return value as T;
   }
 
-  List<T> mapL<T>(
-    T Function(E e) toElement, [
-    bool growable = false,
-  ]) => map(toElement).toList(growable: growable);
+  List<T> mapL<T>(T Function(E e) toElement, [bool growable = false]) =>
+      map(toElement).toList(growable: growable);
 
-  List<T> getL<T>(int index) =>
-      (get(index) as List<dynamic>).cast<T>();
+  List<T> getL<T>(int index) => (get(index) as List<dynamic>).cast<T>();
 
   List<Map<String, dynamic>> getLM(int index) =>
       (get(index) as List<dynamic>).cast<Map<String, dynamic>>();
@@ -196,34 +194,6 @@ extension ListJsonNavigatorExt<E> on List<E> {
   bool get empty => isEmpty;
 
   bool get notEmpty => isNotEmpty;
-}
-
-class JsonReference<T> {
-  final dynamic rawReference;
-  final T Function(Map<String, dynamic> nav) _resolver;
-  final dynamic Function(T resolved) _serializer;
-
-  bool _loaded = false;
-  T? value;
-
-  JsonReference({
-    required this.rawReference,
-    required this._resolver,
-    required this._serializer,
-  });
-
-  void resolve(Map<String, dynamic> nav) {
-    value = _resolver(nav);
-    _loaded = true;
-  }
-
-  dynamic serialize() {
-    if (!_loaded) {
-      throw StateError("Tried to serialize reference that wasn't resolved");
-    }
-
-    return _serializer(value as T);
-  }
 }
 
 /// [map1] has priority over [map2].

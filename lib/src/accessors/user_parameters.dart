@@ -6,8 +6,7 @@ import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/models/user/parameters.dart';
 
-final class const UserParametersAccessor()
-    extends StatelessAccessor<UserParameters> {
+final class const UserParametersAccessor() extends Accessor<UserParameters> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -31,8 +30,10 @@ final class const UserParametersAccessor()
   }
 
   @override
-  FutureOr<UserParameters> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<UserParameters> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(session, nav);
 
   @override
   List<VisualNavigator> store(UserParameters result) => [.stay(result)];

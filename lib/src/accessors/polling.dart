@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:antinote/antinote.dart';
 
-final class const PollingAccessor()
-    extends StatelessAccessor<Map<String, dynamic>> {
+final class const PollingAccessor() extends Accessor<Map<String, dynamic>> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -29,8 +28,9 @@ final class const PollingAccessor()
   }
 
   @override
-  FutureOr<Map<String, dynamic>> interpretStateless(
+  FutureOr<Map<String, dynamic>> interpret(
     Map<String, dynamic> nav,
+    RemoteSession session,
   ) async {
     return nav;
   }

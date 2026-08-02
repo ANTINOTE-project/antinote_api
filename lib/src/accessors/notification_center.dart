@@ -7,7 +7,7 @@ import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/models/notification/center.dart';
 
 final class const NotificationCenterAccessor()
-    extends StatelessAccessor<NotificationCenter> {
+    extends Accessor<NotificationCenter> {
   @override
   bool get exclusiveFriendly => true;
 
@@ -31,8 +31,10 @@ final class const NotificationCenterAccessor()
   }
 
   @override
-  FutureOr<NotificationCenter> interpretStateless(Map<String, dynamic> nav) =>
-      .decode(nav);
+  FutureOr<NotificationCenter> interpret(
+    Map<String, dynamic> nav,
+    RemoteSession session,
+  ) => .decode(nav);
 
   @override
   List<VisualNavigator> store(NotificationCenter result) => [];
