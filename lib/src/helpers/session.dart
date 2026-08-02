@@ -119,26 +119,20 @@ class RemoteSession with SerializableObject<SerializedSession> {
       cache[type]!.get(visualId);
 
   SpecificInstanceParameters get instance =>
-      expectAccessorNamed<SpecificInstanceParameters>(
-        SerialObjectId.instanceParameters,
-      );
+      expectAccessorNamed<SpecificInstanceParameters>(.instanceParameters);
 
   BroadInstanceParameters get broadInstance =>
-      expectAccessorNamed<BroadInstanceParameters>(
-        SerialObjectId.instanceParameters,
-      );
+      expectAccessorNamed<BroadInstanceParameters>(.instanceParameters);
 
   InstanceParameters get anyInstance => expectAccessorNamed<InstanceParameters>(
     SerialObjectId.instanceParameters,
   );
 
   UserParameters get user =>
-      expectAccessorNamed<UserParameters>(SerialObjectId.userParameters);
+      expectAccessorNamed<UserParameters>(.userParameters);
 
   AuthenticationResponse get auth =>
-      expectAccessorNamed<AuthenticationResponse>(
-        SerialObjectId.authenticationData,
-      );
+      expectAccessorNamed<AuthenticationResponse>(.authenticationData);
 
   int _currentUserResourceId = 0;
 

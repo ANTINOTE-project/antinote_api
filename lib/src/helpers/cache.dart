@@ -32,19 +32,25 @@ extension CacheExtension on RemoteSession {
               object.exchanger(rawContent).entries,
             );
 
-      if (curNav != null &&
-          cacheTypesToSerialize.contains(object.value.cacheType) &&
-          !object.value.sensitive) {
-        serializableCache.putIfAbsent(
-          object.value.cacheType!,
-          () => {},
-        )[object.value.overrideSerialId?.writtenId ??
-            object.value.visualId] = RemoteJsonEncoder(data: curNav)
-            .encode();
-      }
+      if (object.value.cacheType != null && !object.value.sensitive) {
+        if (curNav != null &&
+            cacheTypesToSerialize.contains(object.value.cacheType)) {
+          serializableCache.putIfAbsent(
+            object.value.cacheType!,
+            () => {},
+          )[object.value.overrideSerialId?.writtenId ??
+              object.value.visualId] = RemoteJsonEncoder(data: curNav)
+              .encode();
 
-      if (!object.value.sensitive && object.value.cacheType != null) {
-        cache[object.value.cacheType!]![object.value.visualId] = object.value;
+          cache[object.value.cacheType!]![object
+                      .value
+                      .overrideSerialId
+                      ?.writtenId ??
+                  object.value.visualId] =
+              object.value;
+        } else {
+          cache[object.value.cacheType!]![object.value.visualId] = object.value;
+        }
       }
 
       updateCache(object.value.toStore, curNav);

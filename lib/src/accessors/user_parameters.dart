@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:antinote/src/accessors/accessors.dart';
 import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/helpers/network_stack.dart';
 import 'package:antinote/src/helpers/session.dart';
 import 'package:antinote/src/models/user/parameters.dart';
@@ -32,17 +31,8 @@ final class const UserParametersAccessor()
   }
 
   @override
-  FutureOr<UserParameters> interpretStateless(Map<String, dynamic> nav) {
-    List<Map<String, dynamic>> resources = [
-      ...?nav.go('ressource').mGetLM('listeRessources'),
-    ];
-
-    if (resources.isEmpty) {
-      resources.add(nav.getM('ressource'));
-    }
-
-    return .decode(nav);
-  }
+  FutureOr<UserParameters> interpretStateless(Map<String, dynamic> nav) =>
+      .decode(nav);
 
   @override
   List<VisualNavigator> store(UserParameters result) => [.stay(result)];

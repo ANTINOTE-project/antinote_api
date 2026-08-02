@@ -101,7 +101,7 @@ sealed class const Credentials({
   Future<RemoteSession> createSession(SessionOptions options);
 
   Future<void> accessInstanceParameters(RemoteSession session) async {
-    if (!session.hasAccessorNamed("InstanceParameters")) {
+    if (!session.hasAccessorNamed(.instanceParameters)) {
       await session.access(
         InstanceParametersAccessor(
           navIdentifier: navIdentifier,
