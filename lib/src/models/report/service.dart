@@ -39,7 +39,7 @@ final class const ReportService({
   ) => .new(
     name: nav.get('L'),
     id: nav.get('N'),
-    active: nav.get('A'),
+    active: nav.get<bool?>('A') ?? true,
     withSubject: nav.get('AvecMatiere'),
     withSubSubject: nav.get('AvecSousMatiere'),
     withAppreciationPerSubService: nav.get('AvecAppreciationParSousService'),
@@ -85,7 +85,7 @@ final class const ReportServiceSection({
     return .new(
       name: nav.get('L'),
       id: nav.get('N'),
-      active: nav.get('A'),
+      active: nav.get<bool?>('A') ?? true,
       teachers: nav.mGetLM('ListeProfesseurs')?.mapL((e) => .decode(e)),
       appreciations: nav.getLM('ListeAppreciations').mapL((e) => .decode(e)),
       category: sectionId == null

@@ -17,7 +17,7 @@ final class const TimeSlot({
     return .new(
       index: nav.get('G'),
       label: nav.get('L'),
-      active: nav.getB('A'),
+      active: nav.get<bool?>('A') ?? true,
       timing: DateTime.utc(1970, 1, 1, hour, minute),
     );
   }
