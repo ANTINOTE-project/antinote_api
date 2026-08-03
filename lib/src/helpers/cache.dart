@@ -26,11 +26,7 @@ extension CacheExtension on RemoteSession {
     Map<String, dynamic>? rawContent,
   ) {
     for (final object in objects) {
-      final curNav = rawContent == null
-          ? null
-          : Map<String, dynamic>.fromEntries(
-              object.exchanger(rawContent).entries,
-            );
+      final curNav = rawContent == null ? null : object.exchanger(rawContent);
 
       if (object.value.cacheType != null && !object.value.sensitive) {
         if (curNav != null &&

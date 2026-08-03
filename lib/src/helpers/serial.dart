@@ -9,10 +9,19 @@ import 'package:antinote/src/models/grades/grade.dart';
 import 'package:protobuf/protobuf.dart';
 
 final class FileReference<T>({
-  required final dynamic rawReference,
   required final T Function(Map<String, dynamic> nav) _resolver,
   required final dynamic Function(T resolved) _serializer,
 }) {
+  factory resolved(T resolved, dynamic serialized) {
+    final ref = FileReference(
+      resolver: (nav) => resolved,
+      serializer: (resolved) => serialized,
+    );
+    ref.resolve(const {});
+
+    return ref;
+  }
+
   bool _loaded = false;
   T? value;
 
@@ -63,7 +72,9 @@ class RemoteJsonDecoder {
           parsedValue = (value as List).cast<int>().toSet();
         case _resolvedJsonReferenceType:
           assert(value is String);
-          parsedValue = base64Decode(value);
+
+          final decoded = base64Decode(value);
+          parsedValue = FileReference.resolved(decoded, value);
         case 15:
         case 8:
           // It's a domain.
@@ -106,7 +117,6 @@ class RemoteJsonDecoder {
           // This is a file. In this case, we put a reference to the file that's
           // upper and parse it later when we resolve it.
           final ref = FileReference(
-            rawReference: value,
             resolver: (nav) => base64Decode(
               nav
                   .getL<String>('fichiers')

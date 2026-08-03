@@ -124,6 +124,24 @@ void main() {
       expect(page.entries, isNotEmpty);
     });
 
+    test('Double Export', () async {
+      final data = session.exportBinary();
+      final newSession = await RemoteSession.restoreBinary(
+        data,
+        options: SessionOptions(debugMode: true),
+      );
+
+      expect(session.stack.sessionId, newSession.stack.sessionId);
+
+      final newData = newSession.exportBinary();
+      final newNewSession = await RemoteSession.restoreBinary(
+        newData,
+        options: SessionOptions(debugMode: true),
+      );
+
+      expect(newSession.stack.sessionId, newNewSession.stack.sessionId);
+    });
+
     tearDownAll(() async {
       await session.access(const DisconnectionAccessor.logged());
       await session.access(const DisconnectionAccessor.unlogged());
