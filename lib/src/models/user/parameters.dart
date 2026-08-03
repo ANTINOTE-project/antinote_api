@@ -23,6 +23,8 @@ final class const UserParameters({
   required final List<int> notificationTabIds,
 }) with VisualIdMixin {
   factory decode(RemoteSession session, Map<String, dynamic> nav) {
+    session.stack.log.fine('User parameters: $nav');
+
     List<Map<String, dynamic>> resources = [
       ...?nav.go('ressource').mGetLM('listeRessources'),
     ];
