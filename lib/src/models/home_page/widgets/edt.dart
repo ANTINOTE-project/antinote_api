@@ -15,8 +15,7 @@ final class const EDT({
     widget: .edt,
     canQuerySpecifically: true,
     data: (session) => {
-      'numeroSemaine': date.toRemoteWeekNumber(session),
-      'date': date,
+      'EDT': {'numeroSemaine': date.toRemoteWeekNumber(session), 'date': date},
     },
   );
 

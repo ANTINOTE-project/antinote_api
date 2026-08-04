@@ -164,8 +164,6 @@ extension MapJsonNavigatorExt<E> on Map<String, E> {
   bool notEmpty() => isNotEmpty;
 
   Iterator<MapEntry<String, E>> get iterator => entries.iterator;
-
-  // TODO: Add a system that ensures all fields of a map are read or else it gives out warnings.
 }
 
 extension ListJsonNavigatorExt<E> on List<E> {

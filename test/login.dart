@@ -29,7 +29,7 @@ void main() {
 
     test('Home page', () async {
       final day = session.instance.demoDateTime!.toDay();
-      await session.access(
+      final page = await session.access(
         HomePageAccessor(
           modules: [
             Actualites.module(),
@@ -42,6 +42,8 @@ void main() {
           ],
         ),
       );
+
+      expect(page.widgets.length, 7);
     });
 
     test('Menu page', () async {
