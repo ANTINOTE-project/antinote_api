@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:antinote/src/helpers/json.dart';
 import 'package:antinote/src/models/person.dart';
 import 'package:antinote/src/models/report/mention.dart';
+import 'package:antinote/src/models/report/orientation.dart';
 import 'package:antinote/src/models/report/service.dart';
 import 'package:antinote/src/models/user/resource.dart';
 
@@ -46,12 +47,12 @@ final class PublishedReport({
   required final Grade? studentAverage,
   required final Grade classAverage,
 
-  required final String absenceString,
-  required final String tardnessString,
-  required final String punitionsString,
-  required final String sanctionsString,
+  required final String? absenceString,
+  required final String? latenessString,
+  required final String? punitionsString,
+  required final String? sanctionsString,
 
-  required final Map<String, dynamic>? orientationData,
+  required final OrientationData? orientationData,
   required final List<dynamic>? attestationData,
   required final List<dynamic>? studentAttestationData,
 
@@ -90,11 +91,17 @@ final class PublishedReport({
       serviceWithoutGradesExists: nav.get('existeServiceSansNotes'),
       studentAverage: nav.go('General').get('MoyenneEleve'),
       classAverage: nav.go('General').get('MoyenneClasse'),
-      absenceString: nav.go('ListeAbsences').get('strAbsences'),
-      tardnessString: nav.go('ListeAbsences').get('strRetards'),
-      punitionsString: nav.go('ListeAbsences').get('strPunitions'),
-      sanctionsString: nav.go('ListeAbsences').get('strSanctions'),
-      orientationData: nav.mGo('Orientation'),
+      absenceString: nav.mGo('ListeAbsences')?.get('strAbsences'),
+      latenessString: nav.mGo('ListeAbsences')?.get('strRetards'),
+      punitionsString: nav.mGo('ListeAbsences')?.get('strPunitions'),
+      sanctionsString: nav.mGo('ListeAbsences')?.get('strSanctions'),
+      orientationData: nav
+          .mGo('Orientation')
+          .inn(
+            (e) => nav.has('eleve') && nav.get('eleve') != null
+                ? StudentOrientationData.decode(e)
+                : ClassOrientationData.decode(e),
+          ),
       attestationData: nav.mGetL('ListeAttestations'),
       studentAttestationData: nav.mGetL('listeAttestationsEleve'),
       student: nav.mGetM('eleve').inn((value) => .decode(value)),

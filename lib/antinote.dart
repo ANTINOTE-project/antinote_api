@@ -101,6 +101,7 @@ export 'src/models/person.dart';
 export 'src/models/report/appreciation.dart';
 export 'src/models/report/display_information.dart';
 export 'src/models/report/mention.dart';
+export 'src/models/report/orientation.dart';
 export 'src/models/report/report.dart';
 export 'src/models/report/service.dart';
 export 'src/models/report/service_category.dart';
