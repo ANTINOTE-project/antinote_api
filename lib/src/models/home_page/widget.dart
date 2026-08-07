@@ -1,19 +1,19 @@
 library;
 
-import 'package:antinote/src/accessors/home_page.dart';
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/datetime.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/models/exam/preview.dart';
-import 'package:antinote/src/models/grades/page.dart';
-import 'package:antinote/src/models/homework/homework.dart';
-import 'package:antinote/src/models/menu/menu.dart';
-import 'package:antinote/src/models/news/display_mode.dart';
-import 'package:antinote/src/models/news/news.dart';
-import 'package:antinote/src/models/school_life_events/school_life_events.dart';
-import 'package:antinote/src/models/timetable.dart';
-import 'package:antinote/src/models/workspace/type.dart';
+import 'package:antinote_api/src/accessors/home_page.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/datetime.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/models/exam/preview.dart';
+import 'package:antinote_api/src/models/grades/page.dart';
+import 'package:antinote_api/src/models/homework/homework.dart';
+import 'package:antinote_api/src/models/menu/menu.dart';
+import 'package:antinote_api/src/models/news/display_mode.dart';
+import 'package:antinote_api/src/models/news/news.dart';
+import 'package:antinote_api/src/models/school_life_events/school_life_events.dart';
+import 'package:antinote_api/src/models/timetable.dart';
+import 'package:antinote_api/src/models/workspace/type.dart';
 
 part 'widgets/actualites.dart';
 part 'widgets/ds.dart';

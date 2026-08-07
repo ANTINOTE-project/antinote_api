@@ -1,4 +1,4 @@
-import 'package:antinote/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/enum_id.dart';
 
 enum NewsDisplayMode implements EnumId {
   reception(0),

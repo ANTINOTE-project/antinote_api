@@ -1,4 +1,4 @@
-import 'package:antinote/src/helpers/crypto.dart';
+import 'package:antinote_api/src/helpers/crypto.dart';
 
 extension AsColorCode on String {
   int asRGB() {

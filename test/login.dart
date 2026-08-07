@@ -1,4 +1,4 @@
-import 'package:antinote/antinote.dart';
+import 'package:antinote_api/antinote_api.dart';
 import 'package:logging/logging.dart';
 import 'package:test/test.dart';
 
@@ -43,7 +43,7 @@ void main() {
         ),
       );
 
-      expect(page.widgets.length, 7);
+      expect(page.widgets.length, 5);
     });
 
     test('Menu page', () async {

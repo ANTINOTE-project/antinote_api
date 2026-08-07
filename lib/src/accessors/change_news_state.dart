@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:antinote/antinote.dart';
-import 'package:antinote/src/models/state.dart';
+import 'package:antinote_api/antinote_api.dart';
+import 'package:antinote_api/src/models/state.dart';
 
 final class const NewsUpdate({
   required final bool? read,

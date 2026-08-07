@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/enum_id.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/classes/group.dart';
-import 'package:antinote/src/models/classes/room.dart';
-import 'package:antinote/src/models/person.dart';
-import 'package:antinote/src/models/resource.dart';
-import 'package:antinote/src/models/subject/subject.dart';
-import 'package:antinote/src/models/user/resource.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/visual_id.dart';
+import 'package:antinote_api/src/models/classes/group.dart';
+import 'package:antinote_api/src/models/classes/room.dart';
+import 'package:antinote_api/src/models/person.dart';
+import 'package:antinote_api/src/models/resource.dart';
+import 'package:antinote_api/src/models/subject/subject.dart';
+import 'package:antinote_api/src/models/user/resource.dart';
 
 sealed class const ClassContent<T>({
   required final T value,

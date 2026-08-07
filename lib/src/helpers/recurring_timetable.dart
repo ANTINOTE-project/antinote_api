@@ -1,10 +1,10 @@
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/models/break.dart';
-import 'package:antinote/src/models/classes/classes.dart';
-import 'package:antinote/src/models/period.dart';
-import 'package:antinote/src/models/timetable.dart';
-import 'package:antinote/src/models/week_frequency.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/models/break.dart';
+import 'package:antinote_api/src/models/classes/classes.dart';
+import 'package:antinote_api/src/models/period.dart';
+import 'package:antinote_api/src/models/timetable.dart';
+import 'package:antinote_api/src/models/week_frequency.dart';
 
 final class RecurringClassInstance<T extends Class> {
   final T mockValue;

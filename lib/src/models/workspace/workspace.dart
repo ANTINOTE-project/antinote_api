@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/enum_id.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/models/workspace/type.dart';
-import 'package:antinote/src/protos/antinote/workspace.pb.dart';
+import 'package:antinote_api/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/models/workspace/type.dart';
+import 'package:antinote_api/src/protos/antinote/workspace.pb.dart';
 
 final class const Workspace({
   required final WorkspaceType type,

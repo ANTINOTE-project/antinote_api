@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/models/person.dart';
-import 'package:antinote/src/models/report/mention.dart';
-import 'package:antinote/src/models/report/orientation.dart';
-import 'package:antinote/src/models/report/service.dart';
-import 'package:antinote/src/models/user/resource.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/models/person.dart';
+import 'package:antinote_api/src/models/report/mention.dart';
+import 'package:antinote_api/src/models/report/orientation.dart';
+import 'package:antinote_api/src/models/report/service.dart';
+import 'package:antinote_api/src/models/user/resource.dart';
 
 import '../grades/grade.dart';
 import 'appreciation.dart';

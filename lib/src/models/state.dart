@@ -1,4 +1,4 @@
-import 'package:antinote/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/enum_id.dart';
 
 /// This is used when sending edits to the remote. The entire object should be
 /// serialized as elements / element lists that would have edit states, and an

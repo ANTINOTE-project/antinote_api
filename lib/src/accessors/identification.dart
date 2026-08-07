@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/models/challenge.dart';
+import 'package:antinote_api/src/accessors/accessors.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/network_stack.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/models/challenge.dart';
 
 final class IdentificationAccessor extends Accessor<Challenge> {
   final String username;

@@ -1,7 +1,7 @@
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/models/workspace/type.dart';
-import 'package:antinote/src/models/workspace/workspace.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/models/workspace/type.dart';
+import 'package:antinote_api/src/models/workspace/workspace.dart';
 
 // TODO: Make notification parsing exhaustive...
 final class const Notification({

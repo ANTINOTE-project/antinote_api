@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 

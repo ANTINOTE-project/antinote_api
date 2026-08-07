@@ -1,5 +1,5 @@
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/models/notification/notification.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/models/notification/notification.dart';
 
 final class const NotificationCategory({
   required final String label,

@@ -1,4 +1,4 @@
-import 'package:antinote/antinote.dart';
+import 'package:antinote_api/antinote_api.dart';
 
 final class const AccountInformation({
   /// Length is 4.

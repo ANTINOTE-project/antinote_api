@@ -1,4 +1,4 @@
-import 'package:antinote/src/helpers/serial.dart';
+import 'package:antinote_api/src/helpers/serial.dart';
 
 extension MapJsonNavigatorExt<E> on Map<String, E> {
   T get<T extends E>(String key) {

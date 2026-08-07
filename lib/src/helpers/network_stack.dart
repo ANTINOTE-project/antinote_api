@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:antinote/antinote.dart';
-import 'package:antinote/src/helpers/api_properties.dart';
-import 'package:antinote/src/helpers/serial.dart';
-import 'package:antinote/src/helpers/signatures/client.dart';
-import 'package:antinote/src/helpers/signatures/server.dart';
+import 'package:antinote_api/antinote_api.dart';
+import 'package:antinote_api/src/helpers/api_properties.dart';
+import 'package:antinote_api/src/helpers/serial.dart';
+import 'package:antinote_api/src/helpers/signatures/client.dart';
+import 'package:antinote_api/src/helpers/signatures/server.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';

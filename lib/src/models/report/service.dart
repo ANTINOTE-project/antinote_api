@@ -1,10 +1,10 @@
-import 'package:antinote/src/helpers/colors.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/models/grades/grade.dart';
-import 'package:antinote/src/models/person.dart';
-import 'package:antinote/src/models/report/appreciation.dart';
-import 'package:antinote/src/models/report/service_category.dart';
-import 'package:antinote/src/models/subject/subject.dart';
+import 'package:antinote_api/src/helpers/colors.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/models/grades/grade.dart';
+import 'package:antinote_api/src/models/person.dart';
+import 'package:antinote_api/src/models/report/appreciation.dart';
+import 'package:antinote_api/src/models/report/service_category.dart';
+import 'package:antinote_api/src/models/subject/subject.dart';
 
 final class const ReportService({
   required final String name,

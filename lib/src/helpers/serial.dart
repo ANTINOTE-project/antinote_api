@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/enum_id.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/models/date.dart';
-import 'package:antinote/src/models/domain.dart';
-import 'package:antinote/src/models/grades/grade.dart';
+import 'package:antinote_api/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/models/date.dart';
+import 'package:antinote_api/src/models/domain.dart';
+import 'package:antinote_api/src/models/grades/grade.dart';
 import 'package:protobuf/protobuf.dart';
 
 final class FileReference<T>({

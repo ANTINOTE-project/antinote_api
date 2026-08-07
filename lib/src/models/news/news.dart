@@ -1,11 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/news/category.dart';
-import 'package:antinote/src/models/news/question/question.dart';
-import 'package:antinote/src/models/person.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/visual_id.dart';
+import 'package:antinote_api/src/models/news/category.dart';
+import 'package:antinote_api/src/models/news/question/question.dart';
+import 'package:antinote_api/src/models/person.dart';
 
 final class const NewsPreviewData({
   required final bool withAttachments,

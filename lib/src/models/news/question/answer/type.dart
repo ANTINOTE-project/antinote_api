@@ -1,4 +1,4 @@
-import 'package:antinote/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/enum_id.dart';
 
 enum NewsQuestionAnswerType implements EnumId {
   receiptAcknowledgment(0),

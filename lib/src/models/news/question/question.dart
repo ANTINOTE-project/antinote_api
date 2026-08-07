@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/enum_id.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/attachment.dart';
-import 'package:antinote/src/models/news/question/answer/answer.dart';
-import 'package:antinote/src/models/news/question/answer/type.dart';
-import 'package:antinote/src/models/news/question/pick.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/visual_id.dart';
+import 'package:antinote_api/src/models/attachment.dart';
+import 'package:antinote_api/src/models/news/question/answer/answer.dart';
+import 'package:antinote_api/src/models/news/question/answer/type.dart';
+import 'package:antinote_api/src/models/news/question/pick.dart';
 
 final class const NewsQuestion({
   required final String label,

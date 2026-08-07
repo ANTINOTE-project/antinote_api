@@ -1,5 +1,5 @@
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/models/period.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/models/period.dart';
 
 final class const ReportDisplayInformation({
   required final bool withAppreciationPerSubService,

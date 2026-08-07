@@ -2,18 +2,18 @@ library;
 
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/colors.dart';
-import 'package:antinote/src/helpers/datetime.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/classes/content.dart';
-import 'package:antinote/src/models/classes/group.dart';
-import 'package:antinote/src/models/classes/room.dart';
-import 'package:antinote/src/models/notebook/entry/preview.dart';
-import 'package:antinote/src/models/person.dart';
-import 'package:antinote/src/models/subject/subject.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/colors.dart';
+import 'package:antinote_api/src/helpers/datetime.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/helpers/visual_id.dart';
+import 'package:antinote_api/src/models/classes/content.dart';
+import 'package:antinote_api/src/models/classes/group.dart';
+import 'package:antinote_api/src/models/classes/room.dart';
+import 'package:antinote_api/src/models/notebook/entry/preview.dart';
+import 'package:antinote_api/src/models/person.dart';
+import 'package:antinote_api/src/models/subject/subject.dart';
 
 part 'activity.dart';
 part 'detention.dart';

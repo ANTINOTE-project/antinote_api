@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:antinote/antinote.dart';
-import 'package:antinote/src/models/break.dart';
+import 'package:antinote_api/antinote_api.dart';
+import 'package:antinote_api/src/models/break.dart';
 
 final class const Timetable({
   required final Map<String, dynamic>? absences,

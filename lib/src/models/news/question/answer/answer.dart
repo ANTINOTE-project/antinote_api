@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/domain.dart';
-import 'package:antinote/src/models/news/question/answer/type.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/visual_id.dart';
+import 'package:antinote_api/src/models/domain.dart';
+import 'package:antinote_api/src/models/news/question/answer/type.dart';
 
 sealed class const NewsQuestionAnswer({
   /// If [withAnswer] is true, this is the ID of the answer as a String, or else

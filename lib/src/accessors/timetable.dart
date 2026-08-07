@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/models/date.dart';
-import 'package:antinote/src/models/timetable.dart';
-import 'package:antinote/src/models/user/resource.dart';
+import 'package:antinote_api/src/accessors/accessors.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/network_stack.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/models/date.dart';
+import 'package:antinote_api/src/models/timetable.dart';
+import 'package:antinote_api/src/models/user/resource.dart';
 
 final class const TimetableAccessor({
   required final UserResource resource,

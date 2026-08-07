@@ -4,10 +4,10 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:antinote/antinote.dart';
-import 'package:antinote/src/helpers/api_properties.dart';
-import 'package:antinote/src/helpers/serial.dart';
-import 'package:antinote/src/models/authentication_response.dart';
+import 'package:antinote_api/antinote_api.dart';
+import 'package:antinote_api/src/helpers/api_properties.dart';
+import 'package:antinote_api/src/helpers/serial.dart';
+import 'package:antinote_api/src/models/authentication_response.dart';
 import 'package:version/version.dart';
 
 class RemoteSession with SerializableObject<SerializedSession> {

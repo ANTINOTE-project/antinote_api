@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/call/call.dart';
-import 'package:antinote/src/helpers/session.dart';
+import 'package:antinote_api/src/accessors/accessors.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/call/call.dart';
+import 'package:antinote_api/src/helpers/session.dart';
 
 final class DisconnectionAccessor extends Accessor<void> {
   final bool logged;

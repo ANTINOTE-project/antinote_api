@@ -2,7 +2,7 @@ library;
 
 import 'dart:typed_data';
 
-import '../../../antinote.dart';
+import 'package:antinote_api/antinote_api.dart';
 
 part 'absence.dart';
 part 'delay.dart';

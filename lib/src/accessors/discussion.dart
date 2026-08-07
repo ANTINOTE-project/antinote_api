@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/models/discussion/discussion.dart';
-import 'package:antinote/src/models/discussion/node.dart';
+import 'package:antinote_api/src/accessors/accessors.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/network_stack.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/models/discussion/discussion.dart';
+import 'package:antinote_api/src/models/discussion/node.dart';
 
 final class const DiscussionAccessor({
   required final DiscussionRootNode node,

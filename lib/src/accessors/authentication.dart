@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/crypto.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/session_access_type.dart';
-import 'package:antinote/src/models/authentication_response.dart';
+import 'package:antinote_api/src/accessors/accessors.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/crypto.dart';
+import 'package:antinote_api/src/helpers/network_stack.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/helpers/session_access_type.dart';
+import 'package:antinote_api/src/models/authentication_response.dart';
 
 final class const AuthenticationAccessor({
   required final Uint8List challengeSolution,

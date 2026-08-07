@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:antinote/src/accessors/accessors.dart';
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/call/call.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/models/instance_parameters/shared.dart';
+import 'package:antinote_api/src/accessors/accessors.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/call/call.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/models/instance_parameters/shared.dart';
 
 final class const InstanceParametersAccessor({
   final String? navIdentifier,

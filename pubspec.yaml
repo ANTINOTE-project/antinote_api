@@ -1,8 +1,8 @@
-name: antinote
+name: antinote_api
 description: "La solution !"
 version: 0.0.1
 homepage: none
-repository: "https://github.com/ANTINOTE-project/antinote"
+repository: "https://github.com/ANTINOTE-project/antinote_api"
 publish_to: none
 
 environment:

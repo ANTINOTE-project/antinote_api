@@ -1,5 +1,5 @@
-import 'package:antinote/src/models/user/resource.dart';
-import 'package:antinote/src/protos/antinote/session.pb.dart';
+import 'package:antinote_api/src/models/user/resource.dart';
+import 'package:antinote_api/src/protos/antinote/session.pb.dart';
 
 extension MergeClientSignature on ClientSignature {
   ClientSignature changeTab(int newTab) {

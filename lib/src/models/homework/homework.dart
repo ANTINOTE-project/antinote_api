@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:antinote/antinote.dart';
-import 'package:antinote/src/models/theme.dart';
+import 'package:antinote_api/antinote_api.dart';
+import 'package:antinote_api/src/models/theme.dart';
 
 enum HomeworkRenderType implements EnumId {
   noRender(0, renderOnRemote: false),

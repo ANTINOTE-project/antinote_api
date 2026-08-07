@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/enum_id.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
+import 'package:antinote_api/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/visual_id.dart';
 
 enum GradeType implements EnumId {
   error(-1),

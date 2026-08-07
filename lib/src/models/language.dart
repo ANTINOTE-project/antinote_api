@@ -1,4 +1,4 @@
-import 'package:antinote/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/json.dart';
 
 final class const Language({
   required final int id,

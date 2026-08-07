@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:antinote/antinote.dart';
+import 'package:antinote_api/antinote_api.dart';
 
 final class const DiscussionPage({
   required final List<DiscussionLabel> labels,

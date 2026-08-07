@@ -5,10 +5,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/network_stack.dart';
-import 'package:antinote/src/helpers/serial.dart';
-import 'package:antinote/src/helpers/signatures/client.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/network_stack.dart';
+import 'package:antinote_api/src/helpers/serial.dart';
+import 'package:antinote_api/src/helpers/signatures/client.dart';
 import 'package:http/http.dart';
 
 part 'disconnection.dart';

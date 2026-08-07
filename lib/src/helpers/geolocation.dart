@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:antinote/antinote.dart';
+import 'package:antinote_api/antinote_api.dart';
 import 'package:http/http.dart' as http;
 
 final class GeolocatedInstance {

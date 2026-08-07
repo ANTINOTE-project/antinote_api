@@ -1,4 +1,4 @@
-import 'package:antinote/src/helpers/session.dart';
+import 'package:antinote_api/src/helpers/session.dart';
 
 class Date extends DateTime {
   Date(

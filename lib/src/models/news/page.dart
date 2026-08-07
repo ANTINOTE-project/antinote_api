@@ -1,12 +1,12 @@
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/enum_id.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/news/category.dart';
-import 'package:antinote/src/models/news/collection.dart';
-import 'package:antinote/src/models/news/question/question.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/visual_id.dart';
+import 'package:antinote_api/src/models/news/category.dart';
+import 'package:antinote_api/src/models/news/collection.dart';
+import 'package:antinote_api/src/models/news/question/question.dart';
 
 enum NewsPageRequestType(@override final int id) implements EnumId {
   display(0),

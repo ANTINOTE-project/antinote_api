@@ -1,5 +1,5 @@
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/protos/antinote/session.pb.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/protos/antinote/session.pb.dart';
 
 extension MergeServerSignature on ServerSignature {
   // Update signals:

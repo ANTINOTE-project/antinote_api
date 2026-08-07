@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/json.dart';
-import 'package:antinote/src/helpers/session.dart';
-import 'package:antinote/src/helpers/visual_id.dart';
-import 'package:antinote/src/models/disconnection_period_data.dart';
-import 'package:antinote/src/models/tab.dart';
-import 'package:antinote/src/models/user/authorizations.dart';
-import 'package:antinote/src/models/user/resource.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/session.dart';
+import 'package:antinote_api/src/helpers/visual_id.dart';
+import 'package:antinote_api/src/models/disconnection_period_data.dart';
+import 'package:antinote_api/src/models/tab.dart';
+import 'package:antinote_api/src/models/user/authorizations.dart';
+import 'package:antinote_api/src/models/user/resource.dart';
 
 final class const UserParameters({
   required final String id,

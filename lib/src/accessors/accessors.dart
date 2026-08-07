@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:core';
 
-import 'package:antinote/src/helpers/cache.dart';
-import 'package:antinote/src/helpers/session.dart';
+import 'package:antinote_api/src/helpers/cache.dart';
+import 'package:antinote_api/src/helpers/session.dart';
 import 'package:meta/meta.dart';
 
 @immutable

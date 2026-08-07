@@ -1,5 +1,5 @@
-import 'package:antinote/src/helpers/datetime.dart';
-import 'package:antinote/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/datetime.dart';
+import 'package:antinote_api/src/helpers/json.dart';
 
 extension FromRemoteDate on String {
   DateTime asRemoteDate() {

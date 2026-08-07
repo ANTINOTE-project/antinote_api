@@ -1,7 +1,7 @@
-import 'package:antinote/antinote.dart';
-import 'package:antinote/src/helpers/serial.dart';
+import 'package:antinote_api/antinote_api.dart';
+import 'package:antinote_api/src/helpers/serial.dart';
 
-export 'package:antinote/src/protos/antinote/session.pbenum.dart'
+export 'package:antinote_api/src/protos/antinote/session.pbenum.dart'
     show CacheType;
 
 typedef _BaseCacheStore<T> = Map<CacheType, Map<VisualId, T>>;
