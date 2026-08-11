@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:antinote_api/src/accessors/accessors.dart';
+import 'package:antinote_api/src/accessors/discussion_page.dart';
 import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/json.dart';
 import 'package:antinote_api/src/helpers/network_stack.dart';
@@ -16,7 +17,7 @@ final class const DiscussionAccessor({
   bool get exclusiveFriendly => true;
 
   @override
-  int? get page => 131;
+  int? get page => DiscussionPageAccessor.pageId;
 
   @override
   FutureOr<Map<String, dynamic>> access(

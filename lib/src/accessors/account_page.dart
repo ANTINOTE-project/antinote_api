@@ -10,8 +10,10 @@ final class const AccountPageAccessor() extends Accessor<AccountPage> {
   @override
   bool get exclusiveFriendly => true;
 
+  static const int pageId = 49;
+
   @override
-  int? get page => 49;
+  int? get page => pageId;
 
   @override
   FutureOr<Map<String, dynamic>> access(

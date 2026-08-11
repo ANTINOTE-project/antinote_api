@@ -386,8 +386,10 @@ final class SpecificInstanceParameters({
                   Duration.hoursPerDay)) ~/
           7;
 
-  DateTime getDateForWeekNumber(int weekNumber) {
-    return firstMonday.add(Duration(days: 7 * (weekNumber - firstWeekNumber)));
+  Date getDateForWeekNumber(int weekNumber) {
+    return firstMonday
+        .add(Duration(days: 7 * (weekNumber - firstWeekNumber)))
+        .toDay();
   }
 
   DateTime timeForSlot(TimeSlot slot, DateTime day) {

@@ -7,7 +7,10 @@ import 'package:antinote_api/src/helpers/session.dart';
 import 'package:antinote_api/src/models/period.dart';
 import 'package:antinote_api/src/models/report/report.dart';
 
-enum ReportSection { student, clazz }
+enum ReportSection(final int pageId) {
+  student(13),
+  clazz(41)
+}
 
 final class const ReportAccessor({
   required final ReportSection section,
@@ -17,10 +20,7 @@ final class const ReportAccessor({
   bool get exclusiveFriendly => true;
 
   @override
-  int? get page => switch (section) {
-    .student => 13,
-    .clazz => 41,
-  };
+  int? get page => section.pageId;
 
   @override
   FutureOr<Map<String, dynamic>> access(

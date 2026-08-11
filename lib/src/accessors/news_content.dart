@@ -10,7 +10,7 @@ final class const NewsContentAccessor({
   bool get exclusiveFriendly => true;
 
   @override
-  int? get page => 8;
+  int? get page => NewsPageAccessor.pageId;
 
   @override
   FutureOr<Map<String, dynamic>> access(

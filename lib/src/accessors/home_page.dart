@@ -8,8 +8,10 @@ final class const HomePageAccessor({
   @override
   bool get exclusiveFriendly => true;
 
+  static const int pageId = 7;
+
   @override
-  int? get page => 7;
+  int? get page => pageId;
 
   @override
   FutureOr<Map<String, dynamic>> access(

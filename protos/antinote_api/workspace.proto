@@ -1,5 +1,5 @@
 syntax = "proto3";
-package antinote;
+package antinote_api;
 
 message SerializedWorkspace {
   uint32 type_index = 1;

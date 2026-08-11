@@ -4,7 +4,6 @@ import 'package:antinote_api/src/accessors/accessors.dart';
 import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/network_stack.dart';
 import 'package:antinote_api/src/helpers/session.dart';
-import 'package:antinote_api/src/models/date.dart';
 import 'package:antinote_api/src/models/timetable.dart';
 import 'package:antinote_api/src/models/user/resource.dart';
 
@@ -20,15 +19,8 @@ final class const TimetableAccessor({
     return TimetableAccessor(
       resource: resource,
       extra: {
-        ...propertyCaseInsensitive('dateDebut', {
-          '_T': 7,
-          'V': from.asRemoteDate(),
-        }),
-        if (to != null)
-          ...propertyCaseInsensitive('dateFin', {
-            '_T': 7,
-            'V': to.asRemoteDate(),
-          }),
+        ...propertyCaseInsensitive('dateDebut', from),
+        if (to != null) ...propertyCaseInsensitive('dateFin', to),
       },
     );
   }
@@ -62,10 +54,12 @@ final class const TimetableAccessor({
   @override
   bool get exclusiveFriendly => true;
 
+  static const int pageId = 16;
+
   @override
   // There are plenty pages that use this request, but since we currently only
   // support the student session, we keep only one page.
-  int? get page => 16;
+  int? get page => TimetableAccessor.pageId;
 
   @override
   FutureOr<Map<String, dynamic>> access(

@@ -15,6 +15,8 @@ final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
   @override
   bool get exclusiveFriendly => true;
 
+  static const int pageId = 8;
+
   @override
   int? get page => 8;
 

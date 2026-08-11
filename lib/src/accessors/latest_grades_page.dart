@@ -12,8 +12,10 @@ final class const LatestGradesPageAccessor({required final Period period})
   @override
   bool get exclusiveFriendly => true;
 
+  static const int pageId = 198;
+
   @override
-  int? get page => 198;
+  int? get page => LatestGradesPageAccessor.pageId;
 
   @override
   FutureOr<Map<String, dynamic>> access(

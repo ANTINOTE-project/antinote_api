@@ -1,7 +1,7 @@
 syntax = "proto3";
-package antinote;
+package antinote_api;
 
-import "protos/antinote/workspace.proto";
+import "protos/antinote_api/workspace.proto";
 
 message SerializedCrypto {
   // 16 bytes for the AES Initialization Vector used in the relevant session.

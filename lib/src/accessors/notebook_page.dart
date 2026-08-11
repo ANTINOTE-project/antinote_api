@@ -4,14 +4,17 @@ import 'package:antinote_api/src/accessors/accessors.dart';
 import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/network_stack.dart';
 import 'package:antinote_api/src/helpers/session.dart';
-import 'package:antinote_api/src/models/date.dart';
 import 'package:antinote_api/src/models/domain.dart';
 import 'package:antinote_api/src/models/notebook/page.dart';
 
-enum NotebookSection { homework, resources }
+enum NotebookSection(final int pageId) {
+  homework(88),
+  resources(89)
+}
 
 final class NotebookPageAccessor extends Accessor<NotebookPage> {
   final NotebookSection section;
+
   final Set<int>? weeks;
   final DateTime? date;
   final bool? onlyAccessResources;
@@ -44,10 +47,7 @@ final class NotebookPageAccessor extends Accessor<NotebookPage> {
   bool get exclusiveFriendly => true;
 
   @override
-  int? get page => switch (section) {
-    .homework => 88,
-    .resources => 89,
-  };
+  int? get page => section.pageId;
 
   @override
   FutureOr<Map<String, dynamic>> access(
@@ -61,7 +61,7 @@ final class NotebookPageAccessor extends Accessor<NotebookPage> {
             dataSec: {
               session.stack.vocab.data: {
                 if (weeks != null) 'domaine': {'_T': 8, 'V': weeks!.asDomain()},
-                if (date != null) 'date': {'_T': 7, 'V': date!.asRemoteDate()},
+                'date': ?date,
                 if (onlyAccessResources == true) 'estRequeteRP': true,
                 if (onlyAccessResources == false) 'sansRequeteRP': true,
               },
