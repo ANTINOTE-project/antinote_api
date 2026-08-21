@@ -392,6 +392,11 @@ final class SpecificInstanceParameters({
         .toDay();
   }
 
+  List<Date> getDaysForWeekNumber(int weekNumber) {
+    final base = getDateForWeekNumber(weekNumber);
+    return [for (int i = 0; i < 7; i++) base.add(Duration(days: i)).toDay()];
+  }
+
   DateTime timeForSlot(TimeSlot slot, DateTime day) {
     return day.copyWith(hour: slot.timing.hour, minute: slot.timing.minute);
   }
