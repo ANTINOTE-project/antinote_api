@@ -1,15 +1,11 @@
-# ANTINOTE API
-
-> [!IMPORTANT]
-> Le projet ANTINOTE n'est en aucun cas lié à Index-Education.
-
-> [!NOTE] 
-> L'utilisation de ce logiciel est régie par la licence
-> MIT ; il est fourni "en l'état", sans garantie d'aucune sorte quant à son utilisation.
-
 > [!WARNING]
 > Veuillez suivre le lien suivant pour accéder à
 > **[l'application ANTINOTE](https://github.com/ANTINOTE-project/antinote_app)**.
+
+# ANTINOTE API
+
+> Le projet ANTINOTE n'est en aucun cas lié à Index-Education. L'utilisation de ce logiciel est régie par la licence
+> BSD ; il est fourni "en l'état", sans garantie d'aucune sorte quant à son utilisation.
 
 Librairie Dart permettant de communiquer avec une instance PRONOTE d'Index-Education.
 
@@ -122,7 +118,7 @@ reconnecter est nécessaire pour continuer à interagir avec le compte connecté
 
 ## Contribution
 Les contributions sont encouragées. Nous n'interdisons pas l'usage de l'intelligence artificielle. Cependant, nous
-demandons au contributeur d'être responsable de son code, de la comprendre, et de savoir le modifier en conséquence de
+demandons au contributeur d'être responsable de son code, de le comprendre, et de savoir le modifier en conséquence de
 nos commentaires.
 
 Veuillez vous rapprocher vers des contributeurs existants pour demander conseil. Ce contact peut se faire grâce à
