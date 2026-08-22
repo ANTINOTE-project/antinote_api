@@ -10,7 +10,6 @@ extension FromRemoteDate on String {
     final longDateShortHoursRe = RegExp(
       r'^\d{1,2}/\d{1,2}/\d{2} \d{1,2}h\d{1,2}$',
     );
-    final yearFirstTwoChars = DateTime.now().year ~/ 100 * 100;
 
     if (shortDateRe.hasMatch(this)) {
       final [day, month, year] = split('/').mapL(int.parse);
@@ -24,6 +23,8 @@ extension FromRemoteDate on String {
 
       return DateTime.utc(year, month, day, hours, minutes, seconds);
     } else if (longDateShortHoursRe.hasMatch(this)) {
+      final yearFirstTwoChars = DateTime.now().year ~/ 100 * 100;
+
       final [date, time] = split(' ');
       final [day, month, year] = date.split('/').mapL(int.parse);
 
