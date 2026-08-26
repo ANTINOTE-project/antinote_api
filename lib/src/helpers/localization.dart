@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:antinote_api/src/helpers/enum_id.dart';
 import 'package:antinote_api/src/models/grades/grade.dart';
@@ -127,7 +128,10 @@ GradeType gradeType(String type) {
   for (final locale in LocaleData.values) {
     final val = locale.gradeTypes[type];
     if (val == null) {
-      if (type.contains(locale.congratulationsIdentifier, 1)) {
+      if (type.contains(
+        locale.congratulationsIdentifier,
+        min(1, type.length - 1),
+      )) {
         return .congratulations;
       }
 
