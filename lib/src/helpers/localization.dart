@@ -94,14 +94,12 @@ enum LocaleData(
       "inid": .inapt,
       "n.con": .notHanded,
     },
-    congratulationsIdentifier: 'L',
+    congratulationsIdentifier: 'l',
   );
 }
 
-a(param0, $, absent) {}
-
 LocaleData get curLocaleId =>
-    switch (Intl.shortLocale(Intl.defaultLocale ?? Intl.systemLocale)) {
+    switch (Intl.shortLocale(Intl.getCurrentLocale())) {
       'fr' => .french,
       'es' => .spanish,
       'en' => .english,
@@ -151,4 +149,13 @@ GradeType gradeType(String type) {
   }
 
   return .error;
+}
+
+String cleanRawGrade(String rawGrade) {
+  rawGrade = rawGrade.trim().toLowerCase();
+  for (final locale in LocaleData.values) {
+    rawGrade = rawGrade.replaceFirst(locale.congratulationsIdentifier, '');
+  }
+
+  return rawGrade;
 }

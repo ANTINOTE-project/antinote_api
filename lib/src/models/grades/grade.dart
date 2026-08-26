@@ -30,6 +30,8 @@ final class const Grade({
   required final String? rawContent,
 }) {
   factory Grade.decodeString(String rawGrade, {int decimalPlaces = 2}) {
+    // TODO: The congratulations are disabled behind a flag that's probably in
+    // TODO: the instance parameters, we need to check it.
     final type = _gradeType(rawGrade);
 
     double value = _gradeValue(rawGrade);
@@ -43,7 +45,7 @@ final class const Grade({
       type: type,
       grade: grade,
       value: value,
-      maxValue: 0,
+      maxValue: _gradeMax(rawGrade),
       rawContent: rawGrade,
     );
   }
@@ -87,7 +89,18 @@ final class const Grade({
   }
 
   static double _gradeValue(String raw) {
-    return double.tryParse(raw.replaceAll(',', '.')) ?? double.nan;
+    return double.tryParse(
+          cleanRawGrade(raw.split('|').first.replaceAll(',', '.')),
+        ) ??
+        double.nan;
+  }
+
+  static double _gradeMax(String raw) {
+    final max = raw.split('|').elementAtOrNull(2);
+    if (max == null) return 0;
+
+    return double.tryParse(cleanRawGrade(max.replaceAll(',', '.'))) ??
+        double.nan;
   }
 
   static String getGrade(double value, {int decimalPlaces = 2}) {
