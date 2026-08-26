@@ -110,7 +110,7 @@ LocaleData get curLocaleId =>
       _ => .french,
     };
 
-Cookie get localeCookie => Cookie('ielang', curLocaleId.toString());
+Cookie get localeCookie => Cookie('ielang', curLocaleId.id.toString());
 
 int? weekday(String value) {
   value = value.trim().toLowerCase();
