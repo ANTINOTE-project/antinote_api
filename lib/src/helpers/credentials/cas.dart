@@ -25,7 +25,6 @@ final class const CasCredentials({
       cookies: [
         if (casToken != null) Cookie('validationAppliMobile', casToken),
         Cookie('uuidAppliMobile', deviceUuid),
-        Cookie('ielang', '1033'),
         // Cookie('appliMobile', '1'),
       ],
     );

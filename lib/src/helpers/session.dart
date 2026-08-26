@@ -6,6 +6,7 @@ import 'dart:typed_data';
 
 import 'package:antinote_api/antinote_api.dart';
 import 'package:antinote_api/src/helpers/api_properties.dart';
+import 'package:antinote_api/src/helpers/localization.dart';
 import 'package:antinote_api/src/helpers/serial.dart';
 import 'package:antinote_api/src/models/authentication_response.dart';
 import 'package:version/version.dart';
@@ -207,6 +208,7 @@ class RemoteSession with SerializableObject<SerializedSession> {
       'Fetching  ${seedRequest.uri.pathSegments.last} at ${seedRequest.uri}',
     );
 
+    seedRequest.cookies.add(localeCookie);
     if (cookies?.isNotEmpty ?? false) {
       seedRequest.cookies.addAll(cookies!);
     }
@@ -305,9 +307,7 @@ class RemoteSession with SerializableObject<SerializedSession> {
         remoteVersion: remoteVersion,
         demo: seed.getB('d'),
         http: seed.getB('http'),
-        poll:
-            seed.getB('poll') ||
-            remoteVersion >= Version(2025, 1, 3),
+        poll: seed.getB('poll') || remoteVersion >= Version(2025, 1, 3),
         rsaFromConstants: rsaFromConstants,
         skipCompression: skipCompression,
         skipEncryption: skipEncryption,

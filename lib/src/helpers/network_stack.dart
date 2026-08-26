@@ -6,6 +6,7 @@ import 'dart:typed_data';
 
 import 'package:antinote_api/antinote_api.dart';
 import 'package:antinote_api/src/helpers/api_properties.dart';
+import 'package:antinote_api/src/helpers/localization.dart';
 import 'package:antinote_api/src/helpers/serial.dart';
 import 'package:antinote_api/src/helpers/signatures/client.dart';
 import 'package:antinote_api/src/helpers/signatures/server.dart';
@@ -316,7 +317,8 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
       final req = await call.serialize(
         this,
         await client.postUrl(payload.uri)
-          ..cookies.addAll(cookies),
+          ..cookies.addAll(cookies)
+          ..cookies.add(localeCookie),
         payload.orderId,
         debugMode: debugMode,
       );

@@ -2,11 +2,13 @@ import 'dart:typed_data';
 
 import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/localization.dart';
 import 'package:antinote_api/src/helpers/visual_id.dart';
 
 final class const MessageRecipient({required final String id})
     with VisualIdMixin {
   factory decode(Map<String, dynamic> nav) => .new(id: nav.get('N'));
+
   @override
   CacheType? get cacheType => null;
 
@@ -158,28 +160,20 @@ final class const DiscussionRootNode({
         );
 
         if (matchedCombination == null) {
-          // We fallback to now because this might make important messages sink to
-          // the bottom of the discussion list if we set the date to epoch.
+          // We fallback to now because this might make important messages sink
+          // to the bottom of the discussion list if we set the date to epoch.
           parsedDate = DateTime.now().copyWith(isUtc: true);
         } else {
-          // Trickiest to implement as to know which day it is, we need to match a localized weekday name to a date...
-          // TODO: Add localization probably with intl
+          // Trickiest to implement as to know which day it is, we need to match
+          // a localized weekday name to a date...
           final curAttempt = DateTime.now().copyWith(
             isUtc: true,
             hour: int.tryParse(matchedCombination.namedGroup('hour')!),
             minute: int.tryParse(matchedCombination.namedGroup('minute')!),
           );
 
-          final weekDay = switch (matchedCombination.namedGroup('weekday')) {
-            'lundi' => DateTime.monday,
-            'mardi' => DateTime.tuesday,
-            'mercredi' => DateTime.wednesday,
-            'jeudi' => DateTime.thursday,
-            'vendredi' => DateTime.friday,
-            'samedi' => DateTime.saturday,
-            'dimanche' => DateTime.sunday,
-            _ => null,
-          };
+          final rawWeekday = matchedCombination.namedGroup('weekday');
+          final weekDay = rawWeekday == null ? null : weekday(rawWeekday);
 
           if (weekDay != null) {
             parsedDate = curAttempt.subtract(

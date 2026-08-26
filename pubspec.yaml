@@ -19,6 +19,7 @@ dependencies:
   mime: ^2.0.0 # Used to determine MIME type from extension and header bytes.
   path: ^1.9.1 # Gets file extensions safely.
   cross_file: ^0.3.4+2 # Very flutter-adjacent, will be replaced later... TODO
+  intl: ^0.20.3 # Used to determine the language code to send to remote
 
   # Stream utils
   convert: ^3.1.2 # Used to get nice sinks for conversions. It is a transient dependency.

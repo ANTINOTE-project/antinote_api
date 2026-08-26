@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:antinote_api/src/helpers/enum_id.dart';
+import 'package:antinote_api/src/helpers/localization.dart';
 import 'package:antinote_api/src/helpers/visual_id.dart';
 
 enum GradeType implements EnumId {
@@ -13,7 +14,7 @@ enum GradeType implements EnumId {
   notHanded(5),
   absentZero(6),
   notHandedZero(7),
-  felicitations(8);
+  congratulations(8);
 
   @override
   final int id;
@@ -35,7 +36,6 @@ final class const Grade({
     if ([GradeType.absentZero, GradeType.notHandedZero].contains(type)) {
       value = 0;
     }
-    // TODO: Add handling stuff at line 6850 of eleve.js when data about grades is parsed.
 
     final grade = getGrade(value, decimalPlaces: decimalPlaces);
 
@@ -52,11 +52,11 @@ final class const Grade({
     final grade = getGrade(rawGrade, decimalPlaces: decimalPlaces);
 
     return Grade(
-      type: GradeType.note,
+      type: .note,
       grade: grade,
       value: rawGrade,
       maxValue: 0,
-      rawContent: null,
+      rawContent: rawGrade.toString(),
     );
   }
 
@@ -83,8 +83,7 @@ final class const Grade({
       return GradeType.values.byId(int.parse(raw.split('|')[1]));
     }
 
-    // TODO: Do some things with translation stuff at startup to better type this thing.
-    return GradeType.note;
+    return gradeType(raw);
   }
 
   static double _gradeValue(String raw) {
@@ -93,7 +92,7 @@ final class const Grade({
 
   static String getGrade(double value, {int decimalPlaces = 2}) {
     if (value.isNaN) return '';
-    return value.toStringAsFixed(2).replaceAll('.', ',');
+    return value.toStringAsFixed(decimalPlaces).replaceAll('.', ',');
   }
 
   Uint8List visualIdData() {
