@@ -125,6 +125,9 @@ int? weekday(String value) {
 GradeType gradeType(String type) {
   final isZero = type.endsWith('*');
   type = type.trim().toLowerCase().replaceFirst(RegExp(r'\*$'), '');
+
+  if (type.isEmpty) return .note;
+
   for (final locale in LocaleData.values) {
     final val = locale.gradeTypes[type];
     if (val == null) {
