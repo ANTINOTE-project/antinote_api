@@ -70,7 +70,7 @@ sealed class const Credentials({
 
     await session.access(const UserParametersAccessor());
 
-    session.stack.changeTab(7);
+    session.stack.changeTab(HomePageAccessor.pageId);
     session.currentUserResourceId = 0;
 
     return LoginResult(

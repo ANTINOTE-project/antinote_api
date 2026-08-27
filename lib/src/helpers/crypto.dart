@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:antinote_api/src/protos/antinote/session.pb.dart';
+import 'package:antinote_api/src/protos/antinote_api/session.pb.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:pointycastle/export.dart' hide Mac;

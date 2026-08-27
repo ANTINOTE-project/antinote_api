@@ -30,6 +30,10 @@ class RemoteSession with SerializableObject<SerializedSession> {
       options: options ?? SessionOptions.getDefault(),
     );
 
+    session.stack.locale = options?.hasLocale() ?? false
+        ? options!.locale
+        : null;
+
     await session._reconstructCache();
 
     return session;
@@ -208,7 +212,9 @@ class RemoteSession with SerializableObject<SerializedSession> {
       'Fetching  ${seedRequest.uri.pathSegments.last} at ${seedRequest.uri}',
     );
 
-    seedRequest.cookies.add(localeCookie);
+    seedRequest.cookies.add(
+      localeCookie(options?.hasLocale() ?? false ? options!.locale : null),
+    );
     if (cookies?.isNotEmpty ?? false) {
       seedRequest.cookies.addAll(cookies!);
     }
@@ -301,6 +307,7 @@ class RemoteSession with SerializableObject<SerializedSession> {
     return RemoteSession(
       stack: NetworkStack(
         cookies: cookies ?? [],
+        locale: options.hasLocale() ? options.locale : null,
         vocab: ApiVocabulary.forVersion(remoteVersion),
         crypto: crypto,
         baseUrl: baseUri,

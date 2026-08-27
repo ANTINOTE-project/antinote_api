@@ -22,6 +22,7 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
     required this.cookies,
     required this.vocab,
     required this.crypto,
+    this.locale,
     required this.baseUrl,
     this.temporaryWorkspace = Workspace.commonMobile,
     required this.remoteVersion,
@@ -157,6 +158,11 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
   /// This is used mainly on CAS login.
   final List<Cookie> cookies;
 
+  /// An override locale to use when sending requests to remote. Some strings
+  /// returned are localized by the remote so keeping this value in sync with
+  /// the current locale is advised.
+  String? locale;
+
   /// This should not be used to graphically show its label, it is only there so
   /// that [Call.buildUri] is valid before FonctionParametres.
   ///
@@ -183,6 +189,7 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
   final BehaviorSubject<ClientSignature> _clientSignatureSubject =
       BehaviorSubject();
 
+  /// A stream sending the new client signature each time it is updated.
   ValueStream<ClientSignature> get clientSignatureStream =>
       _clientSignatureSubject.stream;
 
@@ -318,7 +325,7 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
         this,
         await client.postUrl(payload.uri)
           ..cookies.addAll(cookies)
-          ..cookies.add(localeCookie),
+          ..cookies.add(localeCookie(locale)),
         payload.orderId,
         debugMode: debugMode,
       );

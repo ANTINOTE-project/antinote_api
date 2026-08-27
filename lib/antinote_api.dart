@@ -116,8 +116,8 @@ export 'src/models/user/resource.dart';
 export 'src/models/week_frequency.dart';
 export 'src/models/workspace/type.dart';
 export 'src/models/workspace/workspace.dart';
-export 'src/protos/antinote/credentials.pb.dart';
-export 'src/protos/antinote/session.pb.dart';
-export 'src/protos/antinote/workspace.pb.dart';
+export 'src/protos/antinote_api/credentials.pb.dart';
+export 'src/protos/antinote_api/session.pb.dart';
+export 'src/protos/antinote_api/workspace.pb.dart';
 
 final libLog = Logger('ANTINOTE');

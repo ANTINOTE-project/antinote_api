@@ -176,4 +176,6 @@ message SessionOptions {
   bool saveNavigationRequests = 1;
   // Will log every single request sent and received to/from remote.
   bool debugMode = 2;
+  // The locale to use when sending requests to the remote (some field values are localized directly on the server).
+  string locale = 3;
 }

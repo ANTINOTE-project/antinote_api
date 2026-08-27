@@ -1,1 +1,1 @@
-protoc -I="." --dart_out="lib/src/" "protos/antinote/session.proto" "protos/antinote/credentials.proto" "protos/antinote/workspace.proto"
+protoc -I="." --dart_out="lib/src/" "protos/antinote_api/session.proto" "protos/antinote_api/credentials.proto" "protos/antinote_api/workspace.proto"

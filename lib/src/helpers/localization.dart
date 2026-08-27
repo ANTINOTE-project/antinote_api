@@ -98,8 +98,8 @@ enum LocaleData(
   );
 }
 
-LocaleData get curLocaleId =>
-    switch (Intl.shortLocale(Intl.getCurrentLocale())) {
+LocaleData curLocaleId([String? localeOverride]) =>
+    switch (Intl.shortLocale(localeOverride ?? Intl.getCurrentLocale())) {
       'fr' => .french,
       'es' => .spanish,
       'en' => .english,
@@ -108,7 +108,8 @@ LocaleData get curLocaleId =>
       _ => .french,
     };
 
-Cookie get localeCookie => Cookie('ielang', curLocaleId.id.toString());
+Cookie localeCookie([String? localeOverride]) =>
+    Cookie('ielang', curLocaleId(localeOverride).id.toString());
 
 int? weekday(String value) {
   value = value.trim().toLowerCase();

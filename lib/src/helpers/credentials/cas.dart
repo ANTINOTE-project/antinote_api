@@ -15,6 +15,7 @@ final class const CasCredentials({
     Uri uri,
     String? casToken,
     Workspace? workspace,
+    String? locale,
   ) async {
     final deviceUuid = Credentials.generateDeviceUuid();
     final session = await RemoteSession.init(
@@ -27,6 +28,7 @@ final class const CasCredentials({
         Cookie('uuidAppliMobile', deviceUuid),
         // Cookie('appliMobile', '1'),
       ],
+      options: SessionOptions(locale: locale),
     );
 
     return CasCredentials(
