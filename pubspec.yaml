@@ -1,7 +1,7 @@
 name: antinote_api
 description: "La solution !"
 version: 0.0.1
-homepage: none
+homepage: "https://antinote.fr/api"
 repository: "https://github.com/ANTINOTE-project/antinote_api"
 publish_to: none
 
@@ -10,7 +10,7 @@ environment:
 
 dependencies:
   # Crypto
-  crypto: ^3.0.6 # For MD5
+  crypto: ^3.0.6 # For MD5 and sha256
   cryptography_plus: ^3.0.0 # Same as cryptography, but maintained. For AES.
   pointycastle: ^4.0.0 # Only working implementation of the RSA Encryption algorithm.
 

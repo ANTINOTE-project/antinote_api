@@ -130,7 +130,7 @@ void main() {
       final data = session.exportBinary();
       final newSession = await RemoteSession.restoreBinary(
         data,
-        options: SessionOptions(debugMode: true),
+        options: .new(debugMode: true),
       );
 
       expect(session.stack.sessionId, newSession.stack.sessionId);
@@ -138,7 +138,7 @@ void main() {
       final newData = newSession.exportBinary();
       final newNewSession = await RemoteSession.restoreBinary(
         newData,
-        options: SessionOptions(debugMode: true),
+        options: .new(debugMode: true),
       );
 
       expect(newSession.stack.sessionId, newNewSession.stack.sessionId);

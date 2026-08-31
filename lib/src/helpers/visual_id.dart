@@ -33,6 +33,10 @@ mixin VisualIdMixin {
     return base64Encode(_hashContents().bytes);
   }
 
+  Uint8List get visualIdBytes {
+    return Uint8List.fromList(_hashContents().bytes);
+  }
+
   VisualId get visualIdUrl {
     return base64UrlEncode(_hashContents().bytes);
   }

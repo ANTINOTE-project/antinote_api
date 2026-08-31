@@ -34,7 +34,6 @@ final class const DiscussionAccessor({
                 'listePossessionsMessages': node.recipients.mapL(
                   (e) => {'N': e.id},
                 ),
-                // TODO: Add flag for that
                 'marquerCommeLu': markAsRead,
                 'message': {'N': int.tryParse(node.id) ?? node.id},
                 'nbMessagesVus': 20,
