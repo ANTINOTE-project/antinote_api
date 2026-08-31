@@ -1,6 +1,6 @@
 name: antinote_api
 description: "La solution !"
-version: 0.0.1
+version: 0.0.1+1
 homepage: "https://antinote.fr/api"
 repository: "https://github.com/ANTINOTE-project/antinote_api"
 

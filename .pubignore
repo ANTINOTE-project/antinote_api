@@ -1,4 +1,4 @@
-protos/
+/protos/
 coverage/
 *.iml
 CODE_OF_CONDUCT.md
