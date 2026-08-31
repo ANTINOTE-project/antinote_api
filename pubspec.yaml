@@ -3,7 +3,6 @@ description: "La solution !"
 version: 0.0.1
 homepage: "https://antinote.fr/api"
 repository: "https://github.com/ANTINOTE-project/antinote_api"
-publish_to: none
 
 environment:
   sdk: ^3.13.0
