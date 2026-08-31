@@ -9,15 +9,15 @@ environment:
 
 dependencies:
   # Crypto
-  crypto: ^3.0.6 # For MD5 and sha256
+  crypto: ^3.0.7 # For MD5 and sha256
   cryptography_plus: ^3.0.0 # Same as cryptography, but maintained. For AES.
   pointycastle: ^4.0.0 # Only working implementation of the RSA Encryption algorithm.
 
   # IO
-  http: ^1.5.0 # Required to have better control over HTTP client.
-  mime: ^2.0.0 # Used to determine MIME type from extension and header bytes.
+  http: ^1.6.0 # Required to have better control over HTTP client.
+  mime: ^2.1.0 # Used to determine MIME type from extension and header bytes.
   path: ^1.9.1 # Gets file extensions safely.
-  cross_file: ^0.3.4+2 # Very flutter-adjacent, will be replaced later... TODO
+  cross_file: ^0.3.5+5 # Very flutter-adjacent, will be replaced later... TODO
   intl: ^0.20.3 # Used to determine the language code to send to remote
 
   # Stream utils
@@ -25,16 +25,16 @@ dependencies:
   rxdart: ^0.28.0 # Provides better streams for server/client signatures.
 
   # Language
-  meta: ^1.16.0 # Marks accessors as immutable among other things.
+  meta: ^1.19.0 # Marks accessors as immutable among other things.
 
   # Serialization
   protobuf: ^6.0.0 # Protocol buffers to serialize important objects to binary/JSON efficiently.
 
   # Nice-to-have
-  uuid: ^4.5.1 # Used to generate device UUIDs, this may be replaced by a random string generation function... TODO
+  uuid: ^4.6.0 # Used to generate device UUIDs, this may be replaced by a random string generation function... TODO
   version: ^3.0.2 # Manages remote versions and behavior related to it.
   logging: ^1.3.0
 
 dev_dependencies:
-  test: ^1.26.3
-  lints: ^6.0.0
+  test: ^1.31.2
+  lints: ^6.1.0
