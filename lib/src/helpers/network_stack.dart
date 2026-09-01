@@ -37,6 +37,9 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
     required this.tokenKey,
     this.debugMode = false,
   }) {
+    if (debugMode) {
+      log.level = .ALL;
+    }
     log.onRecord.listen((event) {
       // ignore: avoid_print
       print('[${event.level.name}]($sessionId) : ${event.message}');
@@ -324,6 +327,10 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
       final req = await call.serialize(
         this,
         await client.postUrl(payload.uri)
+          ..headers.set(
+            HttpHeaders.userAgentHeader,
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 19_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 PRONOTE Mobile APP Version/2.0.11',
+          )
           ..cookies.addAll(cookies)
           ..cookies.add(localeCookie(locale)),
         payload.orderId,

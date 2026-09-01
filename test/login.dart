@@ -20,7 +20,6 @@ void main() {
       final LoginResult(session: newSession, credentials: refreshCredentials) =
           await credentials.login(options: .new(debugMode: true));
       session = newSession;
-      session.stack.log.level = .ALL;
     });
 
     test('Home page', () async {

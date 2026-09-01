@@ -11,14 +11,14 @@ import 'package:cryptography_plus/cryptography_plus.dart';
 import 'package:version/version.dart';
 
 final class const Challenge({
-  required final Uint8List rawEncryptedChallenge,
+  required final String rawEncryptedChallenge,
   required final bool compatibilityLogin,
   required final bool compatibilityPassword,
   required final String? username,
   required final Uint8List alea,
 }) with VisualIdMixin {
   factory decode(Map<String, dynamic> nav) => .new(
-    rawEncryptedChallenge: nav.get<String>('challenge').fromHex(),
+    rawEncryptedChallenge: nav.get<String>('challenge'),
     compatibilityLogin: nav.get<int?>('modeCompLog') == 1,
     compatibilityPassword: nav.get<int?>('modeCompMdp') == 1,
     username: nav.get('login'),
@@ -63,17 +63,18 @@ final class const Challenge({
     required Version version,
     required String rawVersion,
   }) async {
-    if (version >= Version(2026, 2, 5) &&
-        int.parse(rawVersion.split('.').last) >= 6) {
+    if (version > Version(2026, 2, 5) ||
+        (version == Version(2026, 2, 5) &&
+            int.parse(rawVersion.split('.').last) >= 6)) {
       return await crypto.aesEncrypt(
-        rawEncryptedChallenge,
+        utf8.encode(rawEncryptedChallenge),
         auxiliaryWand: challengeWand,
       );
     } else {
       final Uint8List rawChallenge;
       try {
         rawChallenge = await crypto.aesDecrypt(
-          rawEncryptedChallenge,
+          rawEncryptedChallenge.fromHex(),
           auxiliaryWand: challengeWand,
         );
       } on Exception {
