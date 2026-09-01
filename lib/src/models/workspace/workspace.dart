@@ -24,15 +24,37 @@ final class const Workspace({
     hasCasLogin: nav.get('avecDelegation') ?? false,
   );
 
-  static const Workspace common = Workspace(
+  static const Workspace common = .new(
     type: WorkspaceType.commun,
     label: '',
     pathSegment: '',
   );
-  static const Workspace commonMobile = Workspace(
+  static const Workspace commonMobile = .new(
     type: WorkspaceType.mobileCommun,
     label: '',
     pathSegment: 'mobile.html',
+  );
+
+  static const Workspace student = .new(
+    type: .eleve,
+    label: '',
+    pathSegment: 'eleve.html',
+  );
+  static const Workspace studentMobile = .new(
+    type: .mobileEleve,
+    label: '',
+    pathSegment: 'mobile.eleve.html',
+  );
+
+  static const Workspace parent = .new(
+    type: .parent,
+    label: '',
+    pathSegment: 'parent.html',
+  );
+  static const Workspace parentMobile = .new(
+    type: .mobileParent,
+    label: '',
+    pathSegment: 'mobile.parent.html',
   );
 
   Uri toSpecificAccountKind(Uri baseUri) {

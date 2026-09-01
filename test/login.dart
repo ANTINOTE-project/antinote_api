@@ -10,11 +10,7 @@ void main() {
       final credentials = PasswordCredentials(
         username: 'demonstration',
         password: 'pronotevs',
-        workspace: const Workspace(
-          type: .eleve,
-          label: '',
-          pathSegment: 'mobile.eleve.html',
-        ),
+        workspace: .studentMobile,
         cookies: [],
         baseUrl: .parse('https://demo.index-education.net/pronote'),
         deviceUuid: Credentials.generateDeviceUuid(),

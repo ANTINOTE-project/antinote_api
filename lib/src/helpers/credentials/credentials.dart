@@ -8,10 +8,14 @@ import 'package:antinote_api/antinote_api.dart';
 import 'package:uuid/data.dart';
 import 'package:uuid/rng.dart';
 import 'package:uuid/uuid.dart';
+import 'package:version/version.dart';
 
 part 'cas.dart';
+
 part 'password.dart';
+
 part 'qr_code.dart';
+
 part 'token.dart';
 
 final _uuid = const Uuid();
@@ -38,6 +42,8 @@ sealed class const Credentials({
     required Challenge challenge,
     required String username,
     required String mod,
+    required Version version,
+    required String rawVersion,
     bool addUsernameToWand = true,
     Workspace? workspace,
   }) async {
@@ -52,6 +58,8 @@ sealed class const Credentials({
     final challengeSolution = await challenge.solve(
       challengeWand: challengeWand,
       crypto: session.stack.crypto,
+      rawVersion: rawVersion,
+      version: version,
     );
 
     if (challengeSolution == null) {

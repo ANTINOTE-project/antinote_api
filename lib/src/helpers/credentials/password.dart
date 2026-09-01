@@ -77,6 +77,8 @@ final class const PasswordCredentials({
       mod: password,
       challenge: challenge,
       session: session,
+      version: session.stack.remoteVersion,
+      rawVersion: session.instance.rawVersion.join('.'),
     );
   }
 }

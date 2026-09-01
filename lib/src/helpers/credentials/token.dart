@@ -64,6 +64,8 @@ final class const TokenCredentials({
       mod: token,
       challenge: challenge,
       session: session,
+      version: session.stack.remoteVersion,
+      rawVersion: session.instance.rawVersion.join('.'),
     );
   }
 }

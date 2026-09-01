@@ -96,6 +96,8 @@ final class const QrCodeCredentials({
       mod: realToken,
       challenge: challenge,
       session: session,
+      version: session.stack.remoteVersion,
+      rawVersion: session.instance.rawVersion.join('.'),
     );
   }
 }

@@ -56,6 +56,8 @@ final class const CasCredentials({
       challenge: challenge,
       session: session,
       workspace: workspace,
+      version: session.stack.remoteVersion,
+      rawVersion: session.instance.rawVersion.join('.'),
     );
   }
 }

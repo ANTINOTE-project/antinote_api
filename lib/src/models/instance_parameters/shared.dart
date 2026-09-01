@@ -38,6 +38,7 @@ final class const SharedInstanceParameters({
   /// WARNING! The place where it is changes between root.versionPN ([String])
   /// and root.General.tableauVersion ([List<int>])
   required final Version version,
+  required final String rawVersion,
   required final String currentLanguageCode,
   required final int currentLanguageId,
   required final List<Language> languages,
@@ -66,6 +67,8 @@ final class const SharedInstanceParameters({
         nav.go('mentionsPagesPubliques').get('lien'),
       ),
       version: Version.parse(mGen.get('versionPN')),
+      rawVersion:
+          mGen.mGetL<int>('tableauVersion')?.join('.') ?? mGen.get('versionPN'),
       currentLanguageCode: mGen.get('langue'),
       currentLanguageId: mGen.get('langID'),
       languages: mGen.getLM('listeLangues').mapL((e) => .decode(e)),
@@ -118,6 +121,7 @@ sealed class InstanceParameters with VisualIdMixin {
   final Uri privacyTermsUrl;
   final Uri publicPageMentionsUrl;
   final Version version;
+  final List<int> rawVersion;
   final String currentLanguageCode;
   final int currentLanguageId;
   final List<Language> languages;
@@ -141,6 +145,7 @@ sealed class InstanceParameters with VisualIdMixin {
     required this.privacyTermsUrl,
     required this.publicPageMentionsUrl,
     required this.version,
+    required this.rawVersion,
     required this.currentLanguageCode,
     required this.currentLanguageId,
     required this.languages,
@@ -166,6 +171,10 @@ sealed class InstanceParameters with VisualIdMixin {
         privacyTermsUrl: shared.privacyTermsUrl,
         publicPageMentionsUrl: shared.publicPageMentionsUrl,
         version: shared.version,
+        rawVersion: shared.rawVersion
+            .split('.')
+            .map((e) => int.parse(e))
+            .toList(growable: false),
         currentLanguageCode: shared.currentLanguageCode,
         currentLanguageId: shared.currentLanguageId,
         languages: shared.languages,

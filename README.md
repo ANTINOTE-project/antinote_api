@@ -63,11 +63,7 @@ Pour créer une session, il faut se procurer les identifiants correspondants :
 final credentials = PasswordCredentials(
   username: 'demonstration',
   password: 'pronotevs',
-  workspace: Workspace(
-    type: .mobileEleve, // [1]
-    label: '', // [2]
-    pathSegment: 'mobile.eleve.html',
-  ),
+  workspace: .student,
   baseUrl: .parse('https://demo.index-education.net/pronote'),
   deviceUuid: Credentials.generateDeviceUuid(), // [3]
 );

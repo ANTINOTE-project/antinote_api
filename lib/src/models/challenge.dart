@@ -8,6 +8,7 @@ import 'package:antinote_api/src/helpers/visual_id.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_plus/cryptography_plus.dart';
+import 'package:version/version.dart';
 
 final class const Challenge({
   required final Uint8List rawEncryptedChallenge,
@@ -59,30 +60,52 @@ final class const Challenge({
   Future<Uint8List?> solve({
     required CipherWand challengeWand,
     required Crypto crypto,
+    required Version version,
+    required String rawVersion,
   }) async {
-    final Uint8List rawChallenge;
-    try {
-      rawChallenge = await crypto.aesDecrypt(
+    if (version >= Version(2026, 2, 5) &&
+        int.parse(rawVersion.split('.').last) >= 6) {
+      final challenge = utf8.decode(
         rawEncryptedChallenge,
+        allowMalformed: true,
+      );
+      final unscrambled = List<int>.filled(challenge.length ~/ 2, 0);
+
+      for (int i = 0; i < challenge.length; i++) {
+        if (i % 2 == 0) {
+          unscrambled[i ~/ 2] = challenge.codeUnitAt(i);
+        }
+      }
+
+      return await crypto.aesEncrypt(
+        utf8.encode(unscrambled.map((e) => String.fromCharCode(e)).join()),
         auxiliaryWand: challengeWand,
       );
-    } on Exception {
-      // Login failed
-      return null;
-    }
-
-    final challenge = utf8.decode(rawChallenge, allowMalformed: true);
-    final unscrambled = List<int>.filled(challenge.length ~/ 2, 0);
-
-    for (int i = 0; i < challenge.length; i++) {
-      if (i % 2 == 0) {
-        unscrambled[i ~/ 2] = challenge.codeUnitAt(i);
+    } else {
+      final Uint8List rawChallenge;
+      try {
+        rawChallenge = await crypto.aesDecrypt(
+          rawEncryptedChallenge,
+          auxiliaryWand: challengeWand,
+        );
+      } on Exception {
+        // Login failed
+        return null;
       }
-    }
 
-    return await crypto.aesEncrypt(
-      utf8.encode(unscrambled.map((e) => String.fromCharCode(e)).join()),
-      auxiliaryWand: challengeWand,
-    );
+      final challenge = utf8.decode(rawChallenge, allowMalformed: true);
+      final unscrambled = List<int>.filled(challenge.length ~/ 2, 0);
+
+      for (int i = 0; i < challenge.length; i++) {
+        if (i % 2 == 0) {
+          unscrambled[i ~/ 2] = challenge.codeUnitAt(i);
+        }
+      }
+
+      return await crypto.aesEncrypt(
+        utf8.encode(unscrambled.map((e) => String.fromCharCode(e)).join()),
+        auxiliaryWand: challengeWand,
+      );
+    }
   }
 }
