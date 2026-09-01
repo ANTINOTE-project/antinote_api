@@ -65,20 +65,8 @@ final class const Challenge({
   }) async {
     if (version >= Version(2026, 2, 5) &&
         int.parse(rawVersion.split('.').last) >= 6) {
-      final challenge = utf8.decode(
-        rawEncryptedChallenge,
-        allowMalformed: true,
-      );
-      final unscrambled = List<int>.filled(challenge.length ~/ 2, 0);
-
-      for (int i = 0; i < challenge.length; i++) {
-        if (i % 2 == 0) {
-          unscrambled[i ~/ 2] = challenge.codeUnitAt(i);
-        }
-      }
-
       return await crypto.aesEncrypt(
-        utf8.encode(unscrambled.map((e) => String.fromCharCode(e)).join()),
+        rawEncryptedChallenge,
         auxiliaryWand: challengeWand,
       );
     } else {
