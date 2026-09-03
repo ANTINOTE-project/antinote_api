@@ -378,8 +378,9 @@ final class SpecificInstanceParameters({
     return transferTimes;
   }
 
-  int getWeekNumberForDate(DateTime date) =>
-      firstWeekNumber +
+  // TODO: fix negative first week number
+  int getWeekNumberForDate(DateTime date) {
+    return firstWeekNumber +
       ((date.toUtc().millisecondsSinceEpoch -
                   firstMonday.toUtc().millisecondsSinceEpoch) ~/
               (Duration.millisecondsPerSecond *
@@ -387,6 +388,7 @@ final class SpecificInstanceParameters({
                   Duration.minutesPerHour *
                   Duration.hoursPerDay)) ~/
           7;
+  }
 
   Date getDateForWeekNumber(int weekNumber) {
     return firstMonday
