@@ -30,10 +30,13 @@ final class const ChangeNewsStateAccessor({
             name: 'SaisieActualites',
             dataSec: {
               session.stack.vocab.data: {
+                // 0 is for actual updates, 1 is for off time news retrieval
+                'genreSaisie': 0,
                 'listeActualites': [
                   for (final MapEntry(key: news, value: updates)
                       in updatesToPerform.entries)
                     {
+                      'estPublic': news.isPublic,
                       'genrePublic': news.recipientType,
                       'L': news.label,
                       // TODO: Create custom edit system that automagically
