@@ -3,6 +3,7 @@ library;
 import 'dart:collection';
 import 'dart:typed_data';
 
+import 'package:antinote_api/antinote_api.dart';
 import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/colors.dart';
 import 'package:antinote_api/src/helpers/datetime.dart';

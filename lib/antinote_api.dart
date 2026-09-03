@@ -120,4 +120,4 @@ export 'src/protos/antinote_api/credentials.pb.dart';
 export 'src/protos/antinote_api/session.pb.dart';
 export 'src/protos/antinote_api/workspace.pb.dart';
 
-final libLog = Logger('ANTINOTE');
+final logger = Logger('ANTINOTE');

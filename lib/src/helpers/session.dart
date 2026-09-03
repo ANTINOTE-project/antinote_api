@@ -208,7 +208,7 @@ class RemoteSession with SerializableObject<SerializedSession> {
 
     seedRequest.followRedirects = followRedirects;
 
-    libLog.info(
+    logger.info(
       'Fetching  ${seedRequest.uri.pathSegments.last} at ${seedRequest.uri}',
     );
 

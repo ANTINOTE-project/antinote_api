@@ -90,9 +90,9 @@ Future<List<GeolocatedInstance>> findNearbyInstances(
       (e) => (e as Map<String, dynamic>).asGeolocatedInstance(lat, lon),
     )..sort((a, b) => a.distance.compareTo(b.distance));
   } catch (e, st) {
-    libLog.severe('Could not read geolocated instances.', e, st);
-    libLog.severe('Response is: $resBody');
-    libLog.severe('Request was: ${req.body}');
+    logger.severe('Could not read geolocated instances.', e, st);
+    logger.severe('Response is: $resBody');
+    logger.severe('Request was: ${req.body}');
 
     return [];
   }
