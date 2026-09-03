@@ -379,14 +379,22 @@ final class SpecificInstanceParameters({
   }
 
   int getWeekNumberForDate(DateTime date) {
-    return firstWeekNumber +
-      ((date.toUtc().millisecondsSinceEpoch -
-                  firstMonday.toUtc().millisecondsSinceEpoch) ~/
-              (Duration.millisecondsPerSecond *
-                  Duration.secondsPerMinute *
-                  Duration.minutesPerHour *
-                  Duration.hoursPerDay)) ~/
+    if (firstWeekNumber >= 0) {
+      final diffWeeks = ((date.toUtc().millisecondsSinceEpoch -
+          firstMonday.toUtc().millisecondsSinceEpoch) ~/
+          (Duration.millisecondsPerSecond *
+              Duration.secondsPerMinute *
+              Duration.minutesPerHour *
+              Duration.hoursPerDay)) ~/
           7;
+
+      return firstWeekNumber + diffWeeks;
+    }
+
+    final d = DateTime.utc(date.year, date.month, date.day);
+    final thursday = d.add(Duration(days: 4 - d.weekday));
+    final firstDayOfYear = DateTime.utc(thursday.year, 1, 1);
+    return 1 + (thursday.difference(firstDayOfYear).inDays / 7).floor();
   }
 
   Date getDateForWeekNumber(int weekNumber) {
