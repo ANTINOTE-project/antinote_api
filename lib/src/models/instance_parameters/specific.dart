@@ -378,7 +378,6 @@ final class SpecificInstanceParameters({
     return transferTimes;
   }
 
-  // TODO: fix negative first week number
   int getWeekNumberForDate(DateTime date) {
     return firstWeekNumber +
       ((date.toUtc().millisecondsSinceEpoch -
