@@ -38,7 +38,7 @@ void main() {
         ),
       );
 
-      expect(page.widgets.length, 5);
+      expect(page.widgets.length, 6);
     });
 
     test('Menu page', () async {
