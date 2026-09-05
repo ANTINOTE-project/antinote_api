@@ -1,6 +1,6 @@
 part of 'credentials.dart';
 
-final class const CasCredentials({
+final class const TicketCredentials({
   required super.deviceUuid,
   super.navIdentifier,
   required final String tokenId,
@@ -21,17 +21,17 @@ final class const CasCredentials({
     final session = await RemoteSession.init(
       uri,
       followRedirects: true,
-      keepBaseUrl: true,
+      isCustomUrl: true,
+      workspace: workspace ?? .commonMobile,
       parameters: {...RemoteSession.redirectBypassParameters},
       cookies: [
         if (casToken != null) Cookie('validationAppliMobile', casToken),
         Cookie('uuidAppliMobile', deviceUuid),
-        // Cookie('appliMobile', '1'),
       ],
       options: SessionOptions(locale: locale),
     );
 
-    return CasCredentials(
+    return TicketCredentials(
       deviceUuid: deviceUuid,
       tokenId: session.stack.tokenId!,
       tokenKey: session.stack.tokenKey!,
@@ -57,7 +57,6 @@ final class const CasCredentials({
       session: session,
       workspace: workspace,
       version: session.stack.remoteVersion,
-      rawVersion: session.instance.rawVersion.join('.'),
     );
   }
 }

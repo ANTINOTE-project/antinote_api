@@ -380,12 +380,13 @@ final class SpecificInstanceParameters({
 
   int getWeekNumberForDate(DateTime date) {
     if (firstWeekNumber >= 0) {
-      final diffWeeks = ((date.toUtc().millisecondsSinceEpoch -
-          firstMonday.toUtc().millisecondsSinceEpoch) ~/
-          (Duration.millisecondsPerSecond *
-              Duration.secondsPerMinute *
-              Duration.minutesPerHour *
-              Duration.hoursPerDay)) ~/
+      final diffWeeks =
+          ((date.toUtc().millisecondsSinceEpoch -
+                  firstMonday.toUtc().millisecondsSinceEpoch) ~/
+              (Duration.millisecondsPerSecond *
+                  Duration.secondsPerMinute *
+                  Duration.minutesPerHour *
+                  Duration.hoursPerDay)) ~/
           7;
 
       return firstWeekNumber + diffWeeks;
@@ -468,14 +469,14 @@ final class SpecificInstanceParameters({
   DateTime findBusinessDay(
     DateTime anchor,
     Duration offset, {
-    bool canBeDifferent = false,
+    bool mustBeDifferent = false,
   }) {
     final startAnchor = anchor.copyWith();
     while (((offset.isNegative
                 ? !anchor.isBefore(firstDate)
                 : !anchor.isAfter(lastDate)) &&
             !isBusinessDay(anchor)) ||
-        (canBeDifferent ? false : startAnchor.isAtSameMomentAs(anchor))) {
+        (mustBeDifferent ? startAnchor.isAtSameMomentAs(anchor) : false)) {
       anchor = anchor.add(offset);
     }
 

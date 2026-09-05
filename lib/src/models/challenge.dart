@@ -61,11 +61,10 @@ final class const Challenge({
     required CipherWand challengeWand,
     required Crypto crypto,
     required Version version,
-    required String rawVersion,
   }) async {
     if (version > Version(2026, 2, 5) ||
         (version == Version(2026, 2, 5) &&
-            int.parse(rawVersion.split('.').last) >= 6)) {
+            (int.tryParse(version.build) ?? 0) >= 6)) {
       return await crypto.aesEncrypt(
         utf8.encode(rawEncryptedChallenge),
         auxiliaryWand: challengeWand,

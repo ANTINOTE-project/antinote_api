@@ -56,7 +56,7 @@ final class const PasswordCredentials({
         workspace: workspace,
         parameters: {
           ...RemoteSession.baseParameters,
-          'bydlg': 'A6ABB224-12DD-4E31-AD3E-8A39A1C2C335',
+          ...RemoteSession.delegationBypassParameters,
         },
         options: options,
       );
@@ -78,7 +78,6 @@ final class const PasswordCredentials({
       challenge: challenge,
       session: session,
       version: session.stack.remoteVersion,
-      rawVersion: session.instance.rawVersion.join('.'),
     );
   }
 }

@@ -55,6 +55,7 @@ final class const QrCodeCredentials({
   Future<RemoteSession> createSession(SessionOptions options) =>
       RemoteSession.init(
         baseUrl,
+        parameters: RemoteSession.baseParameters,
         workspace: workspace,
         cookies: [Cookie('appliMobile', '1')],
         options: options,
@@ -97,7 +98,6 @@ final class const QrCodeCredentials({
       challenge: challenge,
       session: session,
       version: session.stack.remoteVersion,
-      rawVersion: session.instance.rawVersion.join('.'),
     );
   }
 }

@@ -165,48 +165,58 @@ class RemoteSession with SerializableObject<SerializedSession> {
     ...redirectBypassParameters,
   };
 
+  static Uri _removeQuery(Uri uri) {
+    if (!uri.hasQuery) return uri;
+    return Uri(
+      scheme: uri.hasScheme ? uri.scheme : null,
+      host: uri.hasAuthority ? uri.host : null,
+      port: uri.hasPort ? uri.port : null,
+      path: uri.path,
+      fragment: uri.hasFragment ? uri.fragment : null,
+    );
+  }
+
   static Future<RemoteSession> init(
-    Uri baseUri, {
-    Map<String, String> parameters = baseParameters,
+    Uri uri, {
+    Map<String, String>? parameters,
     List<Cookie>? cookies,
-    Workspace workspace = Workspace.commonMobile,
-    bool keepBaseUrl = false,
+    Workspace workspace = .commonMobile,
+    bool isCustomUrl = false,
     bool followRedirects = false,
     SessionOptions? options,
   }) async {
-    if (keepBaseUrl && parameters != baseParameters) {
-      baseUri = baseUri.replace(
-        queryParameters: {...parameters, ...baseUri.queryParameters},
+    Uri baseUri;
+
+    if (isCustomUrl) {
+      uri = uri.replace(
+        queryParameters: {...?parameters, ...uri.queryParameters},
       );
+      baseUri = uri.replace(
+        pathSegments: uri.pathSegments
+            .takeWhile(
+              (value) =>
+                  value != workspace.pathSegment &&
+                  value != uri.pathSegments.last,
+            )
+            .toList(growable: false),
+        queryParameters: {},
+      );
+    } else {
+      baseUri = uri.replace(queryParameters: {});
+      uri = workspace
+          .toSpecificAccountKind(uri)
+          .replace(queryParameters: {...?parameters, ...uri.queryParameters});
+    }
+
+    if (uri.queryParameters.isEmpty) {
+      uri = _removeQuery(uri);
+      assert(!uri.hasQuery);
     }
 
     final client = HttpClient();
-    final seedRequest = await client.getUrl(
-      keepBaseUrl
-          ? baseUri
-          : workspace
-                .toSpecificAccountKind(baseUri)
-                .replace(
-                  queryParameters: parameters.isEmpty ? null : parameters,
-                ),
-    );
+    var seedRequest = await client.getUrl(uri);
 
-    if (keepBaseUrl) {
-      baseUri = baseUri.replace(
-        pathSegments: [
-          ...baseUri.pathSegments.takeWhile((value) => value != 'pronote'),
-          'pronote',
-        ],
-        queryParameters: {},
-      );
-
-      final rawBaseUri = baseUri.toString();
-      if (rawBaseUri.endsWith('?')) {
-        baseUri = Uri.parse(rawBaseUri.substring(0, rawBaseUri.length - 1));
-      }
-    }
-
-    seedRequest.followRedirects = followRedirects;
+    seedRequest.followRedirects = false;
 
     logger.info(
       'Fetching  ${seedRequest.uri.pathSegments.last} at ${seedRequest.uri}',
@@ -219,14 +229,36 @@ class RemoteSession with SerializableObject<SerializedSession> {
       seedRequest.cookies.addAll(cookies!);
     }
 
-    final seedPageResponse = await seedRequest.close();
+    var seedPageResponse = await seedRequest.close();
 
     // We got redirected to a CAS
-    if (seedPageResponse.statusCode == 302) {
-      throw UnexpectedCASRedirect(
-        'Got redirected to a CAS',
-        Uri.parse(seedPageResponse.headers.value(HttpHeaders.locationHeader)!),
+    if (seedPageResponse.statusCode == 302 ||
+        seedPageResponse.headers.value(HttpHeaders.locationHeader) != null) {
+      uri = uri.resolve(
+        seedPageResponse.headers.value(HttpHeaders.locationHeader)!,
       );
+
+      if (!followRedirects) {
+        throw UnexpectedCASRedirect('Got redirected to a CAS', uri);
+      }
+
+      while (seedPageResponse.statusCode == 302 ||
+          seedPageResponse.headers.value(HttpHeaders.locationHeader) != null) {
+        seedRequest = await client.getUrl(
+          uri.replace(
+            queryParameters: {...?parameters, ...uri.queryParameters},
+          ),
+        );
+        seedRequest.followRedirects = false;
+        seedRequest.cookies.add(
+          localeCookie(options?.hasLocale() ?? false ? options!.locale : null),
+        );
+        if (cookies?.isNotEmpty ?? false) {
+          seedRequest.cookies.addAll(cookies!);
+        }
+
+        seedPageResponse = await seedRequest.close();
+      }
     }
 
     if (seedPageResponse.statusCode != 200) {
@@ -238,11 +270,19 @@ class RemoteSession with SerializableObject<SerializedSession> {
         .value('server')
         ?.split(' ');
     if (splitServerHeader != null && splitServerHeader[0] == 'PRONOTE') {
-      remoteVersion = Version.parse(splitServerHeader[1]);
+      final versionNumbers = splitServerHeader[1]
+          .split('.')
+          .mapL((e) => int.parse(e));
+      remoteVersion = Version(
+        versionNumbers[0],
+        versionNumbers[1],
+        versionNumbers[2],
+        build: versionNumbers.skip(3).join('.'),
+      );
     } else {
       // We assume this is a change that could happen in a future version, we
-      // put it to the latest supported version.
-      remoteVersion = Version(2026, 1, 3);
+      // put it to "the future" (next year version from latest supported).
+      remoteVersion = Version(2027, 0, 0);
     }
 
     final body = await seedPageResponse
@@ -303,6 +343,9 @@ class RemoteSession with SerializableObject<SerializedSession> {
     await crypto.setAesKey(crypto.aesKey);
 
     options ??= SessionOptions.getDefault();
+
+    baseUri = _removeQuery(baseUri);
+    assert(!baseUri.hasQuery);
 
     return RemoteSession(
       stack: NetworkStack(

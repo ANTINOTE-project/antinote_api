@@ -46,6 +46,7 @@ final class const TokenCredentials({
   Future<RemoteSession> createSession(SessionOptions options) =>
       RemoteSession.init(
         baseUrl,
+        parameters: RemoteSession.baseParameters,
         workspace: workspace,
         cookies: cookies,
         options: options,
@@ -65,7 +66,6 @@ final class const TokenCredentials({
       challenge: challenge,
       session: session,
       version: session.stack.remoteVersion,
-      rawVersion: session.instance.rawVersion.join('.'),
     );
   }
 }
