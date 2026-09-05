@@ -378,20 +378,35 @@ final class SpecificInstanceParameters({
     return transferTimes;
   }
 
-  int getWeekNumberForDate(DateTime date) {
-    if (firstWeekNumber >= 0) {
-      final diffWeeks =
-          ((date.toUtc().millisecondsSinceEpoch -
-                  firstMonday.toUtc().millisecondsSinceEpoch) ~/
-              (Duration.millisecondsPerSecond *
-                  Duration.secondsPerMinute *
-                  Duration.minutesPerHour *
-                  Duration.hoursPerDay)) ~/
-          7;
+  int getWeekNumberForDate(
+    DateTime date, {
+    bool forceRelativeToSchoolYear = false,
+  }) {
+    // difference in milliseconds between first monday and the date
+    final diffMilliseconds =
+        date.toUtc().millisecondsSinceEpoch -
+        firstMonday.toUtc().millisecondsSinceEpoch;
 
-      return firstWeekNumber + diffWeeks;
+    // how many milliseconds in a day
+    const millisecondsDay =
+        Duration.millisecondsPerSecond *
+        Duration.secondsPerMinute *
+        Duration.minutesPerHour *
+        Duration.hoursPerDay;
+
+    // we convert the milliseconds to days by dividing
+    final days = diffMilliseconds ~/ millisecondsDay;
+
+    // we convert the days to weeks by dividing by 7
+    final weeks = days ~/ 7;
+
+    // if firstWeekNumber is not negative we just add the actual week number to it
+    // if forceRelativeToSchoolYear is true we add weeks to 1
+    if (forceRelativeToSchoolYear || firstWeekNumber >= 0) {
+      return firstWeekNumber >= 0 ? firstWeekNumber + weeks : 1 + weeks;
     }
 
+    // else we find in which week number we are
     final d = DateTime.utc(date.year, date.month, date.day);
     final thursday = d.add(Duration(days: 4 - d.weekday));
     final firstDayOfYear = DateTime.utc(thursday.year, 1, 1);
