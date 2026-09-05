@@ -7,7 +7,7 @@ enum HomeworkRenderType implements EnumId {
   noRender(0, renderOnRemote: false),
   paperRender(1, renderOnRemote: false),
   remoteRender(2, renderOnRemote: true),
-  kiosqueRender(3, renderOnRemote: true), // TODO: Figure out what this is.
+  kiosqueRender(3, renderOnRemote: true),
   remoteAudioRecordingRender(4, renderOnRemote: true);
 
   @override

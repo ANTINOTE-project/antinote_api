@@ -378,24 +378,47 @@ final class SpecificInstanceParameters({
     return transferTimes;
   }
 
+  // how many milliseconds in a day
+  static const _millisecondsDay =
+      Duration.millisecondsPerSecond *
+      Duration.secondsPerMinute *
+      Duration.minutesPerHour *
+      Duration.hoursPerDay;
+
+  /// Calculates number of weeks for a given year as per https://en.wikipedia.org/wiki/ISO_week_date#Weeks_per_year
+  ///
+  /// Written by András Szepesházi on Stackoverflow
+  static int _numOfWeeks(int year) {
+    DateTime dec28 = DateTime(year, 12, 28);
+    int dayOfDec28 = int.parse(DateFormat('D').format(dec28));
+    return ((dayOfDec28 - dec28.weekday + 10) / 7).floor();
+  }
+
+  /// Calculates week number from a date as per https://en.wikipedia.org/wiki/ISO_week_date#Calculation
+  ///
+  /// Written by András Szepesházi on Stackoverflow
+  static int _weekNumber(DateTime date) {
+    int dayOfYear = int.parse(DateFormat('D').format(date));
+    int woy = ((dayOfYear - date.weekday + 10) / 7).floor();
+    if (woy < 1) {
+      woy = _numOfWeeks(date.year - 1);
+    } else if (woy > _numOfWeeks(date.year)) {
+      woy = 1;
+    }
+    return woy;
+  }
+
   int getWeekNumberForDate(
     DateTime date, {
     bool forceRelativeToSchoolYear = false,
   }) {
     // difference in milliseconds between first monday and the date
     final diffMilliseconds =
-        date.toUtc().millisecondsSinceEpoch -
-        firstMonday.toUtc().millisecondsSinceEpoch;
-
-    // how many milliseconds in a day
-    const millisecondsDay =
-        Duration.millisecondsPerSecond *
-        Duration.secondsPerMinute *
-        Duration.minutesPerHour *
-        Duration.hoursPerDay;
+        date.copyWith(isUtc: true).millisecondsSinceEpoch -
+        firstMonday.millisecondsSinceEpoch;
 
     // we convert the milliseconds to days by dividing
-    final days = diffMilliseconds ~/ millisecondsDay;
+    final days = diffMilliseconds ~/ _millisecondsDay;
 
     // we convert the days to weeks by dividing by 7
     final weeks = days ~/ 7;
@@ -403,20 +426,44 @@ final class SpecificInstanceParameters({
     // if firstWeekNumber is not negative we just add the actual week number to it
     // if forceRelativeToSchoolYear is true we add weeks to 1
     if (forceRelativeToSchoolYear || firstWeekNumber >= 0) {
-      return firstWeekNumber >= 0 ? firstWeekNumber + weeks : 1 + weeks;
+      return (firstWeekNumber >= 0 ? firstWeekNumber : 1) + weeks;
     }
 
-    // else we find in which week number we are
-    final d = DateTime.utc(date.year, date.month, date.day);
-    final thursday = d.add(Duration(days: 4 - d.weekday));
-    final firstDayOfYear = DateTime.utc(thursday.year, 1, 1);
-    return 1 + (thursday.difference(firstDayOfYear).inDays / 7).floor();
+    // else we find in which week number of the year we are
+    return 1 + _weekNumber(date);
   }
 
-  Date getDateForWeekNumber(int weekNumber) {
-    return firstMonday
-        .add(Duration(days: 7 * (weekNumber - firstWeekNumber)))
-        .toDay();
+  Date getDateForWeekNumber(
+    int weekNumber, {
+    bool forceRelativeToSchoolYear = false,
+  }) {
+    if (firstWeekNumber >= 0 || forceRelativeToSchoolYear) {
+      return firstMonday
+          .add(Duration(days: 7 * (weekNumber - firstWeekNumber)))
+          .toDay();
+    }
+
+    // We expect no week numbers overlap between years (so the date range must
+    // be less than a year)
+
+    for (int year = firstMonday.year; year <= lastDate.year; year++) {
+      final candidateDay = Date.utc(
+        year,
+        1,
+        1,
+      ).add(Duration(days: 7 * (weekNumber - 1))).toDay();
+
+      if (!candidateDay.isAfter(firstDate) ||
+          !candidateDay.isBefore(lastDate)) {
+        continue;
+      }
+
+      return candidateDay;
+    }
+
+    assert(false, 'Could not find a suitable date matching the week number.');
+
+    return lastDate;
   }
 
   List<Date> getDaysForWeekNumber(int weekNumber) {
