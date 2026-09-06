@@ -4,8 +4,8 @@ import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/json.dart';
 import 'package:antinote_api/src/helpers/session.dart';
 import 'package:antinote_api/src/helpers/visual_id.dart';
-import 'package:antinote_api/src/models/disconnection_period_data.dart';
 import 'package:antinote_api/src/models/home_page/widget.dart';
+import 'package:antinote_api/src/models/off_time.dart';
 
 final class const HomePage({
   required final List<HomePageWidget> widgets,
