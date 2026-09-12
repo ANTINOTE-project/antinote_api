@@ -31,7 +31,6 @@ final class const Discussion({
             exchanger: (nav) => nav.getLM('listeMessages').get(e.$1),
             value: e.$2,
           ),
-        )
-        .toList(growable: false),
+        ),
   ];
 }

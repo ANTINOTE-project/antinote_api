@@ -16,7 +16,9 @@ final class const UserParameters({
 
   required final UserAuthorizations authorizations,
   required final OffTimeParameters? offTimeParameters,
-  required final List<UserResource> resources,
+
+  required final UserResource rootResource,
+  required final List<UserResource> childResources,
 
   required final List<Tab> tabs,
   required final List<int> hiddenTabIds,
@@ -35,7 +37,8 @@ final class const UserParameters({
       id: nav.go('ressource').get('N'),
       type: nav.go('ressource').get('G'),
       name: nav.go('ressource').get('L'),
-      resources: resources.mapL((e) => .decode(e)),
+      rootResource: .decode(nav.getM('ressource')),
+      childResources: resources.mapL((e) => .decode(e)),
       authorizations: .decode(nav),
       offTimeParameters: nav.has('infosDroitDeconnexion')
           ? .decode(session, nav.getM('infosDroitDeconnexion'))

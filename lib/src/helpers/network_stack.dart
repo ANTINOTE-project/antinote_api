@@ -209,7 +209,8 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
   /// Updates the member displayed in the signature with the new one.
   void changeUserResource(UserResource userResource) =>
       _clientSignatureSubject.add(
-        (clientSignature ?? ClientSignature(member: null, tab: 7))
+        (clientSignature ??
+                ClientSignature(member: null, tab: HomePageAccessor.pageId))
             .changeUserResource(userResource),
       );
 
