@@ -59,6 +59,8 @@ final class const UserParameters({
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {}
 
+  List<UserResource> get allResources => [rootResource, ...childResources];
+
   bool hasAccessToTab(int tab) {
     return tabs.any((element) => element.hasTab(tab));
   }
