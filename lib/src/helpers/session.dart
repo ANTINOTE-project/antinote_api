@@ -147,14 +147,15 @@ class RemoteSession with SerializableObject<SerializedSession> {
     _currentUserResourceId = value;
 
     if (user.childResources.isNotEmpty) {
-      stack.changeUserResource(childResource);
+      stack.changeUserResource(curResource);
     }
   }
 
   UserResource get rootResource => user.rootResource;
 
-  UserResource get childResource =>
-      user.childResources.get(currentUserResourceId);
+  UserResource get curResource =>
+      user.childResources.elementAtOrNull(currentUserResourceId) ??
+      rootResource;
 
   static final _startMatch = RegExp(r'Start\(');
   static final _endMatch = RegExp(r'\);?}catch');
