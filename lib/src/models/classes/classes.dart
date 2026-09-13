@@ -59,7 +59,11 @@ final class const ClassMessage({
       blockLength: blockLength,
       blockSlot: blockSlot,
       weekNumber:
-          nav.get('numeroSemaine') ?? startDate.toRemoteWeekNumber(session),
+          nav.get('numeroSemaine') ??
+          session.instance.getWeekNumberForDate(
+            startDate,
+            forceRelativeToSchoolYear: true,
+          ),
       studentCountString: nav.get('strNbEleves'),
     );
   }
