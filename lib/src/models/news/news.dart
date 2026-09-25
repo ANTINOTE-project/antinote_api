@@ -20,7 +20,7 @@ final class const NewsPreviewData({
 }
 
 final class const News({
-  required final String label,
+  required final String? label,
   required final String id,
   required final bool anonymousResponse,
   required final bool isInformation,
@@ -77,7 +77,7 @@ final class const News({
 
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
-    yield label.visualIdData();
+    yield label?.visualIdData();
     yield anonymousResponse.visualIdData();
     yield isInformation.visualIdData();
     yield isPoll.visualIdData();
