@@ -1,12 +1,13 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/enum_id.dart';
 import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/serial.dart';
 import 'package:antinote_api/src/helpers/visual_id.dart';
 import 'package:antinote_api/src/models/classes/group.dart';
 import 'package:antinote_api/src/models/classes/room.dart';
+import 'package:antinote_api/src/models/classes/virtual.dart';
 import 'package:antinote_api/src/models/person.dart';
 import 'package:antinote_api/src/models/resource.dart';
 import 'package:antinote_api/src/models/subject/subject.dart';
@@ -86,10 +87,10 @@ final class const ClassroomContent({
 final class const VirtualClassroomContent({
   required super.value,
   required super.navigate,
-}) extends ClassContent<Uri> {
+}) extends ClassContent<VirtualClassroom> {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
-    yield value.toString().visualIdData();
+    yield* value.collectVisualIdData();
   }
 }
 
@@ -109,6 +110,6 @@ final class const UnknownContent({
 }) extends ClassContent<Map<String, dynamic>> {
   @override
   Iterable<Uint8List?> collectVisualIdData() sync* {
-    yield jsonEncode(value).visualIdData();
+    yield RemoteJsonEncoder(data: value).encode().visualIdData();
   }
 }

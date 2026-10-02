@@ -11,6 +11,7 @@ import 'package:antinote_api/src/helpers/visual_id.dart';
 import 'package:antinote_api/src/models/classes/content.dart';
 import 'package:antinote_api/src/models/classes/group.dart';
 import 'package:antinote_api/src/models/classes/room.dart';
+import 'package:antinote_api/src/models/classes/virtual.dart';
 import 'package:antinote_api/src/models/notebook/entry/preview.dart';
 import 'package:antinote_api/src/models/person.dart';
 import 'package:antinote_api/src/models/subject/subject.dart';

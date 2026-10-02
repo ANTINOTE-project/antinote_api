@@ -31,7 +31,7 @@ final class const Lesson({
       for (final virtualClassroom in lesson.getLM('listeVisios')) {
         contents.add(
           VirtualClassroomContent(
-            value: Uri.parse(virtualClassroom.get('url')),
+            value: .decode(virtualClassroom),
             navigate: null,
           ),
         );
@@ -85,7 +85,7 @@ final class const Lesson({
   @override
   ClassType get type => .lesson;
 
-  List<Uri> get virtualClassrooms => contents
+  List<VirtualClassroom> get virtualClassrooms => contents
       .whereType<VirtualClassroomContent>()
       .map((e) => e.value)
       .toList(growable: false);
