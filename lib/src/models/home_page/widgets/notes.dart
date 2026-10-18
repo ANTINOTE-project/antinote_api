@@ -2,7 +2,8 @@ part of '../widget.dart';
 
 final class const Notes({required final LatestGradesPage page})
     extends HomePageWidget {
-  factory decode(Map<String, dynamic> nav, RemoteSession _) =>
+  factory decode(Map<String, dynamic> nav,
+      HomePageModule? _, RemoteSession _) =>
       .new(page: .decode(nav.getM('notes')));
 
   static HomePageModule module() => HomePageModule(

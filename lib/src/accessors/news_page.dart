@@ -18,7 +18,7 @@ final class const NewsPageAccessor({required final List<NewsDisplayMode> modes})
   static const int pageId = 8;
 
   @override
-  int? get page => 8;
+  int? get page => pageId;
 
   @override
   FutureOr<Map<String, dynamic>> access(

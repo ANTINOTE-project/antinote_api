@@ -139,23 +139,17 @@ class RemoteSession with SerializableObject<SerializedSession> {
   AuthenticationResponse get auth =>
       expectAccessorNamed<AuthenticationResponse>(.authenticationData);
 
-  int _currentUserResourceId = 0;
-
-  int get currentUserResourceId => _currentUserResourceId;
-
-  set currentUserResourceId(int value) {
-    _currentUserResourceId = value;
-
-    if (user.childResources.isNotEmpty) {
-      stack.changeUserResource(curResource);
-    }
-  }
-
   UserResource get rootResource => user.rootResource;
 
-  UserResource get curResource =>
-      user.childResources.elementAtOrNull(currentUserResourceId) ??
-      rootResource;
+  UserResource get curResource => (stack.clientSignature?.hasMember() ?? false)
+      ? user.rootResource
+      : user.childResources.firstWhere(
+          (resource) => resource.id == stack.clientSignature?.member.id,
+          orElse: () => user.rootResource,
+        );
+
+  void changeUserResource(UserResource resource) =>
+      stack.changeUserResource(resource);
 
   static final _startMatch = RegExp(r'Start\(');
   static final _endMatch = RegExp(r'\);?}catch');

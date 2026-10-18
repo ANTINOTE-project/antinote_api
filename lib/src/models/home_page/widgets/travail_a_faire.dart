@@ -2,7 +2,11 @@ part of '../widget.dart';
 
 final class const TravailAFaire({required final List<Homework> homeworks})
     extends HomePageWidget {
-  factory decode(Map<String, dynamic> nav, RemoteSession _) => .new(
+  factory decode(
+    Map<String, dynamic> nav,
+    HomePageModule? _,
+    RemoteSession _,
+  ) => .new(
     homeworks: nav
         .go('travailAFaire')
         .getLM('listeTAF')

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:antinote_api/src/accessors/home_page.dart';
 import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/json.dart';
 import 'package:antinote_api/src/helpers/session.dart';
@@ -12,10 +13,20 @@ final class const HomePage({
   required final bool duringOffTime,
   required final OffTimeParameters? offTimeParameters,
 }) with VisualIdMixin {
-  factory decode(Map<String, dynamic> nav, RemoteSession session) {
+  factory decode(
+    Map<String, dynamic> nav,
+    List<HomePageModule> modules,
+    RemoteSession session,
+  ) {
     final elements = widgetDefinitions
         .where((element) => element.shouldCreate(nav, session))
-        .map((e) => e.create(nav, session))
+        .map(
+          (def) => def.create(
+            nav,
+            modules.where((module) => module.widget == def.type).firstOrNull,
+            session,
+          ),
+        )
         .toList(growable: true);
 
     final offData = nav.has('infosDroitDeconnexion')

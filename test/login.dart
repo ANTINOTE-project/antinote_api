@@ -10,7 +10,7 @@ void main() {
       final credentials = PasswordCredentials(
         username: 'demonstration',
         password: 'pronotevs',
-        workspace: .student,
+        workspace: .parent,
         cookies: [],
         baseUrl: .parse('https://demo.index-education.net/pronote'),
         deviceUuid: Credentials.generateDeviceUuid(),

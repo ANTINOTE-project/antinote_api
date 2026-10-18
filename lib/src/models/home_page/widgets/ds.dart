@@ -2,7 +2,11 @@ part of '../widget.dart';
 
 final class const DS({required final List<ExamPreview> exams})
     extends HomePageWidget {
-  factory decode(Map<String, dynamic> nav, RemoteSession _) => .new(
+  factory decode(
+    Map<String, dynamic> nav,
+    HomePageModule? _,
+    RemoteSession _,
+  ) => .new(
     exams: nav.go('devoirSurveille').getLM('listeDS').mapL((e) => .decode(e)),
   );
 

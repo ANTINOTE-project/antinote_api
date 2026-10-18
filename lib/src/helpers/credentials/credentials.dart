@@ -74,7 +74,7 @@ sealed class const Credentials({
     await session.access(const UserParametersAccessor());
 
     session.stack.changeTab(HomePageAccessor.pageId);
-    session.currentUserResourceId = 0;
+    session.changeUserResource(session.user.requestableResources.first);
 
     return LoginResult(
       session: session,

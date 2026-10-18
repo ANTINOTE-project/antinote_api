@@ -84,14 +84,9 @@ final class const News({
     yield* category?.collectVisualIdData() ?? [];
     yield startDate.millisecondsSinceEpoch.bytesVisualIdData();
     yield endDate.millisecondsSinceEpoch.bytesVisualIdData();
-    yield isProlonged.visualIdData();
     yield creationTime.millisecondsSinceEpoch.bytesVisualIdData();
     yield author.visualIdData();
-    yield isSelfAuthor.visualIdData();
     yield* authorProfile.collectVisualIdData();
-    yield recipientFirstName?.visualIdData();
-    yield* recipient.collectVisualIdData();
-    yield recipientType.byteVisualIdData();
   }
 
   @override

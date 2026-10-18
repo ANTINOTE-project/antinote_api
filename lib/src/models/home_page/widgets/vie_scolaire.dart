@@ -6,7 +6,11 @@ final class const VieScolaire({
   required final bool absenceCommentRequired,
   required final bool lateArrivalCommentRequired,
 }) extends HomePageWidget {
-  factory decode(Map<String, dynamic> nav, RemoteSession _) => .new(
+  factory decode(
+    Map<String, dynamic> nav,
+    HomePageModule? _,
+    RemoteSession _,
+  ) => .new(
     elementTypes: nav.go('vieScolaire').get('L'),
     absences: nav
         .go('vieScolaire')

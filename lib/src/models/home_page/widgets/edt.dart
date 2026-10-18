@@ -5,7 +5,11 @@ final class const EDT({
   required final int selectedCycleDay,
   required final int? currentSlot,
 }) extends HomePageWidget {
-  factory decode(Map<String, dynamic> nav, RemoteSession session) => .new(
+  factory decode(
+    Map<String, dynamic> nav,
+    HomePageModule? _,
+    RemoteSession session,
+  ) => .new(
     timetable: Timetable.decode(nav, session),
     selectedCycleDay: nav.get('jourCycleSelectionne'),
     currentSlot: nav.get('placeCourante'),

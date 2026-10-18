@@ -2,8 +2,18 @@ part of '../widget.dart';
 
 final class const MenuDeLaCantine({required final Menu currentMenu})
     extends HomePageWidget {
-  factory decode(Map<String, dynamic> nav, RemoteSession _) =>
-      .new(currentMenu: Menu.decode(nav.go('menuDeLaCantine')));
+  factory decode(
+    Map<String, dynamic> nav,
+    HomePageModule? module,
+    RemoteSession session,
+  ) => .new(
+    currentMenu: Menu.decode(
+      nav.go('menuDeLaCantine'),
+      time:
+          module?.data(session).mGo('menuDeLaCantine')?.get('date') ??
+          session.instance.nextBusinessDay,
+    ),
+  );
 
   static HomePageModule module(Date date) => HomePageModule(
     widget: .menuDeLaCantine,

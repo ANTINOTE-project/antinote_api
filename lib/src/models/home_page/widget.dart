@@ -37,7 +37,11 @@ final class const WidgetDefinition<T extends HomePageWidget>({
   required final HomePageWidgetType type,
   required final bool Function(Map<String, dynamic> nav, RemoteSession session)
   shouldCreate,
-  required final T Function(Map<String, dynamic> nav, RemoteSession session)
+  required final T Function(
+    Map<String, dynamic> nav,
+    HomePageModule? module,
+    RemoteSession session,
+  )
   create,
 });
 
