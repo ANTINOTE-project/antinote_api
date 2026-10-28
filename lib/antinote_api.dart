@@ -43,6 +43,7 @@ export 'src/helpers/recurring_timetable.dart';
 export 'src/helpers/serial.dart' show SerializableObject;
 export 'src/helpers/session.dart';
 export 'src/helpers/session_access_type.dart';
+export 'src/helpers/version.dart';
 export 'src/helpers/visual_id.dart';
 export 'src/models/account/page.dart';
 export 'src/models/attachment.dart';

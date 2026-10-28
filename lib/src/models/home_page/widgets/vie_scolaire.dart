@@ -15,7 +15,7 @@ final class const VieScolaire({
     absences: nav
         .go('vieScolaire')
         .getLM('listeAbsences')
-        .mapL((e) => e.asSchoolLifeEvent()),
+        .mapL((e) => .decode(e)),
     absenceCommentRequired: nav
         .go('vieScolaire')
         .getB('commentaireAbsenceObligatoire'),

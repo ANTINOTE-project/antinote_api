@@ -16,7 +16,7 @@ final class const Dispense({
     id: message.id,
     start: message.start!,
     end: message.end!,
-    justified: nav.get('justifie'),
+    justified: nav.getB('justifie'),
     subject: .decode(nav.getM('matiere')),
     dispenseType: nav.get('strGenreDispense'),
     reasons: message.reasons,

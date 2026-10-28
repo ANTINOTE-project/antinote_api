@@ -13,7 +13,6 @@ import 'package:antinote_api/src/helpers/signatures/server.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:version/version.dart';
 
 export 'call/call.dart';
 
@@ -47,7 +46,9 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
   }
 
   static Future<NetworkStack> restore(SerializedNetworkStack serialized) async {
-    final pnVersion = Version.parse(serialized.instanceVersion);
+    final pnVersion = RemoteVersion.fromVersionNumbers(
+      versionNumbers: serialized.instanceVersion.toList(growable: false),
+    );
 
     final stack = NetworkStack(
       cookies: serialized.cookies.mapL(
@@ -90,7 +91,7 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
   SerializedNetworkStack serialize() {
     return SerializedNetworkStack(
       crypto: crypto.serialize(),
-      instanceVersion: remoteVersion.toString(),
+      instanceVersion: remoteVersion.versionNumbers,
       baseUrl: baseUrl.toString(),
       cookies: cookies.map((e) => e.toString()),
       tempWorkspace: temporaryWorkspace.serialize(),
@@ -121,7 +122,7 @@ class NetworkStack with SerializableObject<SerializedNetworkStack> {
   final Uri baseUrl;
 
   /// The version of the remote instance the [baseUrl] points to.
-  final Version remoteVersion;
+  final RemoteVersion remoteVersion;
 
   /// Whether the remote instance the [baseUrl] points to is a
   /// demonstration instance.

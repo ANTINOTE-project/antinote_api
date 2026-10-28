@@ -24,88 +24,70 @@ final class RecurringClassInstance<T extends Class> {
   });
 }
 
-final class RecurringClass<T extends Class> {
-  bool isClassType<C extends Class>() => T is C;
-
-  bool isSameClassTypeAs(Class clazz) => clazz is T;
-
+final class const RecurringClass<T extends Class>({
   /// All the week numbers the class happens on.
-  final Set<int> weeks;
+  required final Set<int> weeks,
 
   /// Every occurrence if the class.
-  final List<RecurringClassInstance<T>> occurrences;
+  required final List<RecurringClassInstance<T>> occurrences,
 
   /// This is to mark classes that only happen on select frequencies (ie. on
   /// even weeks)
-  final List<WeekFrequency> detectedCoveredFrequencies;
+  required final List<WeekFrequency> detectedCoveredFrequencies,
 
   /// This is not null when we can find a set of periods that perfectly match
   /// the first and last occurrences of the recurring class and covers every
   /// single instances.
-  final List<Period> detectedCoveredPeriods;
+  required final List<Period> detectedCoveredPeriods,
 
   /// The class that should be used to visually display the recurrence.
-  final T mockClass;
+  required final T mockClass,
 
   /// Those happen when the specific occurrences do not visually match the mock
   /// class, this is when a class is cancelled, changes properties, etc...
-  final Map<int, T> exceptions;
+  required final Map<int, T> exceptions,
 
   /// The visual IDs for each of the occurrences of the class. Useful when
   /// updating visuals of the recurring class.
-  final Set<String> visualIds;
+  required final Set<String> visualIds,
 
   /// This is not null when all the [detectedCoveredFrequencies] follow
   /// themselves. In this case we say that the event happens every week (even if
   /// there aren't any lessons during holidays).
-  final Duration? calendarPeriodicity;
+  required final Duration? calendarPeriodicity,
 
   /// This will automatically be empty if [calendarPeriodicity] is null.
   ///
   /// If the class does not happen on certain dates even though we define a
   /// [calendarPeriodicity], we provide the exceptions here which would be
   /// analogous to `EXDATE` in iCal.
-  final List<DateTime> calendarExceptions;
-
-  const RecurringClass({
-    required this.weeks,
-    required this.occurrences,
-    required this.detectedCoveredFrequencies,
-    required this.detectedCoveredPeriods,
-    required this.mockClass,
-    required this.exceptions,
-    required this.visualIds,
-    required this.calendarPeriodicity,
-    required this.calendarExceptions,
-  });
-}
-
-extension AsRecurringClass on List<Class> {
-  RecurringClass asRecurringClass(RemoteSession session) {
-    Map<String, List<Class>> classes = {};
-    for (final (visualId, clazz) in map((e) => (e.visualId, e))) {
-      if (classes.containsKey(visualId)) {
-        classes[visualId]!.add(clazz);
+  required final List<DateTime> calendarExceptions,
+}) {
+  factory decode(RemoteSession session, List<T> classes) {
+    Map<String, List<T>> classMap = {};
+    for (final (visualId, clazz) in classes.map((e) => (e.visualId, e))) {
+      if (classMap.containsKey(visualId)) {
+        classMap[visualId]!.add(clazz);
       } else {
-        classes[visualId] = [clazz];
+        classMap[visualId] = [clazz];
       }
     }
 
-    final occurrenceGroups = classes.values.toList(growable: false);
+    final occurrenceGroups = classMap.values.toList(growable: false);
     occurrenceGroups.sort((a, b) => -a.length.compareTo(b.length));
 
     final mockClass = occurrenceGroups.first.first;
-    final Map<int, Class> exceptions = Map.fromEntries(
+    final Map<int, T> exceptions = Map.fromEntries(
       occurrenceGroups
           .sublist(1)
           .fold(
-            <Class>[],
+            <T>[],
             (previousValue, element) => previousValue..addAll(element),
           )
           .map((e) => MapEntry(e.weekNumber, e)),
     );
 
-    final occurrences = mapL(
+    final occurrences = classes.mapL(
       (e) => RecurringClassInstance(
         mockValue: exceptions[e.weekNumber] ?? mockClass,
         weekNumber: e.weekNumber,
@@ -206,40 +188,32 @@ extension AsRecurringClass on List<Class> {
       detectedCoveredPeriods: [],
       mockClass: mockClass,
       exceptions: exceptions,
-      visualIds: classes.keys.toSet(),
+      visualIds: classMap.keys.toSet(),
       calendarPeriodicity: periodicity,
       calendarExceptions: calendarExceptions,
     );
   }
+
+  bool isClassType<C extends Class>() => T is C;
+
+  bool isSameClassTypeAs(Class clazz) => clazz is T;
 }
 
-final class RecurringTimetable {
-  final Map<String, dynamic>? absences;
-  final List<Break> breaks;
+final class const RecurringTimetable({
+  required final Map<String, dynamic>? absences,
+  required final List<Break> breaks,
 
-  final bool withCanceledClasses;
-  final List<RecurringClass>? recurringClasses;
+  required final bool withCanceledClasses,
+  required final List<RecurringClass>? recurringClasses,
 
-  final int? firstSlotForDay;
-  final int? middayMealStartSlot;
-  final int? middayMealEndSlot;
-
-  const RecurringTimetable({
-    required this.absences,
-    required this.breaks,
-    required this.withCanceledClasses,
-    required this.recurringClasses,
-    required this.firstSlotForDay,
-    required this.middayMealStartSlot,
-    required this.middayMealEndSlot,
-  });
-}
-
-extension AsRecurringTimetable on Timetable {
-  RecurringTimetable asRecurringTimetable(RemoteSession session) {
+  required final int? firstSlotForDay,
+  required final int? middayMealStartSlot,
+  required final int? middayMealEndSlot,
+}) {
+  factory decode(RemoteSession session, Timetable table) {
     final Map<String, List<Class>> classes = {};
 
-    for (final clazz in this.classes) {
+    for (final clazz in table.classes) {
       if (classes.containsKey(clazz.id)) {
         classes[clazz.id]!.add(clazz);
       } else {
@@ -248,15 +222,15 @@ extension AsRecurringTimetable on Timetable {
     }
 
     return RecurringTimetable(
-      absences: absences,
-      breaks: breaks,
-      withCanceledClasses: withCanceledClasses,
+      absences: table.absences,
+      breaks: table.breaks,
+      withCanceledClasses: table.withCanceledClasses,
       recurringClasses: classes.values
-          .map((e) => e.asRecurringClass(session))
+          .map((e) => RecurringClass.decode(session, e))
           .toList(growable: false),
-      firstSlotForDay: firstSlotForDay,
-      middayMealStartSlot: middayMealStartSlot,
-      middayMealEndSlot: middayMealEndSlot,
+      firstSlotForDay: table.firstSlotForDay,
+      middayMealStartSlot: table.middayMealStartSlot,
+      middayMealEndSlot: table.middayMealEndSlot,
     );
   }
 }

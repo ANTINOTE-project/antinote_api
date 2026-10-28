@@ -4,36 +4,25 @@ import 'dart:math';
 import 'package:antinote_api/antinote_api.dart';
 import 'package:http/http.dart' as http;
 
-final class GeolocatedInstance {
-  final Uri baseUrl;
-  final String name;
-  final double latitude;
-  final double longitude;
-  final String postalCode;
+final class const GeolocatedInstance({
+  required final Uri baseUrl,
+  required final String name,
+  required final double latitude,
+  required final double longitude,
+  required final String postalCode,
 
-  final double distance;
+  required final double distance,
+}) {
+  static double _toRadians(double degrees) => degrees * pi / 180;
 
-  const GeolocatedInstance({
-    required this.baseUrl,
-    required this.name,
-    required this.latitude,
-    required this.longitude,
-    required this.postalCode,
-    required this.distance,
-  });
-}
-
-const _earthDiameter = 6371.2 * 2;
-
-extension AsGeolocatedInstance on Map<String, dynamic> {
-  double _toRadians(double degrees) => degrees * pi / 180;
-
-  double _hav(double angle) {
+  static double _hav(double angle) {
     final s = sin(angle / 2);
     return s * s;
   }
 
-  double _calculateDistance(
+  static const _earthDiameter = 6371.2 * 2;
+
+  static double _calculateDistance(
     double lat0,
     double lon0,
     double lat1,
@@ -49,16 +38,16 @@ extension AsGeolocatedInstance on Map<String, dynamic> {
         _earthDiameter;
   }
 
-  GeolocatedInstance asGeolocatedInstance(double lat0, double lon0) {
-    final lat1 = double.parse(get('lat'));
-    final lon1 = double.parse(get('long'));
+  factory decode(Map<String, dynamic> nav, double lat0, double lon0) {
+    final lat1 = double.parse(nav.get('lat'));
+    final lon1 = double.parse(nav.get('long'));
 
     return GeolocatedInstance(
-      baseUrl: Uri.parse(get('url')),
-      name: get('nomEtab'),
+      baseUrl: Uri.parse(nav.get('url')),
+      name: nav.get('nomEtab'),
       latitude: lat1,
       longitude: lon1,
-      postalCode: get('cp'),
+      postalCode: nav.get('cp'),
       distance: _calculateDistance(lat0, lon0, lat1, lon1),
     );
   }
@@ -72,8 +61,6 @@ Future<List<GeolocatedInstance>> findNearbyInstances(
   final req = http.Request('POST', Uri.parse(geolocationUrl));
   req.headers['Content-Type'] =
       'application/x-www-form-urlencoded;charset=UTF-8';
-  // req.body =
-  //     'data=${}';
   req.bodyFields = {
     'data': jsonEncode({
       'lat': lat.toString(),
@@ -86,9 +73,8 @@ Future<List<GeolocatedInstance>> findNearbyInstances(
   try {
     final parsed = jsonDecode(resBody) as List<dynamic>;
 
-    return parsed.mapL(
-      (e) => (e as Map<String, dynamic>).asGeolocatedInstance(lat, lon),
-    )..sort((a, b) => a.distance.compareTo(b.distance));
+    return parsed.mapL((e) => .decode(e as Map<String, dynamic>, lat, lon))
+      ..sort((a, b) => a.distance.compareTo(b.distance));
   } catch (e, st) {
     logger.severe('Could not read geolocated instances.', e, st);
     logger.severe('Response is: $resBody');

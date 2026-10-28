@@ -8,7 +8,6 @@ import 'package:antinote_api/antinote_api.dart';
 import 'package:uuid/data.dart';
 import 'package:uuid/rng.dart';
 import 'package:uuid/uuid.dart';
-import 'package:version/version.dart';
 
 part 'password.dart';
 part 'qr_code.dart';
@@ -39,7 +38,7 @@ sealed class const Credentials({
     required Challenge challenge,
     required String username,
     required String mod,
-    required Version version,
+    required RemoteVersion version,
     bool addUsernameToWand = true,
     Workspace? workspace,
   }) async {

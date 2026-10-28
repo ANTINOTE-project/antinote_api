@@ -9,7 +9,6 @@ import 'package:antinote_api/src/helpers/api_properties.dart';
 import 'package:antinote_api/src/helpers/localization.dart';
 import 'package:antinote_api/src/helpers/serial.dart';
 import 'package:antinote_api/src/models/authentication_response.dart';
-import 'package:version/version.dart';
 
 class RemoteSession with SerializableObject<SerializedSession> {
   final NetworkStack stack;
@@ -263,24 +262,16 @@ class RemoteSession with SerializableObject<SerializedSession> {
       throw const HttpException('Remote page not available.');
     }
 
-    Version? remoteVersion;
+    RemoteVersion? remoteVersion;
     final splitServerHeader = seedPageResponse.headers
         .value('server')
         ?.split(' ');
     if (splitServerHeader != null && splitServerHeader[0] == 'PRONOTE') {
-      final versionNumbers = splitServerHeader[1]
-          .split('.')
-          .mapL((e) => int.parse(e));
-      remoteVersion = Version(
-        versionNumbers[0],
-        versionNumbers[1],
-        versionNumbers[2],
-        build: versionNumbers.skip(3).join('.'),
-      );
+      remoteVersion = RemoteVersion.parse(splitServerHeader[1]);
     } else {
       // We assume this is a change that could happen in a future version, we
       // put it to "the future" (next year version from latest supported).
-      remoteVersion = Version(2027, 0, 0);
+      remoteVersion = RemoteVersion(2027, 0, 0);
     }
 
     final body = await seedPageResponse
@@ -296,7 +287,7 @@ class RemoteSession with SerializableObject<SerializedSession> {
     }
 
     final seed = jsonDecode(
-      remoteVersion.major >= 2026
+      remoteVersion.year >= 2026
           ? body.substring(seedStart, seedEnd)
           : body
                 .substring(seedStart, seedEnd)
@@ -312,7 +303,7 @@ class RemoteSession with SerializableObject<SerializedSession> {
     bool skipEncryption;
     bool skipCompression;
 
-    if (remoteVersion >= Version(2025, 1, 3)) {
+    if (remoteVersion >= RemoteVersion(2025, 1, 3)) {
       skipEncryption = !seed.getB('CrA');
       skipCompression = !seed.getB('CoA');
     } else {
@@ -355,7 +346,7 @@ class RemoteSession with SerializableObject<SerializedSession> {
         remoteVersion: remoteVersion,
         demo: seed.getB('d'),
         http: seed.getB('http'),
-        poll: seed.getB('poll') || remoteVersion >= Version(2025, 1, 3),
+        poll: seed.getB('poll') || remoteVersion >= RemoteVersion(2025, 1, 3),
         rsaFromConstants: rsaFromConstants,
         skipCompression: skipCompression,
         skipEncryption: skipEncryption,

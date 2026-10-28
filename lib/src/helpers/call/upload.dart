@@ -1,27 +1,27 @@
 part of 'call.dart';
 
-final class UploadCallData {
-  final String orderId;
-  final String fileName;
-  final String? contentType;
-  final int contentLength;
-  final int viewOffset;
-  final Uint8List dataView;
-  final String fileId;
-  final String? md5DataHash;
-  final DateTime uploadStartTime;
-
-  const UploadCallData({
-    required this.orderId,
-    required this.fileName,
-    required this.contentType,
-    required this.contentLength,
-    required this.viewOffset,
-    required this.dataView,
-    required this.fileId,
-    required this.md5DataHash,
-    required this.uploadStartTime,
-  });
+final class const UploadCallData({
+  required final String orderId,
+  required final String fileName,
+  required final String? contentType,
+  required final int contentLength,
+  required final int viewOffset,
+  required final Uint8List dataView,
+  required final String fileId,
+  required final String? md5DataHash,
+  required final DateTime uploadStartTime,
+}) {
+  factory decode(Map<String, dynamic> nav) => .new(
+    orderId: nav.get('orderId'),
+    fileName: nav.get('fileName'),
+    contentType: nav.get('contentType'),
+    contentLength: nav.get('contentLength'),
+    viewOffset: nav.get('viewOffset'),
+    dataView: nav.get('dataView'),
+    fileId: nav.get('fileId'),
+    md5DataHash: nav.get('md5DataHash'),
+    uploadStartTime: nav.get('uploadStartTime'),
+  );
 
   static String buildFileId(NetworkStack stack, String category) {
     final behavior = OrderBehavior.fileUpload(category);
@@ -39,22 +39,6 @@ final class UploadCallData {
     'fileId': fileId,
     'md5DataHash': md5DataHash,
   };
-}
-
-extension AsUploadCallData on Map<String, dynamic> {
-  UploadCallData asUploadCallData() {
-    return UploadCallData(
-      orderId: this['orderId'],
-      fileName: this['fileName'],
-      contentType: this['contentType'],
-      contentLength: this['contentLength'],
-      viewOffset: this['viewOffset'],
-      dataView: this['dataView'],
-      fileId: this['fileId'],
-      md5DataHash: this['md5DataHash'],
-      uploadStartTime: this['uploadStartTime'],
-    );
-  }
 }
 
 final class _FileUploadCall extends Call {

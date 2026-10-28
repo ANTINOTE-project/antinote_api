@@ -17,7 +17,6 @@ dependencies:
   http: ^1.6.0 # Required to have better control over HTTP client.
   mime: ^2.1.0 # Used to determine MIME type from extension and header bytes.
   path: ^1.9.1 # Gets file extensions safely.
-  cross_file: ^0.3.5+5 # Very flutter-adjacent, will be replaced later... TODO
   intl: ^0.20.3 # Used to determine the language code to send to remote
 
   # Stream utils
@@ -32,7 +31,6 @@ dependencies:
 
   # Nice-to-have
   uuid: ^4.6.0 # Used to generate device UUIDs, this may be replaced by a random string generation function... TODO
-  version: ^3.0.2 # Manages remote versions and behavior related to it.
   logging: ^1.3.0
 
 dev_dependencies:

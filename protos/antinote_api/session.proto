@@ -89,7 +89,7 @@ message ClientSignature {
 
 message SerializedNetworkStack {
   SerializedCrypto crypto = 1;
-  string instance_version = 2;
+  repeated uint32 instance_version = 2;
   string base_url = 3;
   repeated string cookies = 4;
   SerializedWorkspace temp_workspace = 5;

@@ -1,4 +1,4 @@
-import 'package:version/version.dart';
+import 'package:antinote_api/antinote_api.dart';
 
 final class const ApiVocabulary({
   required final String data,
@@ -16,11 +16,11 @@ final class const ApiVocabulary({
   required final String fileUploadFileId,
   required final String fileUploadMd5,
 }) {
-  static ApiVocabulary forVersion(Version version) {
-    if (version >= Version(2025, 1, 3)) {
+  static ApiVocabulary forVersion(RemoteVersion version) {
+    if (version >= RemoteVersion(2025, 1, 3)) {
       return _for2025_1_3;
     }
-    if (version >= Version(2024, 3, 9)) {
+    if (version >= RemoteVersion(2024, 3, 9)) {
       return _for2024_3_9;
     }
 

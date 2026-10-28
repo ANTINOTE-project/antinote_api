@@ -4,11 +4,11 @@ import 'dart:typed_data';
 import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/crypto.dart';
 import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/version.dart';
 import 'package:antinote_api/src/helpers/visual_id.dart';
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cryptography_plus/cryptography_plus.dart';
-import 'package:version/version.dart';
 
 final class const Challenge({
   required final String rawEncryptedChallenge,
@@ -60,11 +60,9 @@ final class const Challenge({
   Future<Uint8List?> solve({
     required CipherWand challengeWand,
     required Crypto crypto,
-    required Version version,
+    required RemoteVersion version,
   }) async {
-    if (version > Version(2026, 2, 5) ||
-        (version == Version(2026, 2, 5) &&
-            (int.tryParse(version.build) ?? 0) >= 6)) {
+    if (version >= RemoteVersion(2026, 2, 5, 6)) {
       return await crypto.aesEncrypt(
         utf8.encode(rawEncryptedChallenge),
         auxiliaryWand: challengeWand,

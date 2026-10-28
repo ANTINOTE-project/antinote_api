@@ -1,36 +1,39 @@
 import 'dart:convert';
 
 import 'package:antinote_api/src/helpers/json.dart';
+import 'package:antinote_api/src/helpers/version.dart';
 import 'package:antinote_api/src/models/workspace/workspace.dart';
 import 'package:http/http.dart' as http;
-import 'package:version/version.dart';
 
-final class MobileInstanceParameters {
-  final Uri baseUrl;
+final class const MobileInstanceParameters({
+  required final Uri baseUrl,
 
-  final String establishmentName;
-  final Map<String, dynamic> collectivity;
-  final List<Workspace> workspaces;
-  final bool editsAllowed; // This is probably ModeExclusif
-  final Version version;
-  final DateTime dateTime;
+  required final String establishmentName,
+  required final Map<String, dynamic> collectivity,
+  required final List<Workspace> workspaces,
+  // This is probably ModeExclusif
+  required final bool editsAllowed,
+  required final RemoteVersion version,
+  required final DateTime dateTime,
 
-  final bool casActive;
-  final Uri? casUrl;
-  final String? casToken;
-
-  const MobileInstanceParameters({
-    required this.baseUrl,
-    required this.establishmentName,
-    required this.collectivity,
-    required this.workspaces,
-    required this.editsAllowed,
-    required this.version,
-    required this.dateTime,
-    required this.casActive,
-    required this.casUrl,
-    required this.casToken,
-  });
+  required final bool casActive,
+  required final Uri? casUrl,
+  required final String? casToken,
+}) {
+  factory decode(Map<String, dynamic> nav, Uri baseUrl) => .new(
+    baseUrl: baseUrl,
+    establishmentName: nav.get('nomEtab'),
+    collectivity: nav.getM('collectivite'),
+    workspaces: nav.getLM('espaces').mapL((e) => .decode(e)),
+    editsAllowed: nav.get('modeModif'),
+    version: RemoteVersion.fromVersionNumbers(
+      versionNumbers: nav.getL<int>('version'),
+    ),
+    dateTime: DateTime.parse(nav.get('date')),
+    casActive: nav.mGo('CAS')?.get('actif') ?? false,
+    casUrl: Uri.tryParse(nav.mGo('CAS')?.get('casURL') ?? ''),
+    casToken: nav.mGo('CAS')?.get('jetonCAS'),
+  );
 
   static Future<MobileInstanceParameters?> fetch(Uri baseUrl) async {
     try {
@@ -43,8 +46,7 @@ final class MobileInstanceParameters {
         /*headers: {'x-requested-with': 'com.IndexEducation.<Redacted>'},*/
       );
 
-      return (jsonDecode(page.body) as Map<String, dynamic>)
-          .asMobileInstanceParameters(baseUrl);
+      return .decode(jsonDecode(page.body) as Map<String, dynamic>, baseUrl);
     } catch (e) {
       rethrow;
       // return null;
@@ -52,20 +54,3 @@ final class MobileInstanceParameters {
   }
 }
 // InfoMobileApp.json?id=0D264427-EEFC-4810-A9E9-346942A862A4
-
-extension AsMobileInstanceParameters on Map<String, dynamic> {
-  MobileInstanceParameters asMobileInstanceParameters(Uri baseUrl) {
-    return MobileInstanceParameters(
-      baseUrl: baseUrl,
-      establishmentName: get('nomEtab'),
-      collectivity: getM('collectivite'),
-      workspaces: getLM('espaces').mapL((e) => .decode(e)),
-      editsAllowed: get('modeModif'),
-      version: Version.parse(getL<int>('version').join('.')),
-      dateTime: DateTime.parse(get('date')),
-      casActive: mGo('CAS')?.get('actif') ?? false,
-      casUrl: Uri.tryParse(mGo('CAS')?.get('casURL') ?? ''),
-      casToken: mGo('CAS')?.get('jetonCAS'),
-    );
-  }
-}

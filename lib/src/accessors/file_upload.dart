@@ -1,18 +1,29 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:antinote_api/src/accessors/accessors.dart';
 import 'package:antinote_api/src/helpers/cache.dart';
 import 'package:antinote_api/src/helpers/json.dart';
 import 'package:antinote_api/src/helpers/network_stack.dart';
 import 'package:antinote_api/src/helpers/session.dart';
-import 'package:cross_file/cross_file.dart';
 import 'package:http/http.dart';
 import 'package:mime/mime.dart';
 
+/// This is inclusive-exclusive.
+typedef FileReadCallback = Stream<Uint8List> Function(int start, int end);
+
 final class const FileUploadAccessor({
   final String fileCategory = 'selecfile',
-  required final XFile file,
+
+  required final String fileName,
+  required final int fileLength,
+  required final FileReadCallback readCallback,
+  final String? mimeType,
+
+  /// The hash must be MD5.
+  final String? fileHash,
+
   required final String nextCallName,
 }) extends Accessor<String> {
   static const int _chunkSize = 100 * 1024; // Same as remote
@@ -30,7 +41,7 @@ final class const FileUploadAccessor({
     Completer<void>? cancellationSignal,
   ) async {
     final baseOrder = await session.stack.getEncryptedOrder(
-      OrderBehavior.communication,
+      .communication,
       forceNullIv: false,
     );
     final uploadStart = DateTime.now();
@@ -39,42 +50,43 @@ final class const FileUploadAccessor({
       'Starting an upload at ${uploadStart.millisecondsSinceEpoch} for $fileId',
     );
 
-    int contentLength = await file.length();
-    String? mimeType;
-    session.stack.log.fine('File size is $contentLength');
+    String? mimeType = this.mimeType;
+    session.stack.log.fine('File size is $fileLength');
 
     int currentOffset = 0;
-    while (currentOffset < contentLength) {
-      final viewEnd = min(contentLength, currentOffset + _chunkSize) /* - 1*/;
-      final viewData = await ByteStream(file.openRead(currentOffset, viewEnd))
+    while (currentOffset < fileLength) {
+      final viewEnd = min(fileLength, currentOffset + _chunkSize);
+      final viewData = await ByteStream(readCallback(currentOffset, viewEnd))
           .toBytes();
 
-      mimeType ??= lookupMimeType(
-        file.name,
-        headerBytes: viewData
-            .take(defaultMagicNumbersMaxLength)
-            .toList(growable: false),
-      );
+      if (currentOffset == 0) {
+        mimeType ??= lookupMimeType(
+          fileName,
+          headerBytes: viewData
+              .take(defaultMagicNumbersMaxLength)
+              .toList(growable: false),
+        );
+      }
 
       session.stack.log.fine(
-        'Uploading chunk $currentOffset-$viewEnd/$contentLength... (actual view data len = ${viewData.length}, requested = ${viewEnd - currentOffset})',
+        'Uploading chunk $currentOffset-$viewEnd/$fileLength... '
+        '(actual view data len = ${viewData.length}, '
+        'requested = ${viewEnd - currentOffset})',
       );
 
       final result = await session.stack
           .post(
             .upload(
               cancellationSignal: cancellationSignal,
-              data: UploadCallData(
+              data: .new(
                 orderId: baseOrder,
-                fileName: file.name,
-                contentType: mimeType ?? file.mimeType,
-                contentLength: contentLength,
+                fileName: fileName,
+                contentType: mimeType,
+                contentLength: fileLength,
                 viewOffset: currentOffset,
                 dataView: viewData,
                 fileId: fileId,
-                md5DataHash: null,
-                // TODO: Calculate when the file is already in memory or in the
-                // TODO: same cases as remote (e.g. blobs)
+                md5DataHash: fileHash,
                 uploadStartTime: uploadStart,
               ),
               name: nextCallName,

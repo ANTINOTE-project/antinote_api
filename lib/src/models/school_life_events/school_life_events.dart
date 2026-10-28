@@ -47,6 +47,22 @@ sealed class const SchoolLifeEvent({
   required final DateTime? end,
   required final List<SchoolLifeEventReason> reasons,
 }) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) {
+    final message = SchoolLifeEventMessage.decode(nav);
+
+    // This feels more and more like a hack...
+    // TODO: Replace those objects with a modular system.
+    return switch (nav) {
+      {/*'G': 71, */ 'estUneExclusion': final isExclusion}
+          when isExclusion == true =>
+        Exclusion.decode(message, nav),
+      {'G': 13} => Absence.decode(message, nav),
+      {'G': 14} => Delay.decode(message, nav),
+      {'G': 40} => Dispense.decode(message, nav),
+      _ => Absence.decode(message, nav),
+    };
+  }
+
   @override
   CacheType? get cacheType => .SCHOOL_LIFE_EVENT;
 
@@ -57,42 +73,11 @@ sealed class const SchoolLifeEvent({
   ];
 }
 
-extension AsSchoolLifeEvent on Map<String, dynamic> {
-  SchoolLifeEventMessage asSchoolLifeEventMessage() {
-    return SchoolLifeEventMessage.decode(this);
-  }
-
-  SchoolLifeEvent asSchoolLifeEvent() {
-    final schoolLifeMessage = asSchoolLifeEventMessage();
-
-    return switch (this) {
-      {'G': final type, 'estUneExclusion': final isExclusion}
-          when type == 71 || isExclusion != null =>
-        Exclusion.decode(schoolLifeMessage, this),
-      {'G': final type} when type == 13 => Absence.decode(
-        schoolLifeMessage,
-        this,
-      ),
-      {'G': final type} when type == 14 => Delay.decode(
-        schoolLifeMessage,
-        this,
-      ),
-      {'G': final type} when type == 40 => Dispense.decode(
-        schoolLifeMessage,
-        this,
-      ),
-      _ => Absence.decode(schoolLifeMessage, this),
-    };
-  }
-}
-
-class SchoolLifeEventReason with VisualIdMixin {
-  final String id;
-  final String name;
-
-  const SchoolLifeEventReason({required this.id, required this.name});
-
-  factory SchoolLifeEventReason.decode(Map<String, dynamic> nav) {
+final class const SchoolLifeEventReason({
+  required final String id,
+  required final String name,
+}) with VisualIdMixin {
+  factory decode(Map<String, dynamic> nav) {
     return SchoolLifeEventReason(id: nav.get('N'), name: nav.get('L'));
   }
 

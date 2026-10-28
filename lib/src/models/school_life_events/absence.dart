@@ -9,7 +9,7 @@ final class const Absence({
   required final bool justified,
   required final bool isReasonUnknown,
   required final bool justifyByParents,
-  required final String hourCount,
+  required final String? hourCount,
   required final double dayCount,
   required super.reasons,
 }) extends SchoolLifeEvent {
@@ -20,13 +20,13 @@ final class const Absence({
     id: message.id,
     start: message.start!,
     end: message.end!,
-    open: nav.get('ouverte'),
-    settled: nav.get('reglee'),
-    justified: nav.get('justifie'),
-    isReasonUnknown: nav.get('estMotifNonEncoreConnu'),
-    justifyByParents: nav.get('aJustifierParParents'),
+    open: nav.getB('ouverte'),
+    settled: nav.getB('reglee'),
+    justified: nav.getB('justifie'),
+    isReasonUnknown: nav.getB('estMotifNonEncoreConnu'),
+    justifyByParents: nav.getB('aJustifierParParents'),
     hourCount: nav.get('NbrHeures'),
-    dayCount: nav.get('NbrJours'),
+    dayCount: nav.eGet(['NbrJours', 'duree']),
     reasons: message.reasons,
   );
 
@@ -39,7 +39,7 @@ final class const Absence({
     yield justified.visualIdData();
     yield isReasonUnknown.visualIdData();
     yield justifyByParents.visualIdData();
-    yield hourCount.visualIdData();
+    yield hourCount?.visualIdData();
     yield dayCount.visualIdData();
   }
 }
